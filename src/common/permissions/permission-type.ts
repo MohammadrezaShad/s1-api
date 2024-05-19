@@ -1,5 +1,6 @@
 import { PermissionPermit } from '@/modules/auth/components/permission/permission/permission-permit';
 import { RolePermission } from '@/modules/auth/components/role/permission/role-permission';
+import { ImagePermission } from '@/modules/image/permission/image-permission';
 import { TaxonomyPermission } from '@/modules/taxonomy/permission/taxonomy-permission';
 import { UserPermission } from '@/modules/user/permission/user-permission';
 
@@ -32,6 +33,10 @@ export class Permission {
   static readonly UPDATE_ROLE = RolePermission.UPDATE_ROLE;
   static readonly DELETE_ROLE = RolePermission.DELETE_ROLE;
   static readonly BULK_DELETE_ROLE = RolePermission.BULK_DELETE_ROLE;
+
+  static readonly UPLOAD_IMAGE = ImagePermission.UPLOAD_IMAGE;
+  static readonly UPDATE_IMAGE = ImagePermission.UPDATE_IMAGE;
+  static readonly DELETE_IMAGE = ImagePermission.DELETE_IMAGE;
 
   static readonly CREATE_TAXONOMY = TaxonomyPermission.CREATE_TAXONOMY;
   static readonly UPDATE_TAXONOMY = TaxonomyPermission.UPDATE_TAXONOMY;
