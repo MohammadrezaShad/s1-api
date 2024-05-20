@@ -172,6 +172,7 @@ export class UserRepository {
       email: email,
       displayName: displayName,
       googleId: googleId,
+      isVerified: true,
     });
     await user.save();
     return this.userEntityFactory.createFromEntity(user);
