@@ -47,9 +47,9 @@ import { GetProfileUseCase } from './use-case/get-profile.use-case';
 import { PassRecoveryUseCase } from './use-case/pass-recovery.use-case';
 import { SendVerificationCodeUseCase } from './use-case/send-verification-code.use-case';
 import { SetPasswordUseCase } from './use-case/set-user-password.use-case';
+import { SigninWithGoogleUseCase } from './use-case/signin-with-google.use-case';
 import { SignupWithPhoneUseCase } from './use-case/signup-with-phone.use-case';
 import { ValidateVerificationCodeUseCase } from './use-case/validate-verification-code.use-case';
-import { SigninWithGoogleUseCase } from './use-case/signin-with-google.use-case';
 
 @Resolver(AuthQuery)
 export class AuthQueryResolver {
@@ -111,12 +111,12 @@ export class AuthQueryResolver {
   @ResolveField(() => SigninOutput)
   async signinWithGoogle(@GetUser() user: TUser) {}
 
-  @ResolveField(() => SigninOutput)
-  async signinWithGoogleRedirect(
-    @GetUser() user: TUser,
-  ): Promise<SigninOutput> {
-    return this.signinWithGoogleUseCase.signinWithGoogle(user);
-  }
+  // @ResolveField(() => SigninOutput)
+  // async signinWithGoogleRedirect(
+  //   @GetUser() user: TUser,
+  // ): Promise<SigninOutput> {
+  //   return this.signinWithGoogleUseCase.signinWithGoogle(user);
+  // }
 }
 
 @Resolver(AuthMutation)

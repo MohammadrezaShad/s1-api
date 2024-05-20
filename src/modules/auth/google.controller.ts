@@ -1,4 +1,13 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { google } from 'googleapis';
 
 import { GoogleOauthGuard } from '@/modules/auth/guards/GoogleOauthGuard';
 import { SigninWithGoogleUseCase } from '@/modules/auth/use-case/signin-with-google.use-case';
@@ -15,7 +24,7 @@ export class GoogleController {
 
   @Get('redirect')
   @UseGuards(GoogleOauthGuard)
-  signinWithGoogleRedirect(@Req() req) {
-    return this.signinWithGoogleUseCase.signinWithGoogle(req.user);
+  signinWithGoogleRedirect(@Req() req, @Res() res) {
+    return this.signinWithGoogleUseCase.signinWithGoogle(req.user, res);
   }
 }

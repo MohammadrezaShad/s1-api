@@ -13,19 +13,22 @@ import { SigninWithGoogleQuery } from '@/modules/auth/query/signin-with-google/s
 export class SigninWithGoogleUseCase {
   constructor(private readonly queryBus: QueryBus) {}
 
-  async signinWithGoogle(user: any): Promise<SigninOutput> {
+  async signinWithGoogle(user: any, res: any): Promise<SigninOutput> {
     try {
       if (!user) {
         throw new BadRequestException('Unauthenticated');
       }
 
-      const object = await this.queryBus.execute(
+      const userTokens = await this.queryBus.execute(
         new SigninWithGoogleQuery(user),
+      );
+      res.redirect(
+        `${process.env.GOOGLE_FRONT_CALLBACK_URL}?accessToken=${userTokens.accessToken}&refreshToken=${userTokens.refreshToken}`,
       );
       return {
         success: true,
-        accessToken: object.accessToken,
-        refreshToken: object.refreshToken,
+        accessToken: userTokens.accessToken,
+        refreshToken: userTokens.refreshToken,
       };
     } catch (error) {
       throw new InternalServerErrorException(error);
