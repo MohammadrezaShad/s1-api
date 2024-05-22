@@ -12,18 +12,18 @@ export class PermissionHelepr {
   constructor(private readonly repository: PermissionRepository) {}
 
   async validatePermissionId(permId: string) {
-    const role = await this.repository.findById({ id: permId });
-    if (!role || role === null)
+    const business = await this.repository.findById({ id: permId });
+    if (!business || business === null)
       throw new BadRequestException(PERMISSION_ID_IS_NOT_CORRECT);
   }
 
   async validatePermissionName(name: string, permId: string | null) {
-    const role = await this.repository.findOneItemByName(name, permId);
-    if (role) throw new BadRequestException(PERMISSION_NAME_DUPLICATED);
+    const business = await this.repository.findOneItemByName(name, permId);
+    if (business) throw new BadRequestException(PERMISSION_NAME_DUPLICATED);
   }
 
   async validatePermissionTitle(title: string, permId: string | null) {
-    const role = await this.repository.findOneItemByTitle(title, permId);
-    if (role) throw new BadRequestException(PERMISSION_TITLE_DUPLICATED);
+    const business = await this.repository.findOneItemByTitle(title, permId);
+    if (business) throw new BadRequestException(PERMISSION_TITLE_DUPLICATED);
   }
 }

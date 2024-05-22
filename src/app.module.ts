@@ -13,6 +13,8 @@ import { AppService } from '@/app.service';
 import { AuthModule } from '@/modules/auth/auth.module';
 import { TaxonomysModule } from '@/modules/taxonomy/taxonomy.module';
 import { UserModule } from '@/modules/user/user.module';
+import { ImageModule } from './modules/image/image.module';
+import { BusinessModule } from './modules/business/business.module';
 
 @Module({
   imports: [
@@ -97,6 +99,8 @@ import { UserModule } from '@/modules/user/user.module';
     UserModule,
     TaxonomysModule,
     AuthModule,
+    ImageModule,
+    BusinessModule,
   ],
   controllers: [],
   providers: [AppService],

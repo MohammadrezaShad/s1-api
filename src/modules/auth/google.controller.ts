@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Query,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
-import { google } from 'googleapis';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 
 import { GoogleOauthGuard } from '@/modules/auth/guards/GoogleOauthGuard';
 import { SigninWithGoogleUseCase } from '@/modules/auth/use-case/signin-with-google.use-case';
