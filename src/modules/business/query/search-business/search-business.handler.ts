@@ -9,10 +9,11 @@ export class SearchBusinessHanler
   implements IQueryHandler<SearchBusinessQuery>
 {
   constructor(private readonly businessRepository: BusinessRepository) {}
+
   async execute({
     searchBusinessInput,
   }: SearchBusinessQuery): Promise<SearchBusinessOutput> {
-    const result = this.businessRepository.search(searchBusinessInput);
+    const result = await this.businessRepository.search(searchBusinessInput);
     return result;
   }
 }

@@ -105,7 +105,7 @@ export class PermissionMutationResolver {
     Permission.BULK_DELETE_PERMISSION,
     Permission.BULK_DELETE,
   )
-  async bulkdeletePermission(
+  async bulkDeletePermission(
     @Args('input') input: BulkDeletePermissionInput,
   ): Promise<DeletePermissionOutput> {
     return this.bulkeletePermissionUseCase.bulkDeletePermission(input);

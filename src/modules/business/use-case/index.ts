@@ -1,4 +1,4 @@
-import { BulkDeletebusinessUseCase } from './bulk-delete-business.use-case';
+import { BulkDeleteBusinessUseCase } from './bulk-delete-business.use-case';
 import { CreateBusinessUseCase } from './create-business.use-case';
 import { DeleteBusinessUseCase } from './delete-business.use-case';
 import { FindBusinessByIdUseCase } from './find-business-by-id.use-case';
@@ -10,7 +10,7 @@ export const BusinessUseCases = [
   CreateBusinessUseCase,
   UpdateBusinessUseCase,
   DeleteBusinessUseCase,
-  BulkDeletebusinessUseCase,
+  BulkDeleteBusinessUseCase,
   FindBusinessByIdUseCase,
   FindBusinessByIdsUseCase,
   SearchBusinessUseCase,

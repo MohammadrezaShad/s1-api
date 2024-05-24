@@ -44,7 +44,7 @@ import {
 import { BusinessEntity } from './entity/business.entity';
 import ImageLoader from '../image/image.loader';
 import { Image } from '../image/model/image.model';
-import { BulkDeletebusinessUseCase } from './use-case/bulk-delete-business.use-case';
+import { BulkDeleteBusinessUseCase } from './use-case/bulk-delete-business.use-case';
 import { ImageEntity } from '../image/entity/image.entity';
 
 @Resolver(() => BusinessQuery)
@@ -88,7 +88,7 @@ export class BusinessMutationResolver {
     private readonly createBusinessUseCase: CreateBusinessUseCase,
     private readonly updateBusinessUseCase: UpdateBusinessUseCase,
     private readonly deleteBusinessUseCase: DeleteBusinessUseCase,
-    private readonly bulkDeletebusinessUseCase: BulkDeletebusinessUseCase,
+    private readonly bulkDeletebusinessUseCase: BulkDeleteBusinessUseCase,
   ) {}
 
   @Mutation(() => BusinessMutation)
@@ -125,7 +125,7 @@ export class BusinessMutationResolver {
   //   Permission.BULK_DELETE_BUSINESS,
   //   Permission.BULK_DELETE,
   // )
-  async bulkdeletePermission(
+  async bulkDeleteComment(
     @Args('input') input: BulkDeleteBusinessInput,
   ): Promise<DeleteBusinessOutput> {
     return this.bulkDeletebusinessUseCase.bulkDeleteBusiness(input);

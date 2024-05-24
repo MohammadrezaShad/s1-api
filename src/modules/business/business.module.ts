@@ -33,7 +33,7 @@ import ImageLoader from '../image/image.loader';
     BusinessHelepr,
     ImageLoader,
   ],
-  exports: [],
+  exports: [...BusinessUseCases],
 })
 @Global()
 export class BusinessModule {}

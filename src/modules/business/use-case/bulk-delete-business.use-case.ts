@@ -1,4 +1,3 @@
-// user-registration.use-case.ts
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { BusinessHelepr } from '../helper/business-helper';
@@ -9,7 +8,7 @@ import {
 import { BulkDeleteBusinessCommand } from '../command/bulk-delete-business/bulk-delete-business.command';
 
 @Injectable()
-export class BulkDeletebusinessUseCase {
+export class BulkDeleteBusinessUseCase {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly businessHelepr: BusinessHelepr,

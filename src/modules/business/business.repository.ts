@@ -73,8 +73,6 @@ export class BusinessRepository {
     const count = inputCount || DEFAULT_COUNT;
     const page = inputPage || DEFAULT_PAGE;
 
-    const safeText = text ? escapeRegex(text) : text;
-
     const pipeline: PipelineStage[] = [
       {
         $match: {

@@ -15,6 +15,7 @@ import { TaxonomysModule } from '@/modules/taxonomy/taxonomy.module';
 import { UserModule } from '@/modules/user/user.module';
 import { ImageModule } from './modules/image/image.module';
 import { BusinessModule } from './modules/business/business.module';
+import { CommentModule } from './modules/comment/comment.module';
 
 @Module({
   imports: [
@@ -101,6 +102,7 @@ import { BusinessModule } from './modules/business/business.module';
     AuthModule,
     ImageModule,
     BusinessModule,
+    CommentModule,
   ],
   controllers: [],
   providers: [AppService],
