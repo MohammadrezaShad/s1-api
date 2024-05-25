@@ -4,8 +4,8 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 @InputType('UserOutputInputType', { isAbstract: true })
 @ObjectType('UserOutputType')
 export class UserOutput {
-  @Field(type => Number)
-  _id: number;
+  @Field(type => String)
+  _id: string;
 
   @Field(type => String, { nullable: true })
   displayName?: string;

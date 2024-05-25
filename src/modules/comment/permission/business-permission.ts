@@ -1,11 +1,6 @@
 import { PermissionType } from '@/common/permissions/permission-type';
 
 export class CommentPermission {
-  static readonly CREATE_COMMENT: PermissionType = {
-    name: 'createComment',
-    title: 'ایجاد کامنت',
-  };
-
   static readonly CREATE_ADMIN_COMMENT: PermissionType = {
     name: 'createَAdminComment',
     title: 'ایجاد کامنت ادمین',

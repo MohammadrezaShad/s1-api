@@ -1,7 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
-import { HttpModule } from '@nestjs/axios';
 
 import { CommentEntityFactory } from './entity/comment.factory';
 import { CommentModelFactory } from './model/comment-model.factory';
@@ -17,7 +16,6 @@ import { CommentHelepr } from './helper/business-helper';
 @Module({
   imports: [
     CqrsModule,
-    HttpModule,
     MongooseModule.forFeature([
       { name: CommentEntity.name, schema: CommentEntitySchema },
     ]),

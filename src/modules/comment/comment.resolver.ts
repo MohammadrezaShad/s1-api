@@ -53,10 +53,12 @@ import { CommentEntity } from './entity/comment.entity';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { UserEntity } from '../user/entity/user.entity';
 import { ClientId } from '@/common/decorators/client-id.decorator';
-import { UseGuards } from '@nestjs/common';
 import CommentDataLoader from './comment.loader';
 import { CommentType } from './enum/comment-type.enum';
 import { UserOutput } from '../user/dto/user.output';
+import { FindUserByIdUseCase } from '../user/use-case/find-user-by-id.use-case';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard';
+import { UseGuards } from '@nestjs/common';
 
 const COMMENTS_LIMIT = 100;
 const COMMENTS_INDEX = 1;
@@ -114,7 +116,7 @@ export class CommentMutationResolver {
   }
 
   @ResolveField(() => CreateCommentOutput)
-  // @PanelGuard<MethodDecorator>(Permission.CREATE_Comment, Permission.CREATE)
+  @UseGuards(AccessTokenGuard)
   async createComment(
     @Args('input') input: CreateCommentInput,
     @GetUser() user: UserEntity,
@@ -128,7 +130,10 @@ export class CommentMutationResolver {
   }
 
   @ResolveField(() => CreateCommentOutput)
-  // @PanelGuard<MethodDecorator>(Permission.CREATE_Comment, Permission.CREATE)
+  @PanelGuard<MethodDecorator>(
+    Permission.CREATE_ADMIN_COMMENT,
+    Permission.CREATE,
+  )
   async createAdminComment(
     @Args('input') input: CreateAdminCommentInput,
     @GetUser() user: UserEntity,
@@ -140,7 +145,7 @@ export class CommentMutationResolver {
   }
 
   @ResolveField(() => UpdateCommentOutput)
-  // @PanelGuard<MethodDecorator>(Permission.UPDATE_Comment, Permission.UPDATE)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE_COMMENT, Permission.UPDATE)
   async updateComment(
     @Args('input') input: UpdateCommentInput,
   ): Promise<UpdateCommentOutput> {
@@ -148,7 +153,7 @@ export class CommentMutationResolver {
   }
 
   @ResolveField(() => EditCommentOutput)
-  // @PanelGuard<MethodDecorator>(Permission.UPDATE_Comment, Permission.UPDATE)
+  @UseGuards(AccessTokenGuard)
   async editComment(
     @Args('input') input: EditCommentInput,
     @GetUser() user: UserEntity,
@@ -160,7 +165,7 @@ export class CommentMutationResolver {
   }
 
   @ResolveField(() => DeleteCommentOutput)
-  // @PanelGuard<MethodDecorator>(Permission.DELETE_Comment, Permission.DELETE)
+  @PanelGuard<MethodDecorator>(Permission.DELETE_COMMENT, Permission.DELETE)
   async deleteComment(
     @Args('input') input: DeleteCommentInput,
   ): Promise<DeleteCommentOutput> {
@@ -168,7 +173,7 @@ export class CommentMutationResolver {
   }
 
   @ResolveField(() => DeleteCommentOutput)
-  // @PanelGuard<MethodDecorator>(Permission.DELETE_Comment, Permission.DELETE)
+  @UseGuards(AccessTokenGuard)
   async removeComment(
     @Args('input') input: RemoveCommentInput,
     @GetUser() user: UserEntity,
@@ -180,10 +185,10 @@ export class CommentMutationResolver {
   }
 
   @ResolveField(() => DeleteCommentOutput)
-  // @PanelGuard<MethodDecorator>(
-  //   Permission.BULK_DELETE_Comment,
-  //   Permission.BULK_DELETE,
-  // )
+  @PanelGuard<MethodDecorator>(
+    Permission.BULK_DELETE_COMMENT,
+    Permission.BULK_DELETE,
+  )
   async bulkDeleteComment(
     @Args('input') input: DeleteCommentsInput,
   ): Promise<DeleteCommentOutput> {
@@ -196,6 +201,7 @@ export class CommentResolver {
   constructor(
     private readonly loader: CommentDataLoader,
     private readonly searchCommentUseCase: SearchCommentUseCase,
+    private readonly userUseCase: FindUserByIdUseCase,
   ) {}
   @ResolveField(() => CommentEntity, { name: 'parent', nullable: true })
   async result(@Parent() comments: CommentEntity) {
@@ -218,14 +224,15 @@ export class CommentResolver {
     return results;
   }
 
-  // @ResolveField(() => UserOutput, { name: 'createUser', nullable: true })
-  // async createUser(@Parent() comment: CommentEntity) {
-  //   const userId = comment.createUser;
-  //   if (userId == null) {
-  //     return null;
-  //   }
-  //   return this.loader.batchUsers.load(userId);
-  // }
+  @ResolveField(() => UserOutput, { name: 'createUser', nullable: true })
+  async createUser(@Parent() comment: CommentEntity) {
+    const userId = comment.createUser;
+    if (userId == null) {
+      return null;
+    }
+    const user = await this.userUseCase.findUserByid({ id: userId });
+    return user.result;
+  }
 
   @ResolveField(() => PostOutput, { name: 'post', nullable: true })
   async post(@Parent() comment: CommentEntity) {

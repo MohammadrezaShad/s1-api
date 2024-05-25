@@ -1,6 +1,7 @@
 import { PermissionPermit } from '@/modules/auth/components/permission/permission/permission-permit';
 import { RolePermission } from '@/modules/auth/components/role/permission/role-permission';
 import { BusinessPermission } from '@/modules/business/permission/business-permission';
+import { CommentPermission } from '@/modules/comment/permission/business-permission';
 import { ImagePermission } from '@/modules/image/permission/image-permission';
 import { TaxonomyPermission } from '@/modules/taxonomy/permission/taxonomy-permission';
 import { UserPermission } from '@/modules/user/permission/user-permission';
@@ -48,6 +49,11 @@ export class Permission {
   static readonly DELETE_BUSINESS = BusinessPermission.DELETE_BUSINESS;
   static readonly BULK_DELETE_BUSINESS =
     BusinessPermission.BULK_DELETE_BUSINESS;
+
+  static readonly CREATE_ADMIN_COMMENT = CommentPermission.CREATE_ADMIN_COMMENT;
+  static readonly UPDATE_COMMENT = CommentPermission.UPDATE_COMMENT;
+  static readonly DELETE_COMMENT = CommentPermission.DELETE_COMMENT;
+  static readonly BULK_DELETE_COMMENT = CommentPermission.BULK_DELETE_COMMENT;
 
   static readonly CREATE_SELLER = UserPermission.CREATE_SELLER;
   static readonly UPDATE_SELLER = UserPermission.UPDATE_SELLER;

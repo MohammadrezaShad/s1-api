@@ -43,7 +43,6 @@ import {
 } from './dto/delete-business.dto';
 import { BusinessEntity } from './entity/business.entity';
 import ImageLoader from '../image/image.loader';
-import { Image } from '../image/model/image.model';
 import { BulkDeleteBusinessUseCase } from './use-case/bulk-delete-business.use-case';
 import { ImageEntity } from '../image/entity/image.entity';
 
@@ -97,7 +96,7 @@ export class BusinessMutationResolver {
   }
 
   @ResolveField(() => CreateBusinessOutput)
-  // @PanelGuard<MethodDecorator>(Permission.CREATE_BUSINESS, Permission.CREATE)
+  @PanelGuard<MethodDecorator>(Permission.CREATE_BUSINESS, Permission.CREATE)
   async createBusiness(
     @Args('input') input: CreateBusinessInput,
   ): Promise<CreateBusinessOutput> {
@@ -105,7 +104,7 @@ export class BusinessMutationResolver {
   }
 
   @ResolveField(() => UpdateBusinessOutput)
-  // @PanelGuard<MethodDecorator>(Permission.UPDATE_BUSINESS, Permission.UPDATE)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE_BUSINESS, Permission.UPDATE)
   async updateBusiness(
     @Args('input') input: UpdateBusinessInput,
   ): Promise<UpdateBusinessOutput> {
@@ -113,7 +112,7 @@ export class BusinessMutationResolver {
   }
 
   @ResolveField(() => DeleteBusinessOutput)
-  // @PanelGuard<MethodDecorator>(Permission.DELETE_BUSINESS, Permission.DELETE)
+  @PanelGuard<MethodDecorator>(Permission.DELETE_BUSINESS, Permission.DELETE)
   async deleteBusiness(
     @Args('input') input: DeleteBusinessInput,
   ): Promise<DeleteBusinessOutput> {
@@ -121,10 +120,10 @@ export class BusinessMutationResolver {
   }
 
   @ResolveField(() => DeleteBusinessOutput)
-  // @PanelGuard<MethodDecorator>(
-  //   Permission.BULK_DELETE_BUSINESS,
-  //   Permission.BULK_DELETE,
-  // )
+  @PanelGuard<MethodDecorator>(
+    Permission.BULK_DELETE_BUSINESS,
+    Permission.BULK_DELETE,
+  )
   async bulkDeleteComment(
     @Args('input') input: BulkDeleteBusinessInput,
   ): Promise<DeleteBusinessOutput> {
