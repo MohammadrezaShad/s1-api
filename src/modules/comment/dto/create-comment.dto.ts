@@ -1,6 +1,7 @@
 import { Field, InputType, ObjectType, PickType } from '@nestjs/graphql';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
+
 import { CommentEntity } from '../entity/comment.entity';
 
 @InputType('CreateCommentInput')
@@ -13,9 +14,6 @@ export class CreateCommentInput extends PickType(CommentEntity, [
 ]) {
   @Field(() => String)
   post: string;
-
-  @Field(() => String)
-  token: string;
 
   user: string;
 
@@ -30,9 +28,6 @@ export class CreateAdminCommentInput extends PickType(CommentEntity, [
 ]) {
   @Field(() => String)
   post: string;
-
-  @Field(() => String)
-  token: string;
 
   user: string;
 }

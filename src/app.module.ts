@@ -11,11 +11,13 @@ import type { ClientOpts } from 'redis';
 
 import { AppService } from '@/app.service';
 import { AuthModule } from '@/modules/auth/auth.module';
+import { FavoriteModule } from '@/modules/favorite/favorite.module';
 import { TaxonomysModule } from '@/modules/taxonomy/taxonomy.module';
 import { UserModule } from '@/modules/user/user.module';
-import { ImageModule } from './modules/image/image.module';
+
 import { BusinessModule } from './modules/business/business.module';
 import { CommentModule } from './modules/comment/comment.module';
+import { ImageModule } from './modules/image/image.module';
 
 @Module({
   imports: [
@@ -103,6 +105,7 @@ import { CommentModule } from './modules/comment/comment.module';
     ImageModule,
     BusinessModule,
     CommentModule,
+    FavoriteModule,
   ],
   controllers: [],
   providers: [AppService],

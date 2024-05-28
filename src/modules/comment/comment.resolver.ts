@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -8,13 +9,30 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
+import { ClientId } from '@/common/decorators/client-id.decorator';
+import { PostOutput } from '@/common/dtos/post-output.dto';
 import { Permission } from '@/common/permissions/permission-type';
 
+import { GetUser } from '../auth/decorators/get-user.decorator';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { PanelGuard } from '../auth/guards/panel.guard';
+import { UserOutput } from '../user/dto/user.output';
+import { UserEntity } from '../user/entity/user.entity';
+import { FindUserByIdUseCase } from '../user/use-case/find-user-by-id.use-case';
+import CommentDataLoader from './comment.loader';
 import { CommentQuery, MutateCommentResponse } from './dto/comment.dto';
-import { SearchCommentUseCase } from './use-case/search-comment.use-case';
-import { FindCommentByIdUseCase } from './use-case/find-comment-by-id.use-case';
-import { FindCommentByIdsUseCase } from './use-case/find-comment-by-ids.use-case';
+import {
+  CreateAdminCommentInput,
+  CreateCommentInput,
+  CreateCommentOutput,
+} from './dto/create-comment.dto';
+import {
+  DeleteCommentInput,
+  DeleteCommentOutput,
+  DeleteCommentsInput,
+  RemoveCommentInput,
+} from './dto/delete-comment.dto';
+import { EditCommentInput, EditCommentOutput } from './dto/edit-comment.dto';
 import {
   FindCommentInput,
   FindCommentOutput,
@@ -22,43 +40,25 @@ import {
   FindCommentsOutput,
 } from './dto/find-comment.dto';
 import {
-  PostOutput,
   SearchCommentInput,
   SearchCommentOutput,
 } from './dto/search-comment.dto';
-import { CreateCommentUseCase } from './use-case/create-comment.use-case';
-import { UpdateCommentUseCase } from './use-case/update-comment.use-case';
-import { DeleteCommentUseCase } from './use-case/delete-comment.use-case';
-import { BulkDeleteCommentUseCase } from './use-case/bulk-delete-comment.use-case';
-import { CreateAdminCommentUseCase } from './use-case/create-admin-comment.use-case';
-import { EditCommentUseCase } from './use-case/edit-comment.use-case';
-import { RemoveCommentUseCase } from './use-case/remove-comment.use-case';
-import {
-  CreateAdminCommentInput,
-  CreateCommentInput,
-  CreateCommentOutput,
-} from './dto/create-comment.dto';
 import {
   UpdateCommentInput,
   UpdateCommentOutput,
 } from './dto/update-comment.dto';
-import { EditCommentInput, EditCommentOutput } from './dto/edit-comment.dto';
-import {
-  DeleteCommentInput,
-  DeleteCommentOutput,
-  DeleteCommentsInput,
-  RemoveCommentInput,
-} from './dto/delete-comment.dto';
 import { CommentEntity } from './entity/comment.entity';
-import { GetUser } from '../auth/decorators/get-user.decorator';
-import { UserEntity } from '../user/entity/user.entity';
-import { ClientId } from '@/common/decorators/client-id.decorator';
-import CommentDataLoader from './comment.loader';
 import { CommentType } from './enum/comment-type.enum';
-import { UserOutput } from '../user/dto/user.output';
-import { FindUserByIdUseCase } from '../user/use-case/find-user-by-id.use-case';
-import { AccessTokenGuard } from '../auth/guards/access-token.guard';
-import { UseGuards } from '@nestjs/common';
+import { BulkDeleteCommentUseCase } from './use-case/bulk-delete-comment.use-case';
+import { CreateAdminCommentUseCase } from './use-case/create-admin-comment.use-case';
+import { CreateCommentUseCase } from './use-case/create-comment.use-case';
+import { DeleteCommentUseCase } from './use-case/delete-comment.use-case';
+import { EditCommentUseCase } from './use-case/edit-comment.use-case';
+import { FindCommentByIdUseCase } from './use-case/find-comment-by-id.use-case';
+import { FindCommentByIdsUseCase } from './use-case/find-comment-by-ids.use-case';
+import { RemoveCommentUseCase } from './use-case/remove-comment.use-case';
+import { SearchCommentUseCase } from './use-case/search-comment.use-case';
+import { UpdateCommentUseCase } from './use-case/update-comment.use-case';
 
 const COMMENTS_LIMIT = 100;
 const COMMENTS_INDEX = 1;
@@ -124,7 +124,7 @@ export class CommentMutationResolver {
   ): Promise<CreateCommentOutput> {
     return this.createCommentUseCase.createComment({
       ...input,
-      user: user ? user._id.toHexString() : null,
+      user: user ? user._id.toString() : null,
       client: clientId,
     });
   }
@@ -140,7 +140,7 @@ export class CommentMutationResolver {
   ): Promise<CreateCommentOutput> {
     return this.createAdminCommentUseCase.createAdminComment({
       ...input,
-      user: user ? user._id.toHexString() : null,
+      user: user ? user._id.toString() : null,
     });
   }
 
@@ -160,7 +160,7 @@ export class CommentMutationResolver {
   ): Promise<EditCommentOutput> {
     return this.editCommentUseCase.editComment({
       ...input,
-      user: user ? user._id.toHexString() : null,
+      user: user ? user._id.toString() : null,
     });
   }
 
@@ -180,7 +180,7 @@ export class CommentMutationResolver {
   ): Promise<DeleteCommentOutput> {
     return this.removeCommentUseCase.removeComment({
       ...input,
-      user: user ? user._id.toHexString() : null,
+      user: user ? user._id.toString() : null,
     });
   }
 

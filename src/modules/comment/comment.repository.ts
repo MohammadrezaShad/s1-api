@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { ObjectId } from 'mongodb';
 import { Model } from 'mongoose';
 import { PipelineStage } from 'mongoose';
 
@@ -9,18 +10,18 @@ import {
 } from '@/common/constants/pagination.constant';
 import { BooleanEnum } from '@/common/enums/boolean.enum';
 import { SearchData } from '@/common/interfaces/search.data.interface';
-import { CommentEntity, TCommentEntity } from './entity/comment.entity';
+
+import { CreateAdminCommentInput } from './dto/create-comment.dto';
+import { RemoveCommentInput } from './dto/delete-comment.dto';
+import { EditCommentInput } from './dto/edit-comment.dto';
 import {
   SearchCommentInput,
   SearchCommentOutput,
 } from './dto/search-comment.dto';
-import { CommentModel } from './model/comment.model';
-import { CommentEntityFactory } from './entity/comment.factory';
-import { CreateAdminCommentInput } from './dto/create-comment.dto';
 import { UpdateCommentInput } from './dto/update-comment.dto';
-import { EditCommentInput } from './dto/edit-comment.dto';
-import { RemoveCommentInput } from './dto/delete-comment.dto';
-import { ObjectId } from 'mongodb';
+import { CommentEntity, TCommentEntity } from './entity/comment.entity';
+import { CommentEntityFactory } from './entity/comment.factory';
+import { CommentModel } from './model/comment.model';
 
 @Injectable()
 export class CommentRepository {
@@ -124,7 +125,6 @@ export class CommentRepository {
     newComment._id = new ObjectId().toHexString();
     newComment.createUser = input.user;
     newComment.author = 'ادمین';
-    newComment.authorEmail = 'TODO';
     newComment.approved = BooleanEnum.TRUE;
 
     await newComment.save();

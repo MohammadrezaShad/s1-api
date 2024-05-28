@@ -47,9 +47,10 @@ export class UserEntity extends DefaultEntity {
     unique: true,
     sparse: true,
   })
+  @IsOptional()
   @IsString()
   @IsPhoneNumber('IR')
-  phone: string;
+  phone?: string;
 
   @Field(() => [RoleEntity], { nullable: true })
   @Prop({ type: [String] })

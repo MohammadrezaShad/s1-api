@@ -9,12 +9,21 @@ import {
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
 import { Permission } from '@/common/permissions/permission-type';
+import { FavoriteCountByPostUseCase } from '@/modules/favorite/use-case/favorite-count-by-post.use-case';
 
 import { PanelGuard } from '../auth/guards/panel.guard';
+import { ImageEntity } from '../image/entity/image.entity';
+import ImageLoader from '../image/image.loader';
 import { BusinessMutation, BusinessQuery } from './dto/business.dto';
-import { SearchBusinessUseCase } from './use-case/search-business.use-case';
-import { FindBusinessByIdUseCase } from './use-case/find-business-by-id.use-case';
-import { FindBusinessByIdsUseCase } from './use-case/find-business-by-ids.use-case';
+import {
+  CreateBusinessInput,
+  CreateBusinessOutput,
+} from './dto/create-business.dto';
+import {
+  BulkDeleteBusinessInput,
+  DeleteBusinessInput,
+  DeleteBusinessOutput,
+} from './dto/delete-business.dto';
 import {
   FindBusinessByIdInput,
   FindBusinessByIdsInput,
@@ -25,26 +34,18 @@ import {
   SearchBusinessInput,
   SearchBusinessOutput,
 } from './dto/search-business.dto';
-import { CreateBusinessUseCase } from './use-case/create-business.use-case';
-import { UpdateBusinessUseCase } from './use-case/update-business.use-case';
-import { DeleteBusinessUseCase } from './use-case/delete-business.use-case';
-import {
-  CreateBusinessInput,
-  CreateBusinessOutput,
-} from './dto/create-business.dto';
 import {
   UpdateBusinessInput,
   UpdateBusinessOutput,
 } from './dto/update-business.dto';
-import {
-  BulkDeleteBusinessInput,
-  DeleteBusinessInput,
-  DeleteBusinessOutput,
-} from './dto/delete-business.dto';
 import { BusinessEntity } from './entity/business.entity';
-import ImageLoader from '../image/image.loader';
 import { BulkDeleteBusinessUseCase } from './use-case/bulk-delete-business.use-case';
-import { ImageEntity } from '../image/entity/image.entity';
+import { CreateBusinessUseCase } from './use-case/create-business.use-case';
+import { DeleteBusinessUseCase } from './use-case/delete-business.use-case';
+import { FindBusinessByIdUseCase } from './use-case/find-business-by-id.use-case';
+import { FindBusinessByIdsUseCase } from './use-case/find-business-by-ids.use-case';
+import { SearchBusinessUseCase } from './use-case/search-business.use-case';
+import { UpdateBusinessUseCase } from './use-case/update-business.use-case';
 
 @Resolver(() => BusinessQuery)
 export class BusinessQueryResolver {
@@ -133,7 +134,16 @@ export class BusinessMutationResolver {
 
 @Resolver(() => BusinessEntity)
 export class BusinessResolver {
-  constructor(private readonly imageLoader: ImageLoader) {}
+  constructor(
+    private readonly imageLoader: ImageLoader,
+    private readonly favoriteCountByPostUseCase: FavoriteCountByPostUseCase,
+  ) {}
+
+  @ResolveField(() => Number)
+  async favoriteCount(@Parent() business: BusinessEntity) {
+    const id = business._id.toString();
+    return this.favoriteCountByPostUseCase.favoriteCountByPost(id);
+  }
 
   @ResolveField(() => ImageEntity, { name: 'thumbnail', nullable: true })
   async thumbnail(@Parent() business: BusinessEntity) {

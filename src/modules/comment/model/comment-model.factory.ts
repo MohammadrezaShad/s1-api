@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 
 import { ModelFactory } from '@/common/repositories/model.factory';
+
 import { CommentRepository } from '../comment.repository';
 import { CreateCommentInput } from '../dto/create-comment.dto';
 import { CommentModel } from './comment.model';

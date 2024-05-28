@@ -2,6 +2,7 @@ import { PermissionPermit } from '@/modules/auth/components/permission/permissio
 import { RolePermission } from '@/modules/auth/components/role/permission/role-permission';
 import { BusinessPermission } from '@/modules/business/permission/business-permission';
 import { CommentPermission } from '@/modules/comment/permission/business-permission';
+import { FavoritePermission } from '@/modules/favorite/permission/favorite-permission';
 import { ImagePermission } from '@/modules/image/permission/image-permission';
 import { TaxonomyPermission } from '@/modules/taxonomy/permission/taxonomy-permission';
 import { UserPermission } from '@/modules/user/permission/user-permission';
@@ -54,6 +55,9 @@ export class Permission {
   static readonly UPDATE_COMMENT = CommentPermission.UPDATE_COMMENT;
   static readonly DELETE_COMMENT = CommentPermission.DELETE_COMMENT;
   static readonly BULK_DELETE_COMMENT = CommentPermission.BULK_DELETE_COMMENT;
+
+  static readonly BULK_DELETE_FAVORITE =
+    FavoritePermission.BULK_DELETE_FAVORITE;
 
   static readonly CREATE_SELLER = UserPermission.CREATE_SELLER;
   static readonly UPDATE_SELLER = UserPermission.UPDATE_SELLER;

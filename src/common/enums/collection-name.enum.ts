@@ -11,6 +11,7 @@ export enum CollectionName {
   OTP = 'otp',
   BUSINESS = 'business',
   COMMENT = 'comment',
+  FAVORITE = 'favorite',
 }
 
 registerEnumType(CollectionName, {

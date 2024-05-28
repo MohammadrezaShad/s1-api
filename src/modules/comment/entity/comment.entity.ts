@@ -10,14 +10,15 @@ import {
 } from 'class-validator';
 
 import { Schema } from '@/common/decorators/schema.decorator';
+import { PostOutput } from '@/common/dtos/post-output.dto';
 import { DefaultEntity } from '@/common/entities/default.entity';
+import { BooleanEnum } from '@/common/enums/boolean.enum';
 import { CollectionName } from '@/common/enums/collection-name.enum';
 import { type Document } from '@/common/types/document.type';
 import { SchemaFactory } from '@/common/utils/schema-factory.util';
-import { PostOutput } from '../dto/search-comment.dto';
-import { CommentType } from '../enum/comment-type.enum';
-import { BooleanEnum } from '@/common/enums/boolean.enum';
 import { UserOutput } from '@/modules/user/dto/user.output';
+
+import { CommentType } from '../enum/comment-type.enum';
 
 @InputType('CommentInputType', { isAbstract: true })
 @ObjectType()
