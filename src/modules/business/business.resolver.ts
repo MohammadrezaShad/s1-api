@@ -8,8 +8,12 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
+import { ClientId } from '@/common/decorators/client-id.decorator';
 import { Permission } from '@/common/permissions/permission-type';
+import { GetUser } from '@/modules/auth/decorators/get-user.decorator';
+import { CheckRepeatedFavoriteByUserUseCase } from '@/modules/favorite/use-case/check-repeated-favorite-by-user.use-case';
 import { FavoriteCountByPostUseCase } from '@/modules/favorite/use-case/favorite-count-by-post.use-case';
+import { UserEntity } from '@/modules/user/entity/user.entity';
 
 import { PanelGuard } from '../auth/guards/panel.guard';
 import { ImageEntity } from '../image/entity/image.entity';
@@ -137,12 +141,27 @@ export class BusinessResolver {
   constructor(
     private readonly imageLoader: ImageLoader,
     private readonly favoriteCountByPostUseCase: FavoriteCountByPostUseCase,
+    private readonly checkRepeatedFavoriteByUserUseCase: CheckRepeatedFavoriteByUserUseCase,
   ) {}
 
   @ResolveField(() => Number)
   async favoriteCount(@Parent() business: BusinessEntity) {
     const id = business._id.toString();
     return this.favoriteCountByPostUseCase.favoriteCountByPost(id);
+  }
+
+  @ResolveField(() => Boolean)
+  async isUserFavorite(
+    @Parent() business: BusinessEntity,
+    @ClientId() client: string,
+    @GetUser() user: UserEntity,
+  ) {
+    const id = business._id.toString();
+    return this.checkRepeatedFavoriteByUserUseCase.checkRepeatedFavoriteByUser({
+      post: id,
+      user: user ? user._id.toString() : null,
+      client: client,
+    });
   }
 
   @ResolveField(() => ImageEntity, { name: 'thumbnail', nullable: true })

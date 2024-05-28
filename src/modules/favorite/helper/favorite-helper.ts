@@ -1,15 +1,18 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { FavoriteRepository } from '../favorite.repository';
+import { FAVORITE_ID_IS_NOT_CORRECT } from '@/modules/favorite/constant/error-message.constant';
+import { FindFavoriteByIdUseCase } from '@/modules/favorite/use-case/find-favorite-by-id.use-case';
 
 @Injectable()
 export class FavoriteHelepr {
-  constructor(private readonly repository: FavoriteRepository) {}
+  constructor(
+    private readonly findFavoriteByIdUseCase: FindFavoriteByIdUseCase,
+  ) {}
 
-  // async validateBusinessId(permId: string) {
-  //   const business = await this.repository.findById({ id: permId });
-  //   if (!business || business === null)
-  //     throw new BadRequestException(BUSINESS_ID_IS_NOT_CORRECT);
+  // async validateBusinessId(id: string) {
+  //   const fav = await this.findFavoriteByIdUseCase.findFavById({ id });
+  //   if (!fav || fav === null)
+  //     throw new BadRequestException(FAVORITE_ID_IS_NOT_CORRECT);
   // }
 
   // async validatePermissionName(name: string, permId: string | null) {

@@ -1,4 +1,5 @@
 import { BulkDeleteFavoriteUseCase } from '@/modules/favorite/use-case/bulk-delete-favorite.use-case';
+import { CheckRepeatedFavoriteByUserUseCase } from '@/modules/favorite/use-case/check-repeated-favorite-by-user.use-case';
 import { CreateFavoriteUseCase } from '@/modules/favorite/use-case/create-favorite.use-case';
 import { DeleteFavoriteUseCase } from '@/modules/favorite/use-case/delete-favorite.use-case';
 import { DeleteOneFavoriteUseCase } from '@/modules/favorite/use-case/delete-one-favorite.use-case';
@@ -18,4 +19,5 @@ export const FavoriteUseCases = [
   FindFavoriteByIdsUseCase,
   SearchFavoriteUseCase,
   FavoriteCountByPostUseCase,
+  CheckRepeatedFavoriteByUserUseCase,
 ];
