@@ -8,6 +8,9 @@ export class BusinessModel extends AggregateRoot {
     private readonly email: string,
     private readonly phone: string,
     private readonly address: string,
+    private readonly address2: string,
+    private readonly description: string,
+    private readonly webAddress: string,
     private readonly hoursOfWork: string,
     private readonly lat: number,
     private readonly long: number,
@@ -39,6 +42,18 @@ export class BusinessModel extends AggregateRoot {
 
   getAddress(): string {
     return this.address;
+  }
+
+  getAddress2(): string {
+    return this.address2;
+  }
+
+  getDescription(): string {
+    return this.description;
+  }
+
+  getWebAddress(): string {
+    return this.webAddress;
   }
 
   getHoursOfWork(): string {

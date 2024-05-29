@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 
 import { ModelEntityFactory } from '@/common/repositories/model-entity';
+
 import { BusinessModel } from '../model/business.model';
 import { BusinessEntity } from './business.entity';
 
@@ -18,6 +19,9 @@ export class BusinessEntityFactory
       email: business.getEmail(),
       phone: business.getPhone(),
       address: business.getAddress(),
+      address2: business.getAddress2(),
+      description: business.getDescription(),
+      webAddress: business.getWebAddress(),
       hoursOfWork: business.getHoursOfWork(),
       lat: business.getLat(),
       long: business.getLong(),
@@ -35,6 +39,9 @@ export class BusinessEntityFactory
       email,
       phone,
       address,
+      address2,
+      description,
+      webAddress,
       hoursOfWork,
       lat,
       long,
@@ -48,6 +55,9 @@ export class BusinessEntityFactory
       email,
       phone,
       address,
+      address2,
+      description,
+      webAddress,
       hoursOfWork,
       lat,
       long,

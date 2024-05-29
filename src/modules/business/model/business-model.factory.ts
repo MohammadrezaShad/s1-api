@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 
 import { ModelFactory } from '@/common/repositories/model.factory';
-import { BusinessModel } from './business.model';
+
 import { BusinessRepository } from '../business.repository';
 import { CreateBusinessInput } from '../dto/create-business.dto';
+import { BusinessModel } from './business.model';
 
 @Injectable()
 export class BusinessModelFactory implements ModelFactory<BusinessModel> {
@@ -16,6 +17,9 @@ export class BusinessModelFactory implements ModelFactory<BusinessModel> {
     email,
     phone,
     address,
+    address2,
+    description,
+    webAddress,
     hoursOfWork,
     lat,
     long,
@@ -29,6 +33,9 @@ export class BusinessModelFactory implements ModelFactory<BusinessModel> {
       email,
       phone,
       address,
+      address2,
+      description,
+      webAddress,
       hoursOfWork,
       lat,
       long,

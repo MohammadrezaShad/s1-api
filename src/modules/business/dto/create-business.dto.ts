@@ -2,6 +2,7 @@ import { Field, InputType, ObjectType, PickType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
+
 import { BusinessEntity } from '../entity/business.entity';
 
 @InputType()
@@ -11,6 +12,9 @@ export class CreateBusinessInput extends PickType(BusinessEntity, [
   'email',
   'phone',
   'address',
+  'address2',
+  'description',
+  'webAddress',
   'hoursOfWork',
   'lat',
   'long',

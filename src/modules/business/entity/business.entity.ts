@@ -53,6 +53,24 @@ export class BusinessEntity extends DefaultEntity {
   @Prop({ type: String, nullable: true })
   @IsOptional()
   @IsString()
+  address2?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  webAddress?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
   hoursOfWork?: string;
 
   @Field(() => Number, { nullable: true })
