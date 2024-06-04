@@ -168,14 +168,14 @@ export class BusinessResolver {
   async thumbnail(@Parent() business: BusinessEntity) {
     const imageId = business.thumbnail;
     if (!imageId) return null;
-    return this.imageLoader.batchImages.load(imageId);
+    return this.imageLoader.batchImage.load(imageId);
   }
 
   @ResolveField(() => ImageEntity, { name: 'images', nullable: true })
   async images(@Parent() business: BusinessEntity) {
     const imageIds = business.images;
     if (!imageIds) return null;
-    return [];
+    return this.imageLoader.batchImages.load(imageIds);
   }
 }
 

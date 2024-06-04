@@ -7,7 +7,7 @@ import { FindImageByIdsUseCase } from '@/modules/image/use-case/find-image-by-id
 export default class ImageLoader {
   constructor(private readonly findImageByIdsUseCase: FindImageByIdsUseCase) {}
 
-  public readonly batchImages = new DataLoader(
+  public readonly batchImage = new DataLoader(
     async (imageIds: readonly string[]) => {
       const images = await this.findImageByIdsUseCase.findImageByIds(
         imageIds as string[],
@@ -17,6 +17,24 @@ export default class ImageLoader {
       );
       const finalImages = imageIds.map(imageId => imagesMap.get(imageId));
       return finalImages;
+    },
+  );
+
+  public readonly batchImages = new DataLoader(
+    async (imageIds: readonly string[][]) => {
+      const ids = [...new Set(imageIds.flat())];
+      const images = await this.findImageByIdsUseCase.findImageByIds(ids);
+      const imagesMap = new Map(
+        images.map(image => [image._id.toString(), image]),
+      );
+
+      const data = imageIds.map(imageId => {
+        const finalImages = imageId.map(networkId => imagesMap.get(networkId));
+
+        return finalImages;
+      });
+
+      return data;
     },
   );
 }
