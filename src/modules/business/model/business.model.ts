@@ -14,6 +14,7 @@ export class BusinessModel extends AggregateRoot {
     private readonly hoursOfWork: string,
     private readonly lat: number,
     private readonly long: number,
+    private readonly taxonomies: string[],
     private readonly thumbnail: string,
     private readonly images: string[],
   ) {
@@ -66,6 +67,10 @@ export class BusinessModel extends AggregateRoot {
 
   getLong(): number {
     return this.long;
+  }
+
+  getTaxonomies(): string[] {
+    return this.taxonomies;
   }
 
   getThumbnail(): string {

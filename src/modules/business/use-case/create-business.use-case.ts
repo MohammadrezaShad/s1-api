@@ -18,8 +18,11 @@ export class CreateBusinessUseCase {
     input: CreateBusinessInput,
   ): Promise<CreateBusinessOutput> {
     try {
-      await this.businessHelepr.validatePermissionName(input.name, null);
-      await this.businessHelepr.validatePermissionSlug(input.slug, null);
+      await this.businessHelepr.validateBusinessName(input.name, null);
+      await this.businessHelepr.validateBusinessSlug(input.slug, null);
+      for (const it of input.taxonomies || []) {
+        await this.businessHelepr.validateTaxonomy(it);
+      }
 
       await this.commandBus.execute(new CreateBusinessCommand(input));
       return { success: true };

@@ -50,6 +50,8 @@ import { FindBusinessByIdUseCase } from './use-case/find-business-by-id.use-case
 import { FindBusinessByIdsUseCase } from './use-case/find-business-by-ids.use-case';
 import { SearchBusinessUseCase } from './use-case/search-business.use-case';
 import { UpdateBusinessUseCase } from './use-case/update-business.use-case';
+import { TaxonomyEntity } from '../taxonomy/entity/taxonomy.entity';
+import BusinessDataLoader from './business.loader';
 
 @Resolver(() => BusinessQuery)
 export class BusinessQueryResolver {
@@ -140,6 +142,7 @@ export class BusinessMutationResolver {
 export class BusinessResolver {
   constructor(
     private readonly imageLoader: ImageLoader,
+    private readonly businessLoader: BusinessDataLoader,
     private readonly favoriteCountByPostUseCase: FavoriteCountByPostUseCase,
     private readonly checkRepeatedFavoriteByUserUseCase: CheckRepeatedFavoriteByUserUseCase,
   ) {}
@@ -162,6 +165,13 @@ export class BusinessResolver {
       user: user ? user._id.toString() : null,
       client: client,
     });
+  }
+
+  @ResolveField(() => [TaxonomyEntity], { name: 'taxonomies', nullable: true })
+  async taxonomies(@Parent() business: BusinessEntity) {
+    const taxonomyIds = business.taxonomies;
+    if (!taxonomyIds) return null;
+    return this.businessLoader.batchTaxonomies.load(taxonomyIds);
   }
 
   @ResolveField(() => ImageEntity, { name: 'thumbnail', nullable: true })

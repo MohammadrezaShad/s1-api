@@ -10,6 +10,12 @@ export class FindTaxonomyInput {
 }
 
 @InputType()
+export class FindTaxonomyByIdsInput {
+  @Field(() => [String])
+  ids: string[];
+}
+
+@InputType()
 export class FindTaxonomyBySlugInput {
   @Field(() => String)
   slug: string;
@@ -19,4 +25,10 @@ export class FindTaxonomyBySlugInput {
 export class FindTaxonomyOutput extends CoreOutput {
   @Field(() => TaxonomyEntity, { nullable: true })
   result?: TaxonomyEntity;
+}
+
+@ObjectType()
+export class FindTaxonomyByIdsOutput extends CoreOutput {
+  @Field(() => [TaxonomyEntity], { nullable: true })
+  results?: TaxonomyEntity[];
 }

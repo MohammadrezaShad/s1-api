@@ -18,9 +18,11 @@ export class CreateBusinessInput extends PickType(BusinessEntity, [
   'hoursOfWork',
   'lat',
   'long',
-  'thumbnail',
-  'images',
 ] as const) {
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  taxonomies?: string[];
+
   @Field(() => String, { nullable: true })
   @IsOptional()
   thumbnail?: string | null;

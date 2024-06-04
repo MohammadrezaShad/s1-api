@@ -10,6 +10,8 @@ import {
   DeleteTaxonomyOutput,
 } from '@/modules/taxonomy/dto/delete-taxonomy.dto';
 import {
+  FindTaxonomyByIdsInput,
+  FindTaxonomyByIdsOutput,
   FindTaxonomyBySlugInput,
   FindTaxonomyInput,
   FindTaxonomyOutput,
@@ -34,11 +36,13 @@ import { SearchTaxonomyUseCase } from '@/modules/taxonomy/use-case/search-taxono
 import { UpdateTaxonomyUseCase } from '@/modules/taxonomy/use-case/update-taxonomy.use-case';
 import { PanelGuard } from '../auth/guards/panel.guard';
 import { Permission } from '@/common/permissions/permission-type';
+import { FindTaxonomyByIdsUseCase } from './use-case/find-taxonomy-by-ids.use-case';
 
 @Resolver(() => TaxonomyQuery)
 export class TaxonomyQueryResolver {
   constructor(
     private readonly findTaxonomyUseCase: FindTaxonomyByIdUseCase,
+    private readonly findTaxonomyByIdsUseCase: FindTaxonomyByIdsUseCase,
     private readonly findTaxonomyBySlugUseCase: FindTaxonomyBySlugUseCase,
     private readonly searchTaxonomyUseCase: SearchTaxonomyUseCase,
   ) {}
@@ -53,6 +57,13 @@ export class TaxonomyQueryResolver {
     @Args('input') { id }: FindTaxonomyInput,
   ): Promise<FindTaxonomyOutput> {
     return this.findTaxonomyUseCase.findTaxonomyById(id);
+  }
+
+  @ResolveField(() => FindTaxonomyByIdsOutput)
+  async findTaxonomyByIds(
+    @Args('input') { ids }: FindTaxonomyByIdsInput,
+  ): Promise<FindTaxonomyByIdsOutput> {
+    return this.findTaxonomyByIdsUseCase.findTaxonomyByIds(ids);
   }
 
   @ResolveField(() => FindTaxonomyOutput)

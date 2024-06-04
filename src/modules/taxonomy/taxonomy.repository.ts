@@ -4,6 +4,7 @@ import mongoose, { Model, PipelineStage } from 'mongoose';
 
 import { stringListToObjectIds } from '@/common/utils/string-list-to-object-ids';
 import {
+  FindTaxonomyByIdsInput,
   FindTaxonomyBySlugInput,
   FindTaxonomyInput,
 } from '@/modules/taxonomy/dto/find-taxonomy.dto';
@@ -51,6 +52,15 @@ export class TaxonomyRepository {
   public async findById({ id }: FindTaxonomyInput): Promise<Taxonomy | null> {
     const taxonomy = await this.taxonomyModel.findById(id).exec();
     return taxonomy ? this.taxonomyFactory.createFromEntity(taxonomy) : null;
+  }
+
+  async findByIds({ ids }: FindTaxonomyByIdsInput): Promise<Taxonomy[]> {
+    const items = await this.taxonomyModel.find({ _id: { $in: ids } }).exec();
+    const taxonomies: Taxonomy[] = [];
+    items.map(it => {
+      taxonomies.push(this.taxonomyFactory.createFromEntity(it));
+    });
+    return taxonomies;
   }
 
   public async findBySlug({

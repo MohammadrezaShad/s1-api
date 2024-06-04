@@ -13,6 +13,7 @@ import { BusinessModelFactory } from './model/business-model.factory';
 import { ImageModule } from '../image/image.module';
 import { BusinessHelepr } from './helper/business-helper';
 import ImageLoader from '../image/image.loader';
+import BusinessDataLoader from './business.loader';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import ImageLoader from '../image/image.loader';
     BusinessModelFactory,
     BusinessHelepr,
     ImageLoader,
+    BusinessDataLoader,
   ],
   exports: [...BusinessUseCases],
 })

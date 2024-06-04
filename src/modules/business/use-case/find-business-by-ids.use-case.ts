@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { BusinessEntityFactory } from '../entity/business.factory';
 import {
@@ -11,8 +7,6 @@ import {
 } from '../dto/find-business.dto';
 import { BusinessModel } from '../model/business.model';
 import { FindBusinessByIdsQuery } from '../query/find-business-by-ids/find-business-by-ids.query';
-import { BUSINESS_NOT_FOUND } from '../constant/error-message.constant';
-import { BusinessEntity } from '../entity/business.entity';
 
 @Injectable()
 export class FindBusinessByIdsUseCase {
@@ -28,9 +22,6 @@ export class FindBusinessByIdsUseCase {
       const business: BusinessModel[] = await this.queryBus.execute(
         new FindBusinessByIdsQuery(ids),
       );
-      if (!business) {
-        throw new NotFoundException(BUSINESS_NOT_FOUND);
-      }
 
       const resultList = business.map(model =>
         this.businessEntityFactory.create(model),

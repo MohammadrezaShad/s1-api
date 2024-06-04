@@ -23,6 +23,7 @@ export class BusinessModelFactory implements ModelFactory<BusinessModel> {
     hoursOfWork,
     lat,
     long,
+    taxonomies,
     thumbnail,
     images,
   }: CreateBusinessInput): Promise<BusinessModel> {
@@ -39,6 +40,7 @@ export class BusinessModelFactory implements ModelFactory<BusinessModel> {
       hoursOfWork,
       lat,
       long,
+      taxonomies,
       thumbnail,
       images,
     );

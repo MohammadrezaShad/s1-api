@@ -25,6 +25,7 @@ export class BusinessEntityFactory
       hoursOfWork: business.getHoursOfWork(),
       lat: business.getLat(),
       long: business.getLong(),
+      taxonomies: business.getTaxonomies(),
       thumbnail: business.getThumbnail(),
       images: business.getImages(),
     };
@@ -45,6 +46,7 @@ export class BusinessEntityFactory
       hoursOfWork,
       lat,
       long,
+      taxonomies,
       thumbnail,
       images,
     } = businessEntity;
@@ -61,6 +63,7 @@ export class BusinessEntityFactory
       hoursOfWork,
       lat,
       long,
+      taxonomies,
       thumbnail,
       images,
     );

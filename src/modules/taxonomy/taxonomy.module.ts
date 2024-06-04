@@ -32,7 +32,7 @@ import { UseCases } from '@/modules/taxonomy/use-case';
     TaxonomyEntityFactory,
     TaxonomyFactory,
   ],
-  exports: [],
+  exports: [...UseCases],
 })
 @Global()
 export class TaxonomysModule {}

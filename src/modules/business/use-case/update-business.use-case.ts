@@ -20,8 +20,11 @@ export class UpdateBusinessUseCase {
   ): Promise<UpdateBusinessOutput> {
     try {
       await this.businessHelepr.validateBusinessId(input.id);
-      await this.businessHelepr.validatePermissionName(input.name, input.id);
-      await this.businessHelepr.validatePermissionSlug(input.slug, input.id);
+      await this.businessHelepr.validateBusinessName(input.name, input.id);
+      await this.businessHelepr.validateBusinessSlug(input.slug, input.id);
+      for (const it of input.taxonomies || []) {
+        await this.businessHelepr.validateTaxonomy(it);
+      }
       await this.commandBus.execute(new UpdateBusinessCommand(input));
       return { success: true };
     } catch (err) {
