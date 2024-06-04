@@ -7,6 +7,7 @@ import {
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
+import mongoose from 'mongoose';
 
 import { Schema } from '@/common/decorators/schema.decorator';
 import { DefaultEntity } from '@/common/entities/default.entity';
@@ -15,6 +16,7 @@ import { type Document } from '@/common/types/document.type';
 import { SchemaFactory } from '@/common/utils/schema-factory.util';
 import { ImageEntity } from '@/modules/image/entity/image.entity';
 import { TaxonomyEntity } from '@/modules/taxonomy/entity/taxonomy.entity';
+import { DailyWorkTime } from './work-time.entity';
 
 @InputType('BusinessInputType', { isAbstract: true })
 @ObjectType()
@@ -68,11 +70,10 @@ export class BusinessEntity extends DefaultEntity {
   @IsString()
   webAddress?: string;
 
-  @Field(() => String, { nullable: true })
-  @Prop({ type: String, nullable: true })
+  @Prop({ type: mongoose.Schema.Types.Mixed, nullable: true })
+  @Field(() => [DailyWorkTime], { nullable: true })
   @IsOptional()
-  @IsString()
-  hoursOfWork?: string;
+  dailyWorkTime?: DailyWorkTime[];
 
   @Field(() => Number, { nullable: true })
   @Prop({ type: Number, nullable: true })
