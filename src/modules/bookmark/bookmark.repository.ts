@@ -6,32 +6,19 @@ import {
   DEFAULT_COUNT,
   DEFAULT_PAGE,
 } from '@/common/constants/pagination.constant';
-import { CreateFavoriteInput } from '@/modules/favorite/dto/create-favorite.dto';
-import { FindRepeatedFavoriteInput } from '@/modules/favorite/dto/find-favorite.dto';
+import { CreateBookmarkInput } from './dto/create-bookmark.dto';
 import {
-  SearchFavoriteInput,
-  SearchFavoriteOutput,
-} from '@/modules/favorite/dto/search-favorite.dto';
-import { UpdateFavoriteInput } from '@/modules/favorite/dto/update-favorite.dto';
-import {
-  FavoriteEntity,
-  TFavorite,
-} from '@/modules/favorite/entity/favorite.entity';
-import { FavoriteEntityFactory } from '@/modules/favorite/entity/favorite.factory';
-import { FavoriteModel } from '@/modules/favorite/model/favorite.model';
-import { BookmarkEntity, TBookmark } from './entity/bookmark.entity';
-import { BookmarkEntityFactory } from './entity/bookmark.factory';
-import { BookmarkModel } from './model/bookmark.model';
+  FindBookmarksByUserInput,
+  FindRepeatedBookmarkInput,
+} from './dto/find-bookmark.dto';
 import {
   SearchBookmarkInput,
   SearchBookmarkOutput,
 } from './dto/search-bookmark.dto';
 import { UpdateBookmarkInput } from './dto/update-bookmark.dto';
-import {
-  FindBookmarksByUserInput,
-  FindRepeatedBookmarkInput,
-} from './dto/find-bookmark.dto';
-import { CreateBookmarkInput } from './dto/create-bookmark.dto';
+import { BookmarkEntity, TBookmark } from './entity/bookmark.entity';
+import { BookmarkEntityFactory } from './entity/bookmark.factory';
+import { BookmarkModel } from './model/bookmark.model';
 
 @Injectable()
 export class BookmarkRepository {
@@ -147,6 +134,7 @@ export class BookmarkRepository {
   async checkRepeatedBookmarkByUser({
     user,
     post,
+    type,
   }: FindRepeatedBookmarkInput | CreateBookmarkInput): Promise<boolean> {
     const pipeline: PipelineStage[] = [
       {
@@ -156,6 +144,7 @@ export class BookmarkRepository {
               ...(user ? [{ user: { $eq: user } }] : []),
             },
             { post: { $eq: post } },
+            { type: { $eq: type } },
           ],
         },
       },

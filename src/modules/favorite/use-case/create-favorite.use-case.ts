@@ -25,6 +25,7 @@ export class CreateFavoriteUseCase {
           post: input.post,
           user: input.user,
           client: input.client,
+          type: input.type,
         }),
       );
       if (isRepeated) {

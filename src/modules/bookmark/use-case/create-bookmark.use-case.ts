@@ -23,6 +23,7 @@ export class CreateBookmarkUseCase {
         new FindRepeatedBookmarkQuery({
           post: input.post,
           user: input.user,
+          type: input.type,
         }),
       );
       if (isRepeated) {

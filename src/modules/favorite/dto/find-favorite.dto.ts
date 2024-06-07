@@ -3,6 +3,7 @@ import { IsOptional } from 'class-validator';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
 import { FavoriteEntity } from '@/modules/favorite/entity/favorite.entity';
+import { CollectionName } from '@/common/enums/collection-name.enum';
 
 @InputType()
 export class FindFavoriteInput {
@@ -36,4 +37,5 @@ export class FindRepeatedFavoriteInput {
   post: string;
   user?: string;
   client: string;
+  type?: CollectionName;
 }

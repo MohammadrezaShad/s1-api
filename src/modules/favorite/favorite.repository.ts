@@ -142,6 +142,7 @@ export class FavoriteRepository {
     client,
     user,
     post,
+    type,
   }: FindRepeatedFavoriteInput | CreateFavoriteInput): Promise<boolean> {
     const pipeline: PipelineStage[] = [
       {
@@ -154,6 +155,7 @@ export class FavoriteRepository {
               ],
             },
             { post: { $eq: post } },
+            { type: { $eq: type } },
           ],
         },
       },

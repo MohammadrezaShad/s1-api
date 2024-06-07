@@ -3,6 +3,7 @@ import { IsOptional } from 'class-validator';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
 import { BookmarkEntity } from '../entity/bookmark.entity';
+import { CollectionName } from '@/common/enums/collection-name.enum';
 
 @InputType()
 export class FindBookmarkInput {
@@ -35,6 +36,7 @@ export class FindRepeatedBookmarkInput {
   @Field(() => String)
   post: string;
   user?: string;
+  type?: CollectionName;
 }
 
 export class FindBookmarksByUserInput {

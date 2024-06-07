@@ -1,5 +1,12 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
 import { ClientId } from '@/common/decorators/client-id.decorator';
@@ -46,6 +53,11 @@ import { UpdateFavoriteUseCase } from '@/modules/favorite/use-case/update-favori
 import { UserEntity } from '@/modules/user/entity/user.entity';
 
 import { PanelGuard } from '../auth/guards/panel.guard';
+import { FindUserByIdUseCase } from '../user/use-case/find-user-by-id.use-case';
+import { BookmarkLoader } from '../bookmark/bookmark.loader';
+import { UserOutput } from '../user/dto/user.output';
+import { PostOutput } from '@/common/dtos/post-output.dto';
+import { CollectionName } from '@/common/enums/collection-name.enum';
 
 @Resolver(() => FavoriteResponse)
 export class FavoriteQueryResolver {
@@ -153,7 +165,34 @@ export class FavoriteMutationResolver {
 
 @Resolver(() => FavoriteEntity)
 export class FavoriteResolver {
-  constructor() {}
+  constructor(
+    private readonly userUseCase: FindUserByIdUseCase,
+    private readonly loader: BookmarkLoader,
+  ) {}
+
+  @ResolveField(() => UserOutput, { name: 'user', nullable: true })
+  async user(@Parent() favoriteEntity: FavoriteEntity) {
+    const userId = favoriteEntity.user;
+    if (userId == null) {
+      return null;
+    }
+    const user = await this.userUseCase.findUserByid({ id: userId });
+    return user.result;
+  }
+
+  @ResolveField(() => PostOutput, { name: 'post', nullable: true })
+  async post(@Parent() favoriteEntity: FavoriteEntity) {
+    const postId = favoriteEntity.post;
+    if (postId == null) return null;
+    switch (favoriteEntity.type) {
+      case CollectionName.BUSINESS: {
+        return {
+          businessEntity: await this.loader.batchBusiness.load(postId),
+        };
+      }
+    }
+    return [];
+  }
 }
 
 export const FavoriteResolvers = [
