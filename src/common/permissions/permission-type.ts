@@ -1,5 +1,6 @@
 import { PermissionPermit } from '@/modules/auth/components/permission/permission/permission-permit';
 import { RolePermission } from '@/modules/auth/components/role/permission/role-permission';
+import { BookmarkPermission } from '@/modules/bookmark/permission/bookmark-permission';
 import { BusinessPermission } from '@/modules/business/permission/business-permission';
 import { CommentPermission } from '@/modules/comment/permission/business-permission';
 import { FavoritePermission } from '@/modules/favorite/permission/favorite-permission';
@@ -58,6 +59,9 @@ export class Permission {
 
   static readonly BULK_DELETE_FAVORITE =
     FavoritePermission.BULK_DELETE_FAVORITE;
+
+  static readonly BULK_DELETE_BOOKMARK =
+    BookmarkPermission.BULK_DELETE_BOOKMARK;
 
   static readonly CREATE_SELLER = UserPermission.CREATE_SELLER;
   static readonly UPDATE_SELLER = UserPermission.UPDATE_SELLER;

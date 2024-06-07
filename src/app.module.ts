@@ -18,6 +18,7 @@ import { UserModule } from '@/modules/user/user.module';
 import { BusinessModule } from './modules/business/business.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { ImageModule } from './modules/image/image.module';
+import { BookmarkModule } from './modules/bookmark/bookmark.module';
 
 @Module({
   imports: [
@@ -106,6 +107,7 @@ import { ImageModule } from './modules/image/image.module';
     BusinessModule,
     CommentModule,
     FavoriteModule,
+    BookmarkModule,
   ],
   controllers: [],
   providers: [AppService],

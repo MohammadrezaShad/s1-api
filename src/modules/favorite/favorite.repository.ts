@@ -80,7 +80,7 @@ export class FavoriteRepository {
         },
       },
     ];
-    const [searchResults = {}] = await this.favModel.aggregate(pipeline);
+    const searchResults = await this.favModel.aggregate(pipeline);
     const [finalResults = {}] = searchResults;
 
     const totalCount = finalResults.totalCount?.[0]?.count || 0;

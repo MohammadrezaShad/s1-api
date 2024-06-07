@@ -167,6 +167,19 @@ export class BusinessResolver {
     });
   }
 
+  @ResolveField(() => Boolean)
+  async isBookmark(
+    @Parent() business: BusinessEntity,
+    @GetUser() user: UserEntity,
+  ) {
+    if (!user) return false;
+    const id = business._id.toString();
+    return this.businessLoader.batchBookmarksByUser.load({
+      post: id,
+      user: user ? user._id.toString() : null,
+    });
+  }
+
   @ResolveField(() => [TaxonomyEntity], { name: 'taxonomies', nullable: true })
   async taxonomies(@Parent() business: BusinessEntity) {
     const taxonomyIds = business.taxonomies;
