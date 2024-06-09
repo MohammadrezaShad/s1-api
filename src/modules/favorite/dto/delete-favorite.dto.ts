@@ -17,7 +17,6 @@ export class DeleteOneFavoriteInput {
   postId: string;
 
   user?: string;
-  clientId?: string;
 }
 
 @InputType()

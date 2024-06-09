@@ -10,13 +10,11 @@ export class CreateFavoriteInput extends OmitType(FavoriteEntity, [
   'updatedAt',
   'post',
   'user',
-  'client',
 ] as const) {
   @Field(() => String)
   post: string;
 
   user: string;
-  client: string;
 }
 
 @ObjectType()

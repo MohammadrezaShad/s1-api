@@ -12,7 +12,6 @@ export class CommentModel extends AggregateRoot {
     private readonly author: string,
     private readonly createUser: string,
     private readonly parent: string,
-    private readonly client: string,
     private readonly approved?: BooleanEnum,
   ) {
     super();
@@ -48,10 +47,6 @@ export class CommentModel extends AggregateRoot {
 
   getParent(): string {
     return this.parent;
-  }
-
-  getClient(): string {
-    return this.client;
   }
 
   getApproved(): BooleanEnum {

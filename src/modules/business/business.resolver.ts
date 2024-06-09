@@ -8,7 +8,6 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
-import { ClientId } from '@/common/decorators/client-id.decorator';
 import { Permission } from '@/common/permissions/permission-type';
 import { GetUser } from '@/modules/auth/decorators/get-user.decorator';
 import { CheckRepeatedFavoriteByUserUseCase } from '@/modules/favorite/use-case/check-repeated-favorite-by-user.use-case';
@@ -156,14 +155,12 @@ export class BusinessResolver {
   @ResolveField(() => Boolean)
   async isUserFavorite(
     @Parent() business: BusinessEntity,
-    @ClientId() client: string,
     @GetUser() user: UserEntity,
   ) {
     const id = business._id.toString();
     return this.checkRepeatedFavoriteByUserUseCase.checkRepeatedFavoriteByUser({
       post: id,
       user: user ? user._id.toString() : null,
-      client: client,
     });
   }
 

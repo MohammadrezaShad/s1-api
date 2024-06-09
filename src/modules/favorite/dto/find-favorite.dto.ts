@@ -36,6 +36,5 @@ export class FindRepeatedFavoriteInput {
   @Field(() => String)
   post: string;
   user?: string;
-  client: string;
   type?: CollectionName;
 }

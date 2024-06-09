@@ -10,10 +10,11 @@ import {
 import { FavoriteEntityFactory } from '@/modules/favorite/entity/favorite.factory';
 import { FavoriteRepository } from '@/modules/favorite/favorite.repository';
 import { FavoriteResolvers } from '@/modules/favorite/favorite.resolver';
-import { FavoriteHelepr } from '@/modules/favorite/helper/favorite-helper';
 import { FavoriteModelFactory } from '@/modules/favorite/model/favorite-model.factory';
 import { FavoriteQueryHandlers } from '@/modules/favorite/query';
 import { FavoriteUseCases } from '@/modules/favorite/use-case';
+import { FavoriteLoader } from './favorite.loader';
+import { FavoriteHelepr } from './helper/favorite-helper';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { FavoriteUseCases } from '@/modules/favorite/use-case';
     FavoriteEntityFactory,
     FavoriteModelFactory,
     FavoriteHelepr,
+    FavoriteLoader,
   ],
   exports: [...FavoriteUseCases],
 })

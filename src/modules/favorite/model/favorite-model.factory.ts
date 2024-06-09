@@ -14,14 +14,12 @@ export class FavoriteModelFactory implements ModelFactory<FavoriteModel> {
   async create({
     post,
     user,
-    client,
     type,
   }: CreateFavoriteInput): Promise<FavoriteModel> {
     const favorite = new FavoriteModel(
       new ObjectId().toHexString(),
       post,
       user,
-      client,
       type,
     );
     await this.favRepository.createFavorite(favorite);

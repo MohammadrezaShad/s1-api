@@ -14,7 +14,6 @@ export class DeleteOneFavoriteHandler
     const { deleteOneFavoriteInput } = command;
     await this.favoriteRepository.deleteOne(
       deleteOneFavoriteInput.postId,
-      deleteOneFavoriteInput.clientId,
       deleteOneFavoriteInput.user,
     );
   }

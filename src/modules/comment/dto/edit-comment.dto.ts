@@ -17,7 +17,6 @@ export class EditCommentInput extends PartialType(
   @Field(() => String)
   commentId: string;
   user?: string;
-  client?: string;
 }
 
 @ObjectType('EditCommentOutput')

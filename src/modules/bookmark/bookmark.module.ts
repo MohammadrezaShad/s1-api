@@ -10,6 +10,7 @@ import { BookmarkRepository } from './bookmark.repository';
 import { BookmarkEntityFactory } from './entity/bookmark.factory';
 import { BookmarkModelFactory } from './model/bookmark-model.factory';
 import { BookmarkLoader } from './bookmark.loader';
+import { BookmarkHelepr } from './helper/bookmark-helper';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { BookmarkLoader } from './bookmark.loader';
     BookmarkRepository,
     BookmarkEntityFactory,
     BookmarkModelFactory,
+    BookmarkHelepr,
     BookmarkLoader,
   ],
   exports: [...BookmarkUseCases],

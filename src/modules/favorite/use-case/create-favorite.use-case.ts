@@ -24,7 +24,6 @@ export class CreateFavoriteUseCase {
         new FindRepeatedFavoriteQuery({
           post: input.post,
           user: input.user,
-          client: input.client,
           type: input.type,
         }),
       );

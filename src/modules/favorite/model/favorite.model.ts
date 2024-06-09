@@ -7,7 +7,6 @@ export class FavoriteModel extends AggregateRoot {
     private readonly _id: string,
     private readonly post: string,
     private readonly user: string,
-    private readonly client: string,
     private readonly type: CollectionName,
   ) {
     super();
@@ -23,10 +22,6 @@ export class FavoriteModel extends AggregateRoot {
 
   getUser(): string {
     return this.user;
-  }
-
-  getClient(): string {
-    return this.client;
   }
 
   getType(): CollectionName {

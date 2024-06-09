@@ -9,7 +9,6 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
-import { ClientId } from '@/common/decorators/client-id.decorator';
 import { PostOutput } from '@/common/dtos/post-output.dto';
 import { Permission } from '@/common/permissions/permission-type';
 
@@ -120,12 +119,10 @@ export class CommentMutationResolver {
   async createComment(
     @Args('input') input: CreateCommentInput,
     @GetUser() user: UserEntity,
-    @ClientId() clientId: string,
   ): Promise<CreateCommentOutput> {
     return this.createCommentUseCase.createComment({
       ...input,
       user: user ? user._id.toString() : null,
-      client: clientId,
     });
   }
 

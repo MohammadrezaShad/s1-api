@@ -16,8 +16,6 @@ export class CreateCommentInput extends PickType(CommentEntity, [
   post: string;
 
   user: string;
-
-  client: string;
 }
 
 @InputType('CreateAdminCommentInput')

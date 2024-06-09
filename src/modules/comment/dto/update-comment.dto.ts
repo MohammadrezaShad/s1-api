@@ -26,7 +26,6 @@ export class UpdateCommentInput extends PartialType(
   commentId: string;
 
   user?: UserEntity;
-  client?: string;
 }
 
 @ObjectType('UpdateCommentOutput')

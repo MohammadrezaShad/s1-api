@@ -16,14 +16,13 @@ export class FavoriteEntityFactory
       _id: new ObjectId(fav.getId()),
       post: fav.getPost(),
       user: fav.getUser(),
-      client: fav.getClient(),
       type: fav.getType(),
     };
   }
 
   createFromEntity(favEntity: FavoriteEntity): FavoriteModel | null {
     if (!favEntity) return null;
-    const { _id, post, user, client, type } = favEntity;
-    return new FavoriteModel(_id.toHexString(), post, user, client, type);
+    const { _id, post, user, type } = favEntity;
+    return new FavoriteModel(_id.toHexString(), post, user, type);
   }
 }

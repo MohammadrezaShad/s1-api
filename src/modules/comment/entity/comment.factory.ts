@@ -20,7 +20,6 @@ export class CommentEntityFactory
       createUser: comment.getCreateUser(),
       parent: comment.getParent(),
       approved: comment.getApproved(),
-      client: comment.getClient(),
     };
   }
 
@@ -35,7 +34,6 @@ export class CommentEntityFactory
       author,
       createUser,
       parent,
-      client,
       approved,
     } = commentEntity;
     return new CommentModel(
@@ -47,7 +45,6 @@ export class CommentEntityFactory
       author,
       createUser,
       parent,
-      client,
       approved,
     );
   }

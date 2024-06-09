@@ -81,12 +81,6 @@ export class CommentEntity extends DefaultEntity {
   @IsEnum(BooleanEnum)
   @IsOptional()
   approved?: BooleanEnum;
-
-  @Prop({ type: String, nullable: false })
-  @Field(() => String, { nullable: false })
-  @IsString()
-  @IsNotEmpty()
-  client?: string;
 }
 
 export type TCommentEntity = Document<CommentEntity>;

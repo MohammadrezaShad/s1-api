@@ -19,7 +19,6 @@ export class CommentModelFactory implements ModelFactory<CommentModel> {
     author,
     parent,
     user,
-    client,
   }: CreateCommentInput): Promise<CommentModel> {
     const comment = new CommentModel(
       new ObjectId().toHexString(),
@@ -30,7 +29,6 @@ export class CommentModelFactory implements ModelFactory<CommentModel> {
       author,
       user,
       parent,
-      client,
     );
     await this.commentRepository.createComment(comment);
     return comment;

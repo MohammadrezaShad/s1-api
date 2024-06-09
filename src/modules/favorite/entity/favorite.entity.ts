@@ -26,12 +26,6 @@ export class FavoriteEntity extends DefaultEntity {
   @IsOptional()
   user?: string;
 
-  @Prop({ type: String, nullable: false })
-  @Field(() => String, { nullable: false })
-  @IsString({ message: 'client id must be string' })
-  @IsNotEmpty({ message: 'client id can not be empty' })
-  client: string;
-
   @Prop({
     type: String,
     enum: [...Object.values(CollectionName)],

@@ -111,19 +111,12 @@ export class FavoriteRepository {
     await this.favModel.findByIdAndDelete(id).exec();
   }
 
-  async deleteOne(
-    postId: string,
-    clientId: string,
-    user?: string,
-  ): Promise<void> {
+  async deleteOne(postId: string, user?: string): Promise<void> {
     await this.favModel
       .findOneAndDelete({
         $and: [
           {
-            $or: [
-              { client: { $eq: clientId } },
-              ...(user ? [{ user: { $eq: user } }] : []),
-            ],
+            ...(user ? [{ user: { $eq: user } }] : []),
           },
           { post: { $eq: postId } },
         ],
@@ -139,7 +132,6 @@ export class FavoriteRepository {
   }
 
   async checkRepeatedFavoriteByUser({
-    client,
     user,
     post,
     type,
@@ -149,10 +141,7 @@ export class FavoriteRepository {
         $match: {
           $and: [
             {
-              $or: [
-                { client: { $eq: client } },
-                ...(user ? [{ user: { $eq: user } }] : []),
-              ],
+              ...(user ? [{ user: { $eq: user } }] : []),
             },
             { post: { $eq: post } },
             { type: { $eq: type } },

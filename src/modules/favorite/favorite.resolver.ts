@@ -9,7 +9,6 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
-import { ClientId } from '@/common/decorators/client-id.decorator';
 import { Permission } from '@/common/permissions/permission-type';
 import { GetUser } from '@/modules/auth/decorators/get-user.decorator';
 import { AccessTokenGuard } from '@/modules/auth/guards/access-token.guard';
@@ -58,6 +57,7 @@ import { BookmarkLoader } from '../bookmark/bookmark.loader';
 import { UserOutput } from '../user/dto/user.output';
 import { PostOutput } from '@/common/dtos/post-output.dto';
 import { CollectionName } from '@/common/enums/collection-name.enum';
+import { FavoriteLoader } from './favorite.loader';
 
 @Resolver(() => FavoriteResponse)
 export class FavoriteQueryResolver {
@@ -114,12 +114,10 @@ export class FavoriteMutationResolver {
   async createFavorite(
     @Args('input') input: CreateFavoriteInput,
     @GetUser() user: UserEntity,
-    @ClientId() clientId: string,
   ): Promise<CreateFavoriteOutput> {
     return this.createFavoriteUseCase.createFav({
       ...input,
       user: user ? user._id.toString() : null,
-      client: clientId,
     });
   }
 
@@ -142,11 +140,9 @@ export class FavoriteMutationResolver {
   async deleteOneFavorite(
     @Args('input') input: DeleteOneFavoriteInput,
     @GetUser() user: UserEntity,
-    @ClientId() clientId: string,
   ): Promise<DeleteFavoriteOutput> {
     return this.deleteOneFavoriteUseCase.deleteOneFav({
       ...input,
-      clientId: clientId,
       user: user ? user._id.toString() : null,
     });
   }
@@ -167,7 +163,7 @@ export class FavoriteMutationResolver {
 export class FavoriteResolver {
   constructor(
     private readonly userUseCase: FindUserByIdUseCase,
-    private readonly loader: BookmarkLoader,
+    private readonly loader: FavoriteLoader,
   ) {}
 
   @ResolveField(() => UserOutput, { name: 'user', nullable: true })
