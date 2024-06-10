@@ -17,6 +17,8 @@ import { UserEntity } from '@/modules/user/entity/user.entity';
 import { PanelGuard } from '../auth/guards/panel.guard';
 import { ImageEntity } from '../image/entity/image.entity';
 import ImageLoader from '../image/image.loader';
+import { TaxonomyEntity } from '../taxonomy/entity/taxonomy.entity';
+import BusinessDataLoader from './business.loader';
 import { BusinessMutation, BusinessQuery } from './dto/business.dto';
 import {
   CreateBusinessInput,
@@ -49,8 +51,6 @@ import { FindBusinessByIdUseCase } from './use-case/find-business-by-id.use-case
 import { FindBusinessByIdsUseCase } from './use-case/find-business-by-ids.use-case';
 import { SearchBusinessUseCase } from './use-case/search-business.use-case';
 import { UpdateBusinessUseCase } from './use-case/update-business.use-case';
-import { TaxonomyEntity } from '../taxonomy/entity/taxonomy.entity';
-import BusinessDataLoader from './business.loader';
 
 @Resolver(() => BusinessQuery)
 export class BusinessQueryResolver {
@@ -102,7 +102,11 @@ export class BusinessMutationResolver {
   }
 
   @ResolveField(() => CreateBusinessOutput)
-  @PanelGuard<MethodDecorator>(Permission.CREATE_BUSINESS, Permission.CREATE)
+  @PanelGuard<MethodDecorator>(
+    Permission.REGULAR_USER,
+    Permission.CREATE_BUSINESS,
+    Permission.CREATE,
+  )
   async createBusiness(
     @Args('input') input: CreateBusinessInput,
   ): Promise<CreateBusinessOutput> {
@@ -110,7 +114,11 @@ export class BusinessMutationResolver {
   }
 
   @ResolveField(() => UpdateBusinessOutput)
-  @PanelGuard<MethodDecorator>(Permission.UPDATE_BUSINESS, Permission.UPDATE)
+  @PanelGuard<MethodDecorator>(
+    Permission.REGULAR_USER,
+    Permission.UPDATE_BUSINESS,
+    Permission.UPDATE,
+  )
   async updateBusiness(
     @Args('input') input: UpdateBusinessInput,
   ): Promise<UpdateBusinessOutput> {
@@ -118,7 +126,11 @@ export class BusinessMutationResolver {
   }
 
   @ResolveField(() => DeleteBusinessOutput)
-  @PanelGuard<MethodDecorator>(Permission.DELETE_BUSINESS, Permission.DELETE)
+  @PanelGuard<MethodDecorator>(
+    Permission.REGULAR_USER,
+    Permission.DELETE_BUSINESS,
+    Permission.DELETE,
+  )
   async deleteBusiness(
     @Args('input') input: DeleteBusinessInput,
   ): Promise<DeleteBusinessOutput> {

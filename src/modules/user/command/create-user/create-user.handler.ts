@@ -25,17 +25,21 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const { createUserInput } = command;
 
     let user: UserModel;
-    user = await this.queryBus.execute(
-      new FindUserByPhoneQuery(createUserInput.phone),
-    );
+    if (createUserInput.phone) {
+      user = await this.queryBus.execute(
+        new FindUserByPhoneQuery(createUserInput.phone),
+      );
+    }
 
     if (user) {
       throw new BadRequestException(USER_ALREADY_EXISTS);
     }
 
-    user = await this.queryBus.execute(
-      new FindUserByEmailQuery(createUserInput.email),
-    );
+    if (createUserInput.email) {
+      user = await this.queryBus.execute(
+        new FindUserByEmailQuery(createUserInput.email),
+      );
+    }
 
     if (user) {
       throw new BadRequestException(USER_ALREADY_EXISTS);

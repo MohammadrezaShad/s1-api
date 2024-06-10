@@ -8,6 +8,7 @@ import {
   DEFAULT_PAGE,
 } from '@/common/constants/pagination.constant';
 import { escapeRegex } from '@/common/utils/escape-regx.util';
+import { RoleRepository } from '@/modules/auth/components/role/role.repository';
 import { DeleteUserInput } from '@/modules/user/dto/delete-user.dto';
 import {
   FindUserByEmailInput,
@@ -32,6 +33,7 @@ export class UserRepository {
     @InjectModel(UserEntity.name)
     private readonly userModel: Model<TUser>,
     protected readonly userEntityFactory: UserEntityFactory,
+    private readonly roleRepository: RoleRepository,
   ) {}
 
   public async findById({ id }: FindUserByIdInput): Promise<UserModel | null> {
@@ -152,12 +154,19 @@ export class UserRepository {
   }
 
   public async create(userInput: UserModel): Promise<void> {
+    const userRole = await this.roleRepository.findByName('REGULAR_USER');
     const user = new this.userModel(this.userEntityFactory.create(userInput));
+    user.roles = [userRole.getId()];
     await user.save();
   }
 
   public async createWithPhone(phone: string): Promise<UserModel> {
-    const user = new this.userModel({ _id: new ObjectId(), phone: phone });
+    const userRole = await this.roleRepository.findByName('REGULAR_USER');
+    const user = new this.userModel({
+      _id: new ObjectId(),
+      phone: phone,
+      roles: [userRole.getId()],
+    });
     await user.save();
     return this.userEntityFactory.createFromEntity(user);
   }
@@ -167,12 +176,14 @@ export class UserRepository {
     displayName: string,
     googleId: string,
   ): Promise<UserModel> {
+    const userRole = await this.roleRepository.findByName('REGULAR_USER');
     const user = new this.userModel({
       _id: new ObjectId(),
       email: email,
       displayName: displayName,
       googleId: googleId,
       isVerified: true,
+      roles: [userRole.getId()],
     });
     await user.save();
     return this.userEntityFactory.createFromEntity(user);

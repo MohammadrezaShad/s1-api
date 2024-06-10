@@ -9,6 +9,8 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
+import { PostOutput } from '@/common/dtos/post-output.dto';
+import { CollectionName } from '@/common/enums/collection-name.enum';
 import { Permission } from '@/common/permissions/permission-type';
 import { GetUser } from '@/modules/auth/decorators/get-user.decorator';
 import { AccessTokenGuard } from '@/modules/auth/guards/access-token.guard';
@@ -52,11 +54,8 @@ import { UpdateFavoriteUseCase } from '@/modules/favorite/use-case/update-favori
 import { UserEntity } from '@/modules/user/entity/user.entity';
 
 import { PanelGuard } from '../auth/guards/panel.guard';
-import { FindUserByIdUseCase } from '../user/use-case/find-user-by-id.use-case';
-import { BookmarkLoader } from '../bookmark/bookmark.loader';
 import { UserOutput } from '../user/dto/user.output';
-import { PostOutput } from '@/common/dtos/post-output.dto';
-import { CollectionName } from '@/common/enums/collection-name.enum';
+import { FindUserByIdUseCase } from '../user/use-case/find-user-by-id.use-case';
 import { FavoriteLoader } from './favorite.loader';
 
 @Resolver(() => FavoriteResponse)
@@ -110,7 +109,7 @@ export class FavoriteMutationResolver {
   }
 
   @ResolveField(() => CreateFavoriteOutput)
-  @UseGuards(AccessTokenGuard)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER)
   async createFavorite(
     @Args('input') input: CreateFavoriteInput,
     @GetUser() user: UserEntity,
@@ -121,14 +120,16 @@ export class FavoriteMutationResolver {
     });
   }
 
-  @ResolveField(() => UpdateFavoriteOutput)
-  async updateFavorite(
-    @Args('input') input: UpdateFavoriteInput,
-  ): Promise<UpdateFavoriteOutput> {
-    return this.updateFavoriteUseCase.updateFav(input);
-  }
+  // @ResolveField(() => UpdateFavoriteOutput)
+  // @UseGuards(AccessTokenGuard)
+  // async updateFavorite(
+  //   @Args('input') input: UpdateFavoriteInput,
+  // ): Promise<UpdateFavoriteOutput> {
+  //   return this.updateFavoriteUseCase.updateFav(input);
+  // }
 
   @ResolveField(() => DeleteFavoriteOutput)
+  @PanelGuard<MethodDecorator>(Permission.DELETE_FAVORITE, Permission.DELETE)
   async deleteFavorite(
     @Args('input') input: DeleteFavoriteInput,
   ): Promise<DeleteFavoriteOutput> {
@@ -136,7 +137,7 @@ export class FavoriteMutationResolver {
   }
 
   @ResolveField(() => DeleteFavoriteOutput)
-  @UseGuards(AccessTokenGuard)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER)
   async deleteOneFavorite(
     @Args('input') input: DeleteOneFavoriteInput,
     @GetUser() user: UserEntity,

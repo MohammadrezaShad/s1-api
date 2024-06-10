@@ -1,4 +1,3 @@
-import { UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -9,17 +8,27 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
+import { PostOutput } from '@/common/dtos/post-output.dto';
+import { CollectionName } from '@/common/enums/collection-name.enum';
 import { Permission } from '@/common/permissions/permission-type';
 import { GetUser } from '@/modules/auth/decorators/get-user.decorator';
-import { AccessTokenGuard } from '@/modules/auth/guards/access-token.guard';
-
 import { UserEntity } from '@/modules/user/entity/user.entity';
 
 import { PanelGuard } from '../auth/guards/panel.guard';
+import { UserOutput } from '../user/dto/user.output';
+import { FindUserByIdUseCase } from '../user/use-case/find-user-by-id.use-case';
+import { BookmarkLoader } from './bookmark.loader';
 import { BookmarkResponse, MutateBookmarkResponse } from './dto/bookmark.dto';
-import { SearchBookmarkUseCase } from './use-case/search-bookmark.use-case';
-import { FindBookmarkByIdUseCase } from './use-case/find-bookmark-by-id.use-case';
-import { FindBookmarkByIdsUseCase } from './use-case/find-bookmark-by-ids.use-case';
+import {
+  CreateBookmarkInput,
+  CreateBookmarkOutput,
+} from './dto/create-bookmark.dto';
+import {
+  DeleteBookmarkInput,
+  DeleteBookmarkOutput,
+  DeleteBookmarksInput,
+  DeleteOneBookmarkInput,
+} from './dto/delete-bookmark.dto';
 import {
   FindBookmarkInput,
   FindBookmarkOutput,
@@ -30,31 +39,19 @@ import {
   SearchBookmarkInput,
   SearchBookmarkOutput,
 } from './dto/search-bookmark.dto';
-import { CreateBookmarkUseCase } from './use-case/create-bookmark.use-case';
-import { UpdateBookmarkUseCase } from './use-case/update-bookmark.use-case';
-import { DeleteBookmarkUseCase } from './use-case/delete-bookmark.use-case';
-import { DeleteOneBookmarkUseCase } from './use-case/delete-one-bookmark.use-case';
-import { BulkDeleteBookmarkUseCase } from './use-case/bulk-delete-bookmark.use-case';
-import {
-  CreateBookmarkInput,
-  CreateBookmarkOutput,
-} from './dto/create-bookmark.dto';
 import {
   UpdateBookmarkInput,
   UpdateBookmarkOutput,
 } from './dto/update-bookmark.dto';
-import {
-  DeleteBookmarkInput,
-  DeleteBookmarkOutput,
-  DeleteBookmarksInput,
-  DeleteOneBookmarkInput,
-} from './dto/delete-bookmark.dto';
 import { BookmarkEntity } from './entity/bookmark.entity';
-import { FindUserByIdUseCase } from '../user/use-case/find-user-by-id.use-case';
-import { UserOutput } from '../user/dto/user.output';
-import { BookmarkLoader } from './bookmark.loader';
-import { PostOutput } from '@/common/dtos/post-output.dto';
-import { CollectionName } from '@/common/enums/collection-name.enum';
+import { BulkDeleteBookmarkUseCase } from './use-case/bulk-delete-bookmark.use-case';
+import { CreateBookmarkUseCase } from './use-case/create-bookmark.use-case';
+import { DeleteBookmarkUseCase } from './use-case/delete-bookmark.use-case';
+import { DeleteOneBookmarkUseCase } from './use-case/delete-one-bookmark.use-case';
+import { FindBookmarkByIdUseCase } from './use-case/find-bookmark-by-id.use-case';
+import { FindBookmarkByIdsUseCase } from './use-case/find-bookmark-by-ids.use-case';
+import { SearchBookmarkUseCase } from './use-case/search-bookmark.use-case';
+import { UpdateBookmarkUseCase } from './use-case/update-bookmark.use-case';
 
 @Resolver(() => BookmarkResponse)
 export class BookmarkQueryResolver {
@@ -107,7 +104,7 @@ export class BookmarkMutationResolver {
   }
 
   @ResolveField(() => CreateBookmarkOutput)
-  // @UseGuards(AccessTokenGuard)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER)
   async createBookmark(
     @Args('input') input: CreateBookmarkInput,
     @GetUser() user: UserEntity,
@@ -118,14 +115,16 @@ export class BookmarkMutationResolver {
     });
   }
 
-  @ResolveField(() => UpdateBookmarkOutput)
-  async updateBookmark(
-    @Args('input') input: UpdateBookmarkInput,
-  ): Promise<UpdateBookmarkOutput> {
-    return this.updateBookmarkUseCase.updateBookmark(input);
-  }
+  // @ResolveField(() => UpdateBookmarkOutput)
+  // @PanelGuard<MethodDecorator>(Permission.REGULAR_USER)
+  // async updateBookmark(
+  //   @Args('input') input: UpdateBookmarkInput,
+  // ): Promise<UpdateBookmarkOutput> {
+  //   return this.updateBookmarkUseCase.updateBookmark(input);
+  // }
 
   @ResolveField(() => DeleteBookmarkOutput)
+  @PanelGuard<MethodDecorator>(Permission.DELETE_BOOKMARK, Permission.DELETE)
   async deleteBookmark(
     @Args('input') input: DeleteBookmarkInput,
   ): Promise<DeleteBookmarkOutput> {
@@ -133,7 +132,7 @@ export class BookmarkMutationResolver {
   }
 
   @ResolveField(() => DeleteBookmarkOutput)
-  @UseGuards(AccessTokenGuard)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER)
   async deleteOneBookmark(
     @Args('input') input: DeleteOneBookmarkInput,
     @GetUser() user: UserEntity,

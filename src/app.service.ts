@@ -16,8 +16,7 @@ export class AppService implements OnModuleInit {
   async onModuleInit() {
     await this.createPermissions();
     await this.createCeoRole();
-    await this.createSellerRole();
-    await this.createUserRole();
+    await this.createRegularUserRole();
   }
 
   async createPermissions() {
@@ -52,46 +51,16 @@ export class AppService implements OnModuleInit {
     }
   }
 
-  async createSellerRole() {
-    const sellerRole = await this.roleRepository.findByName('SELLER');
-    const createSellerPermission =
-      await this.permissionRepository.findByName('createSeller');
-    const updateSellerPermission =
-      await this.permissionRepository.findByName('updateSeller');
-    const deleteSellerPermission =
-      await this.permissionRepository.findByName('deleteSeller');
-    if (!sellerRole) {
-      await this.roleRepository.directCreate({
-        _id: new ObjectId(),
-        name: 'SELLER',
-        title: 'فروشنده',
-        permissions: [
-          createSellerPermission.getId(),
-          updateSellerPermission.getId(),
-          deleteSellerPermission.getId(),
-        ],
-      });
-    }
-  }
-
-  async createUserRole() {
-    const userRole = await this.roleRepository.findByName('USER');
-    const createUserPermission =
-      await this.permissionRepository.findByName('createUser');
-    const updateUserPermission =
-      await this.permissionRepository.findByName('updateUser');
-    const deleteUserPermission =
-      await this.permissionRepository.findByName('deleteUser');
+  async createRegularUserRole() {
+    const userRole = await this.roleRepository.findByName('REGULAR_USER');
+    const regularUserPermission =
+      await this.permissionRepository.findByName('regularUser');
     if (!userRole) {
       await this.roleRepository.directCreate({
         _id: new ObjectId(),
-        name: 'USER',
+        name: 'REGULAR_USER',
         title: 'کاربر ساده',
-        permissions: [
-          createUserPermission.getId(),
-          updateUserPermission.getId(),
-          deleteUserPermission.getId(),
-        ],
+        permissions: [regularUserPermission.getId()],
       });
     }
   }

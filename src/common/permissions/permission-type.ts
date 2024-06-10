@@ -23,6 +23,11 @@ export class Permission {
     title: 'حذف چندتایی',
   };
 
+  static readonly REGULAR_USER: PermissionType = {
+    name: 'regularUser',
+    title: 'کاربر ساده',
+  };
+
   static readonly CREATE_USER = UserPermission.CREATE_USER;
   static readonly UPDATE_USER = UserPermission.UPDATE_USER;
   static readonly DELETE_USER = UserPermission.DELETE_USER;
@@ -57,14 +62,15 @@ export class Permission {
   static readonly DELETE_COMMENT = CommentPermission.DELETE_COMMENT;
   static readonly BULK_DELETE_COMMENT = CommentPermission.BULK_DELETE_COMMENT;
 
+  static readonly CREATE_FAVORITE = FavoritePermission.CREATE_FAVORITE;
+  static readonly UPDATE_FAVORITE = FavoritePermission.UPDATE_FAVORITE;
+  static readonly DELETE_FAVORITE = FavoritePermission.DELETE_FAVORITE;
   static readonly BULK_DELETE_FAVORITE =
     FavoritePermission.BULK_DELETE_FAVORITE;
 
+  static readonly CREATE_BOOKMARK = BookmarkPermission.CREATE_BOOKMARK;
+  static readonly UPDATE_BOOKMARK = BookmarkPermission.UPDATE_BOOKMARK;
+  static readonly DELETE_BOOKMARK = BookmarkPermission.DELETE_BOOKMARK;
   static readonly BULK_DELETE_BOOKMARK =
     BookmarkPermission.BULK_DELETE_BOOKMARK;
-
-  static readonly CREATE_SELLER = UserPermission.CREATE_SELLER;
-  static readonly UPDATE_SELLER = UserPermission.UPDATE_SELLER;
-  static readonly DELETE_SELLER = UserPermission.DELETE_SELLER;
-  static readonly BULK_DELETE_SELLER = UserPermission.BULK_DELETE_SELLER;
 }
