@@ -14,7 +14,7 @@ export class CreateFavoriteInput extends OmitType(FavoriteEntity, [
   @Field(() => String)
   post: string;
 
-  user: string;
+  user?: string;
 }
 
 @ObjectType()

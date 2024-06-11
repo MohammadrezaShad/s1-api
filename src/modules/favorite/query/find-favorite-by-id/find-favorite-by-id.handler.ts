@@ -6,7 +6,7 @@ import { FindFavoriteByIdQuery } from '@/modules/favorite/query/find-favorite-by
 import { FavoriteRepository } from '../../favorite.repository';
 
 @QueryHandler(FindFavoriteByIdQuery)
-export class FindFavoritebyIdHandler
+export class FindFavoriteByIdHandler
   implements IQueryHandler<FindFavoriteByIdQuery>
 {
   constructor(private readonly favoriteRepository: FavoriteRepository) {}

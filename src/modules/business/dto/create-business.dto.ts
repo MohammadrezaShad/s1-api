@@ -34,6 +34,8 @@ export class CreateBusinessInput extends PickType(BusinessEntity, [
   @Field(() => [String], { nullable: true })
   @IsOptional()
   images?: string[];
+
+  user?: string;
 }
 
 @ObjectType()

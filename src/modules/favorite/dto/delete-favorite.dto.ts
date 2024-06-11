@@ -7,7 +7,7 @@ import { CoreOutput } from '@/common/dtos/output.dto';
 export class DeleteFavoriteInput {
   @Field(() => String)
   @IsString()
-  id: number;
+  id: string;
 }
 
 @InputType()

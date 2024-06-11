@@ -14,7 +14,7 @@ export class CreateBookmarkInput extends OmitType(BookmarkEntity, [
   @Field(() => String)
   post: string;
 
-  user: string;
+  user?: string;
 }
 
 @ObjectType()

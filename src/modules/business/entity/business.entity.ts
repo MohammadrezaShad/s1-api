@@ -17,6 +17,7 @@ import { SchemaFactory } from '@/common/utils/schema-factory.util';
 import { ImageEntity } from '@/modules/image/entity/image.entity';
 import { TaxonomyEntity } from '@/modules/taxonomy/entity/taxonomy.entity';
 import { DailyWorkTime } from './work-time.entity';
+import { UserOutput } from '@/modules/user/dto/user.output';
 
 @InputType('BusinessInputType', { isAbstract: true })
 @ObjectType()
@@ -87,21 +88,27 @@ export class BusinessEntity extends DefaultEntity {
   @IsNumber()
   long?: number;
 
-  @Prop({ type: [String], ref: 'taxonomy' })
+  @Prop({ type: [String], ref: 'Taxonomy' })
   @Field(() => [TaxonomyEntity], { nullable: true })
   @IsOptional()
   taxonomies?: string[];
 
-  @Prop({ type: String, ref: 'image' })
+  @Prop({ type: String, ref: 'Image' })
   @Field(() => ImageEntity, { nullable: true })
   @IsOptional()
   @IsString()
   thumbnail?: string;
 
-  @Prop({ type: [String], ref: 'image' })
+  @Prop({ type: [String], ref: 'Image' })
   @Field(() => [ImageEntity], { nullable: true })
   @IsOptional()
   images?: string[];
+
+  @Prop({ type: String, ref: 'User' })
+  @Field(() => UserOutput, { nullable: true })
+  @IsString()
+  @IsOptional()
+  user?: string;
 }
 
 type TBusiness = Document<BusinessEntity>;

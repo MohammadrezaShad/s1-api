@@ -21,6 +21,10 @@ export class DeleteBusinessUseCase {
       await this.businessHelepr.validateBusinessId(input.id);
 
       await this.commandBus.execute(new DeleteBusinessCommand(input));
+
+      await this.businessHelepr.deleteBookmarks(input.id);
+      await this.businessHelepr.deleteFavorites(input.id);
+
       return { success: true };
     } catch (err) {
       throw new InternalServerErrorException(err);

@@ -51,6 +51,8 @@ import { FindBusinessByIdUseCase } from './use-case/find-business-by-id.use-case
 import { FindBusinessByIdsUseCase } from './use-case/find-business-by-ids.use-case';
 import { SearchBusinessUseCase } from './use-case/search-business.use-case';
 import { UpdateBusinessUseCase } from './use-case/update-business.use-case';
+import { CollectionName } from '@/common/enums/collection-name.enum';
+import { CheckRepeatedBookmarkByUserUseCase } from '../bookmark/use-case/check-repeated-bookmark-by-user.use-case';
 
 @Resolver(() => BusinessQuery)
 export class BusinessQueryResolver {
@@ -109,8 +111,12 @@ export class BusinessMutationResolver {
   )
   async createBusiness(
     @Args('input') input: CreateBusinessInput,
+    @GetUser() user: UserEntity,
   ): Promise<CreateBusinessOutput> {
-    return this.createBusinessUseCase.createBusiness(input);
+    return this.createBusinessUseCase.createBusiness({
+      ...input,
+      user: user ? user._id.toString() : null,
+    });
   }
 
   @ResolveField(() => UpdateBusinessOutput)
@@ -156,6 +162,7 @@ export class BusinessResolver {
     private readonly businessLoader: BusinessDataLoader,
     private readonly favoriteCountByPostUseCase: FavoriteCountByPostUseCase,
     private readonly checkRepeatedFavoriteByUserUseCase: CheckRepeatedFavoriteByUserUseCase,
+    private readonly checkRepeatedBookmarkByUserUseCase: CheckRepeatedBookmarkByUserUseCase,
   ) {}
 
   @ResolveField(() => Number)
@@ -173,19 +180,20 @@ export class BusinessResolver {
     return this.checkRepeatedFavoriteByUserUseCase.checkRepeatedFavoriteByUser({
       post: id,
       user: user ? user._id.toString() : null,
+      type: CollectionName.BUSINESS,
     });
   }
 
   @ResolveField(() => Boolean)
-  async isBookmark(
+  async isUserBookmark(
     @Parent() business: BusinessEntity,
     @GetUser() user: UserEntity,
   ) {
-    if (!user) return false;
     const id = business._id.toString();
-    return this.businessLoader.batchBookmarksByUser.load({
+    return this.checkRepeatedBookmarkByUserUseCase.checkRepeatedBookmarkByUser({
       post: id,
       user: user ? user._id.toString() : null,
+      type: CollectionName.BUSINESS,
     });
   }
 

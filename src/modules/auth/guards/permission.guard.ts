@@ -45,12 +45,12 @@ export class PermissionGuard implements CanActivate {
       new FindUserByIdQuery(payload._id),
     );
     // get user permissions from user
-    const userPermissions = await this.permissionUseCase.findPermissionByids({
+    const userPermissions = await this.permissionUseCase.findPermissionByIds({
       ids: user.getPermissions(),
     });
 
     // get user roles from user
-    const userRoles = await this.roleUseCase.findRoleByids({
+    const userRoles = await this.roleUseCase.findRoleByIds({
       ids: user.getRoles(),
     });
 
@@ -65,7 +65,7 @@ export class PermissionGuard implements CanActivate {
     });
 
     // get role permission with permission ids
-    const rolePermission = await this.permissionUseCase.findPermissionByids({
+    const rolePermission = await this.permissionUseCase.findPermissionByIds({
       ids: rolePermissionIds,
     });
 

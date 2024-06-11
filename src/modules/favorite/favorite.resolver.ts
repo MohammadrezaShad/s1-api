@@ -173,7 +173,7 @@ export class FavoriteResolver {
     if (userId == null) {
       return null;
     }
-    const user = await this.userUseCase.findUserByid({ id: userId });
+    const user = await this.userUseCase.findUserById({ id: userId });
     return user.result;
   }
 

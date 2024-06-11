@@ -45,6 +45,15 @@ export class BusinessRepository {
     return businessModel;
   }
 
+  async findByUser(user: string): Promise<BusinessModel[]> {
+    const items = await this.businessModel.find({ user: user }).exec();
+    const businessModel: BusinessModel[] = [];
+    items.map(it => {
+      businessModel.push(this.businessEntityFactory.createFromEntity(it));
+    });
+    return businessModel;
+  }
+
   public async findOneItemByName(
     name: string,
     id: string | null,

@@ -4,7 +4,7 @@ import { BusinessRepository } from '../../business.repository';
 import { BusinessModel } from '../../model/business.model';
 
 @QueryHandler(FindBusinessByIdsQuery)
-export class FindBusinessbyIdsHandler
+export class FindBusinessByIdsHandler
   implements IQueryHandler<FindBusinessByIdsQuery>
 {
   constructor(private readonly businessRepository: BusinessRepository) {}

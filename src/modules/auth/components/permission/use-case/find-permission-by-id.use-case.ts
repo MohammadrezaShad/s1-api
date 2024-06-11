@@ -22,7 +22,7 @@ export class FindPermissionByIdUseCase {
     private readonly permissionFactory: PermissionEntityFactory,
   ) {}
 
-  async findPermissionByid({
+  async findPermissionById({
     id,
   }: FindPermissionByIdInput): Promise<FindPermissionOutput> {
     try {

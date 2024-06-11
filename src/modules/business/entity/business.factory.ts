@@ -28,6 +28,7 @@ export class BusinessEntityFactory
       taxonomies: business.getTaxonomies(),
       thumbnail: business.getThumbnail(),
       images: business.getImages(),
+      user: business.getUser(),
     };
   }
 
@@ -49,6 +50,7 @@ export class BusinessEntityFactory
       taxonomies,
       thumbnail,
       images,
+      user,
     } = businessEntity;
     return new BusinessModel(
       _id.toHexString(),
@@ -66,6 +68,7 @@ export class BusinessEntityFactory
       taxonomies,
       thumbnail,
       images,
+      user,
     );
   }
 }

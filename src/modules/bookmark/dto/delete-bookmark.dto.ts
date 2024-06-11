@@ -7,7 +7,7 @@ import { CoreOutput } from '@/common/dtos/output.dto';
 export class DeleteBookmarkInput {
   @Field(() => String)
   @IsString()
-  id: number;
+  id: string;
 }
 
 @InputType()

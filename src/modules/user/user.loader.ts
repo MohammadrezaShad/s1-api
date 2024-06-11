@@ -15,7 +15,7 @@ export default class UserDataLoader {
     async (permissionList: readonly string[][]) => {
       const ids = [...new Set(permissionList.flat())];
       const permissions =
-        await this.findPermissionByIdsUseCase.findPermissionByids({ ids: ids });
+        await this.findPermissionByIdsUseCase.findPermissionByIds({ ids: ids });
 
       const permissionsMap = new Map(
         permissions.results.map(permission => [
@@ -35,7 +35,7 @@ export default class UserDataLoader {
   public readonly batchRole = new DataLoader(
     async (roleList: readonly string[][]) => {
       const ids = [...new Set(roleList.flat())];
-      const roles = await this.findRoleByIdsUseCase.findRoleByids({
+      const roles = await this.findRoleByIdsUseCase.findRoleByIds({
         ids: ids,
       });
 

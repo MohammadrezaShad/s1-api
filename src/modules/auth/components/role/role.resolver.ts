@@ -59,7 +59,7 @@ export class RoleQueryResolver {
   async findRoleByIds(
     @Args('input') input: FindRoleByIdsInput,
   ): Promise<FindManyRolesOutput> {
-    return this.findRoleByIdsUseCase.findRoleByids(input);
+    return this.findRoleByIdsUseCase.findRoleByIds(input);
   }
 
   @ResolveField(() => SearchRoleOutput)

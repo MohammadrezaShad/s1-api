@@ -17,7 +17,7 @@ export class FindPermissionByIdsUseCase {
     private readonly permissionFactory: PermissionEntityFactory,
   ) {}
 
-  async findPermissionByids({
+  async findPermissionByIds({
     ids,
   }: FindPermissionByIdsInput): Promise<FindManyPermissionsOutput> {
     try {

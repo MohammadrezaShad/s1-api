@@ -22,7 +22,7 @@ export class FindUserByIdUseCase {
     private readonly userEntityFactory: UserEntityFactory,
   ) {}
 
-  async findUserByid({ id }: FindUserByIdInput): Promise<FindUserOutput> {
+  async findUserById({ id }: FindUserByIdInput): Promise<FindUserOutput> {
     try {
       const user: UserModel = await this.queryBus.execute(
         new FindUserByIdQuery(id),

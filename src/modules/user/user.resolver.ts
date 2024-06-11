@@ -69,7 +69,7 @@ export class UserQueryResolver {
   async findUserById(
     @Args('input') input: FindUserByIdInput,
   ): Promise<FindUserOutput> {
-    return this.findUserByIdUseCase.findUserByid(input);
+    return this.findUserByIdUseCase.findUserById(input);
   }
 
   @ResolveField(() => FindUserOutput)

@@ -17,7 +17,7 @@ export class FindRoleByIdsUseCase {
     private readonly roleFactory: RoleEntityFactory,
   ) {}
 
-  async findRoleByids({
+  async findRoleByIds({
     ids,
   }: FindRoleByIdsInput): Promise<FindManyRolesOutput> {
     try {

@@ -22,6 +22,11 @@ export class BulkDeleteBusinessUseCase {
         await this.businessHelepr.validateBusinessId(id);
       }
       await this.commandBus.execute(new BulkDeleteBusinessCommand(input));
+
+      for (const id of input.ids) {
+        await this.businessHelepr.deleteBookmarks(id);
+        await this.businessHelepr.deleteFavorites(id);
+      }
       return { success: true };
     } catch (err) {
       throw new InternalServerErrorException(err);

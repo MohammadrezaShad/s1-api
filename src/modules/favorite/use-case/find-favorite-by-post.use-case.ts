@@ -1,31 +1,23 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
-import { FAVORITE_NOT_FOUND } from '@/modules/favorite/constant/error-message.constant';
-import {
-  FindFavoritesInput,
-  FindFavoritesOutput,
-} from '@/modules/favorite/dto/find-favorite.dto';
+import { FindFavoritesOutput } from '@/modules/favorite/dto/find-favorite.dto';
 import { FavoriteModel } from '@/modules/favorite/model/favorite.model';
-import { FindFavoriteByIdsQuery } from '@/modules/favorite/query/find-favorite-by-ids/find-favorite-by-ids.query';
 
 import { FavoriteEntityFactory } from '../entity/favorite.factory';
+import { FindFavoriteByPostQuery } from '../query/find-favorite-by-post/find-favorite-by-post.query';
 
 @Injectable()
-export class FindFavoriteByIdsUseCase {
+export class FindFavoriteByPostUseCase {
   constructor(
     private readonly queryBus: QueryBus,
     private readonly favoriteEntityFactory: FavoriteEntityFactory,
   ) {}
 
-  async findFavIds({ ids }: FindFavoritesInput): Promise<FindFavoritesOutput> {
+  async findFavByPost(post: string): Promise<FindFavoritesOutput> {
     try {
       const favorites: FavoriteModel[] = await this.queryBus.execute(
-        new FindFavoriteByIdsQuery(ids),
+        new FindFavoriteByPostQuery(post),
       );
 
       const resultList = favorites.map(model =>

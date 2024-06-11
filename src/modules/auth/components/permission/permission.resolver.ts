@@ -49,14 +49,14 @@ export class PermissionQueryResolver {
   async findPermissionById(
     @Args('input') input: FindPermissionByIdInput,
   ): Promise<FindPermissionOutput> {
-    return this.findPermissionByIdUseCase.findPermissionByid(input);
+    return this.findPermissionByIdUseCase.findPermissionById(input);
   }
 
   @ResolveField(() => FindManyPermissionsOutput)
   async findPermissionByIds(
     @Args('input') input: FindPermissionByIdsInput,
   ): Promise<FindManyPermissionsOutput> {
-    return this.findPermissionByIdsUseCase.findPermissionByids(input);
+    return this.findPermissionByIdsUseCase.findPermissionByIds(input);
   }
 
   @ResolveField(() => SearchPermissionOutput)

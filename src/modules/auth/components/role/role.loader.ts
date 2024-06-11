@@ -13,7 +13,7 @@ export default class RoleDataLoader {
     async (permissionList: readonly string[][]) => {
       const ids = [...new Set(permissionList.flat())];
       const permissions =
-        await this.findPermissionByIdsUseCase.findPermissionByids({ ids: ids });
+        await this.findPermissionByIdsUseCase.findPermissionByIds({ ids: ids });
 
       const permissionsMap = new Map(
         permissions.results.map(permission => [

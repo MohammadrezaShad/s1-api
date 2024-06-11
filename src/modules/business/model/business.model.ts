@@ -18,6 +18,7 @@ export class BusinessModel extends AggregateRoot {
     private readonly taxonomies: string[],
     private readonly thumbnail: string,
     private readonly images: string[],
+    private readonly user: string,
   ) {
     super();
   }
@@ -80,5 +81,9 @@ export class BusinessModel extends AggregateRoot {
 
   getImages(): string[] {
     return this.images;
+  }
+
+  getUser(): string {
+    return this.user;
   }
 }
