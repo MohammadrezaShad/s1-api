@@ -55,6 +55,8 @@ import { FindReviewByIdUseCase } from './use-case/find-review-by-id.use-case';
 import { RemoveReviewUseCase } from './use-case/remove-review.use-case';
 import { SearchReviewUseCase } from './use-case/search-review.use-case';
 import { UpdateReviewUseCase } from './use-case/update-review.use-case';
+import { GetVotesDetailUseCase } from './use-case/get-votes-detail.use-case';
+import { GetVotesDetailInput, VotesDetail } from './dto/votes-detail.dto';
 
 const REVIEW_LIMIT = 100;
 const REVIEW_INDEX = 1;
@@ -66,6 +68,7 @@ export class ReviewQueryResolver {
     private readonly findReviewByIdUseCase: FindReviewByIdUseCase,
     private readonly findReviewByPostUseCase: FindReviewByPostUseCase,
     private readonly findReviewByIdsUseCase: FindReviewByIdsUseCase,
+    private readonly getVotesDetailUseCase: GetVotesDetailUseCase,
   ) {}
 
   @Query(() => ReviewQuery)
@@ -99,6 +102,13 @@ export class ReviewQueryResolver {
     @Args('input') input: SearchReviewInput,
   ): Promise<SearchReviewOutput> {
     return this.searchReviewUseCase.search(input);
+  }
+
+  @ResolveField(() => [VotesDetail])
+  async getVotesDetail(
+    @Args('input') input: GetVotesDetailInput,
+  ): Promise<VotesDetail[]> {
+    return this.getVotesDetailUseCase.getVotesDetail(input);
   }
 }
 

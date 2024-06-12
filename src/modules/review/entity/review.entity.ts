@@ -57,11 +57,11 @@ export class ReviewEntity extends DefaultEntity {
   @IsOptional()
   authorEmail?: string;
 
-  @Prop({ type: String, required: true })
-  @Field(() => String)
+  @Prop({ type: String })
+  @Field(() => String, { nullable: true })
   @IsString()
-  @IsNotEmpty()
-  author: string;
+  @IsOptional()
+  author?: string;
 
   @Prop({ type: String, ref: 'UserEntity' })
   @Field(() => UserOutput, { nullable: true })
@@ -79,8 +79,8 @@ export class ReviewEntity extends DefaultEntity {
   @Field(() => Number)
   @IsNumber({}, { message: 'Score must be number' })
   @IsNotEmpty({ message: 'Score can not be empty' })
-  @Min(1, { message: 'Score must be between' })
-  @Max(10, { message: 'Score must be between' })
+  @Min(1, { message: 'The score must be between one and ten' })
+  @Max(10, { message: 'The score must be between one and ten' })
   score: number;
 
   @Prop({

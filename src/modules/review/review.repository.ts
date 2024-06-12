@@ -21,6 +21,7 @@ import { SearchReviewInput, SearchReviewOutput } from './dto/search-review.dto';
 import { UpdateReviewInput } from './dto/update-review.dto';
 import { ReviewEntityFactory } from './entity/review.factory';
 import { ReviewModel } from './model/review.model';
+import { GetVotesDetailInput, VotesDetail } from './dto/votes-detail.dto';
 
 @Injectable()
 export class ReviewRepository {
@@ -180,5 +181,64 @@ export class ReviewRepository {
       .countDocuments()
       .exec();
     return reviewCount;
+  }
+
+  async getVotesDetail({ type }: GetVotesDetailInput): Promise<VotesDetail[]> {
+    const pipeline: PipelineStage[] = [
+      {
+        $match: {
+          type: type,
+        },
+      },
+      {
+        $group: {
+          _id: { post: '$post', score: '$score' },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: '$_id.post',
+          totalVotesCount: { $sum: '$count' },
+          scoreGroup: {
+            $push: {
+              score: '$_id.score',
+              votesCount: '$count',
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          post: '$_id',
+          totalVotesCount: '$totalVotesCount',
+          scoreGroup: {
+            $map: {
+              input: '$scoreGroup',
+              as: 'item',
+              in: {
+                score: '$$item.score',
+                votesCount: '$$item.votesCount',
+                percent: {
+                  $multiply: [
+                    '$$item.votesCount',
+                    { $divide: [100, '$totalVotesCount'] },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        $sort: {
+          totalVotesCount: -1,
+        },
+      },
+    ];
+
+    const result = await this.reviewModel.aggregate(pipeline);
+
+    return result;
   }
 }
