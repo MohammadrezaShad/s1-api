@@ -10,6 +10,7 @@ export class CreateReviewInput extends PickType(ReviewEntity, [
   'authorEmail',
   'parent',
   'type',
+  'score',
 ]) {
   @Field(() => String)
   post: string;

@@ -14,6 +14,7 @@ export class ReviewModel extends AggregateRoot {
     private readonly author: string,
     private readonly createUser: string,
     private readonly parent: string,
+    private readonly score?: number,
     private readonly approved?: BooleanEnum,
   ) {
     super();
@@ -49,6 +50,10 @@ export class ReviewModel extends AggregateRoot {
 
   getParent(): string {
     return this.parent;
+  }
+
+  getScore(): number {
+    return this.score;
   }
 
   getApproved(): BooleanEnum {

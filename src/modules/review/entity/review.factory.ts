@@ -21,6 +21,7 @@ export class ReviewEntityFactory
       author: review.getAuthor(),
       createUser: review.getCreateUser(),
       parent: review.getParent(),
+      score: review.getScore(),
       approved: review.getApproved(),
     };
   }
@@ -36,6 +37,7 @@ export class ReviewEntityFactory
       author,
       createUser,
       parent,
+      score,
       approved,
     } = reviewEntity;
     return new ReviewModel(
@@ -47,6 +49,7 @@ export class ReviewEntityFactory
       author,
       createUser,
       parent,
+      score,
       approved,
     );
   }

@@ -1,12 +1,15 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Prop } from '@nestjs/mongoose';
 import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   Length,
+  Max,
+  Min,
 } from 'class-validator';
 
 import { Schema } from '@/common/decorators/schema.decorator';
@@ -71,6 +74,14 @@ export class ReviewEntity extends DefaultEntity {
   @IsString()
   @IsOptional()
   parent?: string;
+
+  @Prop({ type: Number, required: true })
+  @Field(() => Number)
+  @IsNumber({}, { message: 'Score must be number' })
+  @IsNotEmpty({ message: 'Score can not be empty' })
+  @Min(1, { message: 'Score must be between' })
+  @Max(10, { message: 'Score must be between' })
+  score: number;
 
   @Prop({
     type: String,
