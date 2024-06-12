@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -8,13 +9,16 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
+import { CollectionName } from '@/common/enums/collection-name.enum';
 import { Permission } from '@/common/permissions/permission-type';
 import { GetUser } from '@/modules/auth/decorators/get-user.decorator';
+import { GqlOptionalAuthGuard } from '@/modules/auth/guards/gql-optional-auth.guard';
 import { CheckRepeatedFavoriteByUserUseCase } from '@/modules/favorite/use-case/check-repeated-favorite-by-user.use-case';
 import { FavoriteCountByPostUseCase } from '@/modules/favorite/use-case/favorite-count-by-post.use-case';
 import { UserEntity } from '@/modules/user/entity/user.entity';
 
 import { PanelGuard } from '../auth/guards/panel.guard';
+import { CheckRepeatedBookmarkByUserUseCase } from '../bookmark/use-case/check-repeated-bookmark-by-user.use-case';
 import { ImageEntity } from '../image/entity/image.entity';
 import ImageLoader from '../image/image.loader';
 import { TaxonomyEntity } from '../taxonomy/entity/taxonomy.entity';
@@ -51,8 +55,6 @@ import { FindBusinessByIdUseCase } from './use-case/find-business-by-id.use-case
 import { FindBusinessByIdsUseCase } from './use-case/find-business-by-ids.use-case';
 import { SearchBusinessUseCase } from './use-case/search-business.use-case';
 import { UpdateBusinessUseCase } from './use-case/update-business.use-case';
-import { CollectionName } from '@/common/enums/collection-name.enum';
-import { CheckRepeatedBookmarkByUserUseCase } from '../bookmark/use-case/check-repeated-bookmark-by-user.use-case';
 
 @Resolver(() => BusinessQuery)
 export class BusinessQueryResolver {
@@ -172,6 +174,7 @@ export class BusinessResolver {
   }
 
   @ResolveField(() => Boolean)
+  @UseGuards(GqlOptionalAuthGuard)
   async isUserFavorite(
     @Parent() business: BusinessEntity,
     @GetUser() user: UserEntity,
@@ -185,6 +188,7 @@ export class BusinessResolver {
   }
 
   @ResolveField(() => Boolean)
+  @UseGuards(GqlOptionalAuthGuard)
   async isUserBookmark(
     @Parent() business: BusinessEntity,
     @GetUser() user: UserEntity,

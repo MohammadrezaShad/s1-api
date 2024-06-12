@@ -6,6 +6,7 @@ import {
   DEFAULT_COUNT,
   DEFAULT_PAGE,
 } from '@/common/constants/pagination.constant';
+
 import { CreateBookmarkInput } from './dto/create-bookmark.dto';
 import {
   FindBookmarksByUserInput,
@@ -114,13 +115,7 @@ export class BookmarkRepository {
   async deleteOne(postId: string, user?: string): Promise<void> {
     await this.bookmarkModel
       .findOneAndDelete({
-        $and: [
-          // {
-          //   ...(user ? [{ user: { $eq: user } }] : []),
-          // },
-          { user: { $eq: user } },
-          { post: { $eq: postId } },
-        ],
+        $and: [{ user: { $eq: user } }, { post: { $eq: postId } }],
       })
       .exec();
   }
@@ -141,9 +136,6 @@ export class BookmarkRepository {
       {
         $match: {
           $and: [
-            // {
-            //   ...(user ? [{ user: { $eq: user } }] : []),
-            // },
             { user: { $eq: user } },
             { post: { $eq: post } },
             { type: { $eq: type } },

@@ -114,13 +114,7 @@ export class FavoriteRepository {
   async deleteOne(postId: string, user?: string): Promise<void> {
     await this.favModel
       .findOneAndDelete({
-        $and: [
-          // {
-          //   ...(user ? [{ user: { $eq: user } }] : []),
-          // },
-          { user: { $eq: user } },
-          { post: { $eq: postId } },
-        ],
+        $and: [{ user: { $eq: user } }, { post: { $eq: postId } }],
       })
       .exec();
   }
@@ -141,9 +135,6 @@ export class FavoriteRepository {
       {
         $match: {
           $and: [
-            // {
-            //   ...(user ? [{ user: { $eq: user } }] : []),
-            // },
             { user: { $eq: user } },
             { post: { $eq: post } },
             { type: { $eq: type } },
