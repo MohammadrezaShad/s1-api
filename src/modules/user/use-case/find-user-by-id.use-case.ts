@@ -30,7 +30,6 @@ export class FindUserByIdUseCase {
       if (!user) {
         throw new NotFoundException(USER_NOT_FOUND);
       }
-
       return {
         success: true,
         result: this.userEntityFactory.create(user),

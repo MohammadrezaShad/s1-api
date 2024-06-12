@@ -1,14 +1,15 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 
-import { FindTaxonomyByIdsUseCase } from '../taxonomy/use-case/find-taxonomy-by-ids.use-case';
+import { FindUserByIdUseCase } from '@/modules/user/use-case/find-user-by-id.use-case';
+
 import { GetBookmarksByUserUseCase } from '../bookmark/use-case/get-bookmarks-by-user.use-case';
+import { FindTaxonomyByIdsUseCase } from '../taxonomy/use-case/find-taxonomy-by-ids.use-case';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class BusinessDataLoader {
   constructor(
     private readonly findTaxonomyByIdsUseCase: FindTaxonomyByIdsUseCase,
-    private readonly getBookmarksByUserUseCase: GetBookmarksByUserUseCase,
   ) {}
 
   public readonly batchTaxonomies = new DataLoader(
@@ -26,39 +27,6 @@ export default class BusinessDataLoader {
         return finalTaxonomies;
       });
       return data;
-    },
-  );
-
-  public readonly batchBookmarksByUser = new DataLoader(
-    async (
-      list: readonly {
-        post: string;
-        user: string;
-      }[],
-    ) => {
-      const postIds = list.map(item => item.post);
-      const ids = [...new Set(postIds)];
-      const user = list.at(0)?.user;
-
-      const bookmarks = await this.getBookmarksByUserUseCase.getBookmarksByUser(
-        {
-          posts: ids,
-          user,
-        },
-      );
-
-      const bookmarksMap = new Map(
-        bookmarks.results.map(bookmarkItem => [
-          bookmarkItem.post.toString(),
-          bookmarkItem,
-        ]),
-      );
-
-      const finalBookMarks = list.map(
-        ({ post: posts }) => !!bookmarksMap.get(posts)?.post,
-      );
-
-      return finalBookMarks;
     },
   );
 }

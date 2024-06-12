@@ -1,18 +1,21 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
+import { FindRoleByIdUseCase } from '@/modules/auth/components/role/use-case/find-role-by-id.use-case';
+import { DeleteBookmarkUseCase } from '@/modules/bookmark/use-case/delete-bookmark.use-case';
+import { FindBookmarkByPostUseCase } from '@/modules/bookmark/use-case/find-bookmark-by-post.use-case';
+import { DeleteCommentUseCase } from '@/modules/comment/use-case/delete-comment.use-case';
+import { FindCommentByPostUseCase } from '@/modules/comment/use-case/find-comment-by-post.use-case';
+import { DeleteFavoriteUseCase } from '@/modules/favorite/use-case/delete-favorite.use-case';
+import { FindFavoriteByPostUseCase } from '@/modules/favorite/use-case/find-favorite-by-post.use-case';
+import { FindTaxonomyByIdUseCase } from '@/modules/taxonomy/use-case/find-taxonomy.use-case';
+import { FindUserByIdUseCase } from '@/modules/user/use-case/find-user-by-id.use-case';
+
 import { BusinessRepository } from '../business.repository';
 import {
   BUSINESS_ID_IS_NOT_CORRECT,
   BUSINESS_NAME_DUPLICATED,
   BUSINESS_SLUG_DUPLICATED,
 } from '../constant/error-message.constant';
-import { FindTaxonomyByIdUseCase } from '@/modules/taxonomy/use-case/find-taxonomy.use-case';
-import { FindUserByIdUseCase } from '@/modules/user/use-case/find-user-by-id.use-case';
-import { FindRoleByIdUseCase } from '@/modules/auth/components/role/use-case/find-role-by-id.use-case';
-import { FindBookmarkByPostUseCase } from '@/modules/bookmark/use-case/find-bookmark-by-post.use-case';
-import { DeleteBookmarkUseCase } from '@/modules/bookmark/use-case/delete-bookmark.use-case';
-import { FindFavoriteByPostUseCase } from '@/modules/favorite/use-case/find-favorite-by-post.use-case';
-import { DeleteFavoriteUseCase } from '@/modules/favorite/use-case/delete-favorite.use-case';
 import { FindBusinessByUserUseCase } from '../use-case/find-business-by-user.use-case';
 
 @Injectable()
@@ -26,6 +29,8 @@ export class BusinessHelepr {
     private readonly deleteBookmarkUseCase: DeleteBookmarkUseCase,
     private readonly findFavoriteByPostUseCase: FindFavoriteByPostUseCase,
     private readonly deleteFavoriteUseCase: DeleteFavoriteUseCase,
+    private readonly findCommentByPostUseCase: FindCommentByPostUseCase,
+    private readonly deleteCommentUseCase: DeleteCommentUseCase,
     private readonly findBusinessByUserUseCase: FindBusinessByUserUseCase,
   ) {}
 
@@ -64,6 +69,17 @@ export class BusinessHelepr {
     for (const favorite of favorites.results || []) {
       await this.deleteFavoriteUseCase.deleteFav({
         id: favorite._id.toString(),
+      });
+    }
+  }
+
+  async deleteComments(post: string) {
+    const comments = await this.findCommentByPostUseCase.findCommentByPost({
+      post: post,
+    });
+    for (const comment of comments.results || []) {
+      await this.deleteCommentUseCase.deleteComment({
+        commentId: comment._id.toString(),
       });
     }
   }

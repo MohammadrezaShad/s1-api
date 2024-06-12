@@ -1,12 +1,19 @@
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
+
 import { CommentEntity } from '../entity/comment.entity';
 
 @InputType()
 export class FindCommentInput {
   @Field(() => String)
   id: string;
+}
+
+@InputType()
+export class FindCommentsByPostInput {
+  @Field(() => String)
+  post: string;
 }
 
 @InputType()

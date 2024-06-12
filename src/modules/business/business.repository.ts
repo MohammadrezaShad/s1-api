@@ -7,19 +7,20 @@ import {
   DEFAULT_PAGE,
 } from '@/common/constants/pagination.constant';
 import { escapeRegex } from '@/common/utils/escape-regx.util';
-import { BusinessEntity, TBusiness } from './entity/business.entity';
-import { BusinessEntityFactory } from './entity/business.factory';
+
+import { DeleteBusinessInput } from './dto/delete-business.dto';
 import {
   FindBusinessByIdInput,
   FindBusinessByIdsInput,
 } from './dto/find-business.dto';
-import { BusinessModel } from './model/business.model';
 import {
   SearchBusinessInput,
   SearchBusinessOutput,
 } from './dto/search-business.dto';
 import { UpdateBusinessInput } from './dto/update-business.dto';
-import { DeleteBusinessInput } from './dto/delete-business.dto';
+import { BusinessEntity, TBusiness } from './entity/business.entity';
+import { BusinessEntityFactory } from './entity/business.factory';
+import { BusinessModel } from './model/business.model';
 
 @Injectable()
 export class BusinessRepository {
@@ -133,8 +134,58 @@ export class BusinessRepository {
       .exec();
   }
 
+  public async updateOne({
+    id,
+    user,
+    name,
+    slug,
+    email,
+    phone,
+    address,
+    address2,
+    description,
+    webAddress,
+    dailyWorkTime,
+    lat,
+    long,
+    taxonomies,
+    thumbnail,
+    images,
+  }: UpdateBusinessInput): Promise<void> {
+    await this.businessModel
+      .findOneAndUpdate(
+        { _id: id, user: user },
+        {
+          name,
+          slug,
+          email,
+          phone,
+          address,
+          address2,
+          description,
+          webAddress,
+          dailyWorkTime,
+          lat,
+          long,
+          taxonomies,
+          thumbnail,
+          images,
+        },
+        { new: true },
+      )
+      .exec();
+  }
+
   public async delete({ id }: DeleteBusinessInput): Promise<void> {
     await this.businessModel.findByIdAndDelete(id).exec();
+  }
+
+  public async deleteOne({ id, user }: DeleteBusinessInput): Promise<void> {
+    await this.businessModel
+      .findOneAndDelete({
+        $and: [{ _id: { $eq: id } }, { user: { $eq: user } }],
+      })
+      .exec();
   }
 
   async bulkDelete(ids: string[]): Promise<boolean> {

@@ -11,6 +11,7 @@ import {
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
 import { PostOutput } from '@/common/dtos/post-output.dto';
 import { Permission } from '@/common/permissions/permission-type';
+import { FindCommentByPostUseCase } from '@/modules/comment/use-case/find-comment-by-post.use-case';
 
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard';
@@ -35,6 +36,7 @@ import { EditCommentInput, EditCommentOutput } from './dto/edit-comment.dto';
 import {
   FindCommentInput,
   FindCommentOutput,
+  FindCommentsByPostInput,
   FindCommentsInput,
   FindCommentsOutput,
 } from './dto/find-comment.dto';
@@ -67,6 +69,7 @@ export class CommentQueryResolver {
   constructor(
     private readonly searchCommentUseCase: SearchCommentUseCase,
     private readonly findCommentByIdUseCase: FindCommentByIdUseCase,
+    private readonly findCommentByPostUseCase: FindCommentByPostUseCase,
     private readonly findCommentByIdsUseCase: FindCommentByIdsUseCase,
   ) {}
 
@@ -80,6 +83,13 @@ export class CommentQueryResolver {
     @Args('input') input: FindCommentInput,
   ): Promise<FindCommentOutput> {
     return this.findCommentByIdUseCase.findCommentById(input);
+  }
+
+  @ResolveField(() => FindCommentsOutput)
+  async findCommentByPost(
+    @Args('input') input: FindCommentsByPostInput,
+  ): Promise<FindCommentsOutput> {
+    return this.findCommentByPostUseCase.findCommentByPost(input);
   }
 
   @ResolveField(() => FindCommentsOutput)
@@ -115,7 +125,7 @@ export class CommentMutationResolver {
   }
 
   @ResolveField(() => CreateCommentOutput)
-  @UseGuards(AccessTokenGuard)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER)
   async createComment(
     @Args('input') input: CreateCommentInput,
     @GetUser() user: UserEntity,
@@ -150,7 +160,7 @@ export class CommentMutationResolver {
   }
 
   @ResolveField(() => EditCommentOutput)
-  @UseGuards(AccessTokenGuard)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER)
   async editComment(
     @Args('input') input: EditCommentInput,
     @GetUser() user: UserEntity,
@@ -170,7 +180,7 @@ export class CommentMutationResolver {
   }
 
   @ResolveField(() => DeleteCommentOutput)
-  @UseGuards(AccessTokenGuard)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER)
   async removeComment(
     @Args('input') input: RemoveCommentInput,
     @GetUser() user: UserEntity,

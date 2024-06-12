@@ -9,7 +9,6 @@ import {
   DEFAULT_PAGE,
 } from '@/common/constants/pagination.constant';
 import { BooleanEnum } from '@/common/enums/boolean.enum';
-import { SearchData } from '@/common/interfaces/search.data.interface';
 
 import { CreateAdminCommentInput } from './dto/create-comment.dto';
 import { RemoveCommentInput } from './dto/delete-comment.dto';
@@ -101,8 +100,8 @@ export class CommentRepository {
     return commentModel;
   }
 
-  async findCommentsByPost(id: string): Promise<CommentModel[]> {
-    const comments = await this.commentModel.find({ post: id }).exec();
+  async findCommentsByPost(post: string): Promise<CommentModel[]> {
+    const comments = await this.commentModel.find({ post: post }).exec();
     const commentModel: CommentModel[] = [];
     comments.map(it => {
       commentModel.push(this.commentEntityFactory.createFromEntity(it));

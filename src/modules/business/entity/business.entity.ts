@@ -16,8 +16,9 @@ import { type Document } from '@/common/types/document.type';
 import { SchemaFactory } from '@/common/utils/schema-factory.util';
 import { ImageEntity } from '@/modules/image/entity/image.entity';
 import { TaxonomyEntity } from '@/modules/taxonomy/entity/taxonomy.entity';
-import { DailyWorkTime } from './work-time.entity';
 import { UserOutput } from '@/modules/user/dto/user.output';
+
+import { DailyWorkTime } from './work-time.entity';
 
 @InputType('BusinessInputType', { isAbstract: true })
 @ObjectType()
@@ -88,23 +89,23 @@ export class BusinessEntity extends DefaultEntity {
   @IsNumber()
   long?: number;
 
-  @Prop({ type: [String], ref: 'Taxonomy' })
+  @Prop({ type: [String], ref: 'TaxonomyEntity' })
   @Field(() => [TaxonomyEntity], { nullable: true })
   @IsOptional()
   taxonomies?: string[];
 
-  @Prop({ type: String, ref: 'Image' })
+  @Prop({ type: String, ref: 'ImageEntity' })
   @Field(() => ImageEntity, { nullable: true })
   @IsOptional()
   @IsString()
   thumbnail?: string;
 
-  @Prop({ type: [String], ref: 'Image' })
+  @Prop({ type: [String], ref: 'ImageEntity' })
   @Field(() => [ImageEntity], { nullable: true })
   @IsOptional()
   images?: string[];
 
-  @Prop({ type: String, ref: 'User' })
+  @Prop({ type: String, ref: 'UserEntity' })
   @Field(() => UserOutput, { nullable: true })
   @IsString()
   @IsOptional()

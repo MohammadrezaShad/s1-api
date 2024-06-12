@@ -1,11 +1,12 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { BusinessHelepr } from '../helper/business-helper';
+
+import { BulkDeleteBusinessCommand } from '../command/bulk-delete-business/bulk-delete-business.command';
 import {
   BulkDeleteBusinessInput,
   DeleteBusinessOutput,
 } from '../dto/delete-business.dto';
-import { BulkDeleteBusinessCommand } from '../command/bulk-delete-business/bulk-delete-business.command';
+import { BusinessHelepr } from '../helper/business-helper';
 
 @Injectable()
 export class BulkDeleteBusinessUseCase {
@@ -26,6 +27,7 @@ export class BulkDeleteBusinessUseCase {
       for (const id of input.ids) {
         await this.businessHelepr.deleteBookmarks(id);
         await this.businessHelepr.deleteFavorites(id);
+        await this.businessHelepr.deleteComments(id);
       }
       return { success: true };
     } catch (err) {

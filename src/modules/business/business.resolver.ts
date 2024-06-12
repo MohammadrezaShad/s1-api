@@ -13,9 +13,13 @@ import { CollectionName } from '@/common/enums/collection-name.enum';
 import { Permission } from '@/common/permissions/permission-type';
 import { GetUser } from '@/modules/auth/decorators/get-user.decorator';
 import { GqlOptionalAuthGuard } from '@/modules/auth/guards/gql-optional-auth.guard';
+import { DeleteOneBusinessUseCase } from '@/modules/business/use-case/delete-one-business.use-case';
+import { UpdateOneBusinessUseCase } from '@/modules/business/use-case/update-one-business.use-case';
 import { CheckRepeatedFavoriteByUserUseCase } from '@/modules/favorite/use-case/check-repeated-favorite-by-user.use-case';
 import { FavoriteCountByPostUseCase } from '@/modules/favorite/use-case/favorite-count-by-post.use-case';
+import { UserOutput } from '@/modules/user/dto/user.output';
 import { UserEntity } from '@/modules/user/entity/user.entity';
+import { FindUserByIdUseCase } from '@/modules/user/use-case/find-user-by-id.use-case';
 
 import { PanelGuard } from '../auth/guards/panel.guard';
 import { CheckRepeatedBookmarkByUserUseCase } from '../bookmark/use-case/check-repeated-bookmark-by-user.use-case';
@@ -96,7 +100,9 @@ export class BusinessMutationResolver {
   constructor(
     private readonly createBusinessUseCase: CreateBusinessUseCase,
     private readonly updateBusinessUseCase: UpdateBusinessUseCase,
+    private readonly updateOneBusinessUseCase: UpdateOneBusinessUseCase,
     private readonly deleteBusinessUseCase: DeleteBusinessUseCase,
+    private readonly deleteOneBusinessUseCase: DeleteOneBusinessUseCase,
     private readonly bulkDeletebusinessUseCase: BulkDeleteBusinessUseCase,
   ) {}
 
@@ -122,27 +128,43 @@ export class BusinessMutationResolver {
   }
 
   @ResolveField(() => UpdateBusinessOutput)
-  @PanelGuard<MethodDecorator>(
-    Permission.REGULAR_USER,
-    Permission.UPDATE_BUSINESS,
-    Permission.UPDATE,
-  )
+  @PanelGuard<MethodDecorator>(Permission.UPDATE_BUSINESS, Permission.UPDATE)
   async updateBusiness(
     @Args('input') input: UpdateBusinessInput,
   ): Promise<UpdateBusinessOutput> {
     return this.updateBusinessUseCase.updateBusiness(input);
   }
 
+  @ResolveField(() => UpdateBusinessOutput)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER)
+  async updateOneBusiness(
+    @Args('input') input: UpdateBusinessInput,
+    @GetUser() user: UserEntity,
+  ): Promise<UpdateBusinessOutput> {
+    return this.updateOneBusinessUseCase.updateOneBusiness({
+      ...input,
+      user: user ? user._id.toString() : null,
+    });
+  }
+
   @ResolveField(() => DeleteBusinessOutput)
-  @PanelGuard<MethodDecorator>(
-    Permission.REGULAR_USER,
-    Permission.DELETE_BUSINESS,
-    Permission.DELETE,
-  )
+  @PanelGuard<MethodDecorator>(Permission.DELETE_BUSINESS, Permission.DELETE)
   async deleteBusiness(
     @Args('input') input: DeleteBusinessInput,
   ): Promise<DeleteBusinessOutput> {
     return this.deleteBusinessUseCase.deleteBusiness(input);
+  }
+
+  @ResolveField(() => DeleteBusinessOutput)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER)
+  async deleteOneBusiness(
+    @Args('input') input: DeleteBusinessInput,
+    @GetUser() user: UserEntity,
+  ): Promise<DeleteBusinessOutput> {
+    return this.deleteOneBusinessUseCase.deleteOneBusiness({
+      ...input,
+      user: user ? user._id.toString() : null,
+    });
   }
 
   @ResolveField(() => DeleteBusinessOutput)
@@ -165,6 +187,7 @@ export class BusinessResolver {
     private readonly favoriteCountByPostUseCase: FavoriteCountByPostUseCase,
     private readonly checkRepeatedFavoriteByUserUseCase: CheckRepeatedFavoriteByUserUseCase,
     private readonly checkRepeatedBookmarkByUserUseCase: CheckRepeatedBookmarkByUserUseCase,
+    private readonly findUserByIdUseCase: FindUserByIdUseCase,
   ) {}
 
   @ResolveField(() => Number)
@@ -220,6 +243,14 @@ export class BusinessResolver {
     const imageIds = business.images;
     if (!imageIds) return null;
     return this.imageLoader.batchImages.load(imageIds);
+  }
+
+  @ResolveField(() => UserOutput, { name: 'user', nullable: true })
+  async user(@Parent() business: BusinessEntity) {
+    const userId = business.user;
+    if (!userId) return null;
+    const user = await this.findUserByIdUseCase.findUserById({ id: userId });
+    return user.result;
   }
 }
 
