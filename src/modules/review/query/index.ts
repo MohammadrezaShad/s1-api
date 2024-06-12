@@ -1,0 +1,12 @@
+import { FindReviewByPostHandler } from '@/modules/review/query/find-review-by-post/find-review-by-post.handler';
+
+import { FindReviewByIdHandler } from './find-review-by-id/find-review-by-id.handler';
+import { FindReviewByIdsHandler } from './find-review-by-ids/find-review-by-ids.handler';
+import { SearchReviewHanler } from './search-review/search-review.handler';
+
+export const ReviewQueryHandlers = [
+  FindReviewByIdHandler,
+  FindReviewByIdsHandler,
+  FindReviewByPostHandler,
+  SearchReviewHanler,
+];

@@ -27,7 +27,7 @@ export class BulkDeleteBusinessUseCase {
       for (const id of input.ids) {
         await this.businessHelepr.deleteBookmarks(id);
         await this.businessHelepr.deleteFavorites(id);
-        await this.businessHelepr.deleteComments(id);
+        await this.businessHelepr.deleteReview(id);
       }
       return { success: true };
     } catch (err) {

@@ -2,9 +2,9 @@ import { PermissionPermit } from '@/modules/auth/components/permission/permissio
 import { RolePermission } from '@/modules/auth/components/role/permission/role-permission';
 import { BookmarkPermission } from '@/modules/bookmark/permission/bookmark-permission';
 import { BusinessPermission } from '@/modules/business/permission/business-permission';
-import { CommentPermission } from '@/modules/comment/permission/business-permission';
 import { FavoritePermission } from '@/modules/favorite/permission/favorite-permission';
 import { ImagePermission } from '@/modules/image/permission/image-permission';
+import { ReviewPermission } from '@/modules/review/permission/review-permission';
 import { TaxonomyPermission } from '@/modules/taxonomy/permission/taxonomy-permission';
 import { UserPermission } from '@/modules/user/permission/user-permission';
 
@@ -57,10 +57,10 @@ export class Permission {
   static readonly BULK_DELETE_BUSINESS =
     BusinessPermission.BULK_DELETE_BUSINESS;
 
-  static readonly CREATE_ADMIN_COMMENT = CommentPermission.CREATE_ADMIN_COMMENT;
-  static readonly UPDATE_COMMENT = CommentPermission.UPDATE_COMMENT;
-  static readonly DELETE_COMMENT = CommentPermission.DELETE_COMMENT;
-  static readonly BULK_DELETE_COMMENT = CommentPermission.BULK_DELETE_COMMENT;
+  static readonly CREATE_ADMIN_REVIEW = ReviewPermission.CREATE_ADMIN_REVIEW;
+  static readonly UPDATE_REVIEW = ReviewPermission.UPDATE_REVIEW;
+  static readonly DELETE_REVIEW = ReviewPermission.DELETE_REVIEW;
+  static readonly BULK_DELETE_REVIEW = ReviewPermission.BULK_DELETE_REVIEW;
 
   static readonly CREATE_FAVORITE = FavoritePermission.CREATE_FAVORITE;
   static readonly UPDATE_FAVORITE = FavoritePermission.UPDATE_FAVORITE;

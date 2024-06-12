@@ -15,10 +15,10 @@ import { FavoriteModule } from '@/modules/favorite/favorite.module';
 import { TaxonomysModule } from '@/modules/taxonomy/taxonomy.module';
 import { UserModule } from '@/modules/user/user.module';
 
-import { BusinessModule } from './modules/business/business.module';
-import { CommentModule } from './modules/comment/comment.module';
-import { ImageModule } from './modules/image/image.module';
 import { BookmarkModule } from './modules/bookmark/bookmark.module';
+import { BusinessModule } from './modules/business/business.module';
+import { ImageModule } from './modules/image/image.module';
+import { ReviewModule } from './modules/review/review.module';
 
 @Module({
   imports: [
@@ -105,7 +105,7 @@ import { BookmarkModule } from './modules/bookmark/bookmark.module';
     AuthModule,
     ImageModule,
     BusinessModule,
-    CommentModule,
+    ReviewModule,
     FavoriteModule,
     BookmarkModule,
   ],

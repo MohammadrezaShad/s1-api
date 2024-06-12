@@ -172,7 +172,7 @@ export class BusinessMutationResolver {
     Permission.BULK_DELETE_BUSINESS,
     Permission.BULK_DELETE,
   )
-  async bulkDeleteComment(
+  async bulkDeleteBusiness(
     @Args('input') input: BulkDeleteBusinessInput,
   ): Promise<DeleteBusinessOutput> {
     return this.bulkDeletebusinessUseCase.bulkDeleteBusiness(input);

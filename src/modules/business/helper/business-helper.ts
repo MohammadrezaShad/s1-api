@@ -3,10 +3,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { FindRoleByIdUseCase } from '@/modules/auth/components/role/use-case/find-role-by-id.use-case';
 import { DeleteBookmarkUseCase } from '@/modules/bookmark/use-case/delete-bookmark.use-case';
 import { FindBookmarkByPostUseCase } from '@/modules/bookmark/use-case/find-bookmark-by-post.use-case';
-import { DeleteCommentUseCase } from '@/modules/comment/use-case/delete-comment.use-case';
-import { FindCommentByPostUseCase } from '@/modules/comment/use-case/find-comment-by-post.use-case';
 import { DeleteFavoriteUseCase } from '@/modules/favorite/use-case/delete-favorite.use-case';
 import { FindFavoriteByPostUseCase } from '@/modules/favorite/use-case/find-favorite-by-post.use-case';
+import { DeleteReviewUseCase } from '@/modules/review/use-case/delete-review.use-case';
+import { FindReviewByPostUseCase } from '@/modules/review/use-case/find-review-by-post.use-case';
 import { FindTaxonomyByIdUseCase } from '@/modules/taxonomy/use-case/find-taxonomy.use-case';
 import { FindUserByIdUseCase } from '@/modules/user/use-case/find-user-by-id.use-case';
 
@@ -29,8 +29,8 @@ export class BusinessHelepr {
     private readonly deleteBookmarkUseCase: DeleteBookmarkUseCase,
     private readonly findFavoriteByPostUseCase: FindFavoriteByPostUseCase,
     private readonly deleteFavoriteUseCase: DeleteFavoriteUseCase,
-    private readonly findCommentByPostUseCase: FindCommentByPostUseCase,
-    private readonly deleteCommentUseCase: DeleteCommentUseCase,
+    private readonly findReviewByPostUseCase: FindReviewByPostUseCase,
+    private readonly deleteReviewUseCase: DeleteReviewUseCase,
     private readonly findBusinessByUserUseCase: FindBusinessByUserUseCase,
   ) {}
 
@@ -73,13 +73,13 @@ export class BusinessHelepr {
     }
   }
 
-  async deleteComments(post: string) {
-    const comments = await this.findCommentByPostUseCase.findCommentByPost({
+  async deleteReview(post: string) {
+    const review = await this.findReviewByPostUseCase.findReviewByPost({
       post: post,
     });
-    for (const comment of comments.results || []) {
-      await this.deleteCommentUseCase.deleteComment({
-        commentId: comment._id.toString(),
+    for (const rv of review.results || []) {
+      await this.deleteReviewUseCase.deleteReview({
+        id: rv._id.toString(),
       });
     }
   }
