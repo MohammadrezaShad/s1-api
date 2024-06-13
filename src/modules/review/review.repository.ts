@@ -12,16 +12,18 @@ import { BooleanEnum } from '@/common/enums/boolean.enum';
 import { CreateAdminReviewInput } from '@/modules/review/dto/create-review.dto';
 import { RemoveReviewInput } from '@/modules/review/dto/delete-review.dto';
 import { EditReviewInput } from '@/modules/review/dto/edit-review.dto';
+import { ReviewRateDetail } from '@/modules/review/dto/review-rate.entity';
 import {
   ReviewEntity,
   TReviewEntity,
 } from '@/modules/review/entity/review.entity';
+import { ReviewType } from '@/modules/review/enum/review-type.enum';
 
 import { SearchReviewInput, SearchReviewOutput } from './dto/search-review.dto';
 import { UpdateReviewInput } from './dto/update-review.dto';
+import { GetVotesDetailInput, VotesDetail } from './dto/votes-detail.dto';
 import { ReviewEntityFactory } from './entity/review.factory';
 import { ReviewModel } from './model/review.model';
-import { GetVotesDetailInput, VotesDetail } from './dto/votes-detail.dto';
 
 @Injectable()
 export class ReviewRepository {
@@ -236,9 +238,32 @@ export class ReviewRepository {
         },
       },
     ];
-
     const result = await this.reviewModel.aggregate(pipeline);
-
     return result;
+  }
+
+  async getStatisticsOfRichsnippetList(
+    richsnippetIds: number[],
+    type: ReviewType,
+  ): Promise<ReviewRateDetail[]> {
+    const [searchData = {}] = await this.reviewModel.aggregate([
+      {
+        $facet: {
+          richsnippetStatistics: [
+            { $match: { [type]: { $in: richsnippetIds } } },
+            {
+              $group: {
+                _id: '$' + type,
+                ratingValue: { $avg: '$score' },
+                bestRating: { $max: '$score' },
+                worstRating: { $min: '$score' },
+                ratingCount: { $sum: 1 },
+              },
+            },
+          ],
+        },
+      },
+    ]);
+    return searchData?.richsnippetStatistics;
   }
 }
