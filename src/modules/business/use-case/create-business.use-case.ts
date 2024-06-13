@@ -25,8 +25,10 @@ export class CreateBusinessUseCase {
         await this.businessHelepr.validateTaxonomy(it);
       }
 
-      await this.commandBus.execute(new CreateBusinessCommand(input));
-      return { success: true };
+      const businessId: string = await this.commandBus.execute(
+        new CreateBusinessCommand(input),
+      );
+      return { success: true, businessId: businessId };
     } catch (err) {
       throw new InternalServerErrorException(err);
     }

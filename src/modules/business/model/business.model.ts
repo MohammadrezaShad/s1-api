@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { DailyWorkTime } from '../entity/work-time.entity';
+import { WorkHour } from '../entity/work-hour.entity';
 
 export class BusinessModel extends AggregateRoot {
   constructor(
@@ -12,7 +12,7 @@ export class BusinessModel extends AggregateRoot {
     private readonly address2: string,
     private readonly description: string,
     private readonly webAddress: string,
-    private readonly dailyWorkTime: DailyWorkTime[],
+    private readonly workHour: WorkHour[],
     private readonly lat: number,
     private readonly long: number,
     private readonly taxonomies: string[],
@@ -59,8 +59,8 @@ export class BusinessModel extends AggregateRoot {
     return this.webAddress;
   }
 
-  getDailyWorkTime(): DailyWorkTime[] {
-    return this.dailyWorkTime;
+  getWorkHour(): WorkHour[] {
+    return this.workHour;
   }
 
   getLat(): number {

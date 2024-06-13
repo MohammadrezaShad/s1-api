@@ -18,7 +18,7 @@ import { ImageEntity } from '@/modules/image/entity/image.entity';
 import { TaxonomyEntity } from '@/modules/taxonomy/entity/taxonomy.entity';
 import { UserOutput } from '@/modules/user/dto/user.output';
 
-import { DailyWorkTime } from './work-time.entity';
+import { WorkHour } from './work-hour.entity';
 
 @InputType('BusinessInputType', { isAbstract: true })
 @ObjectType()
@@ -73,9 +73,9 @@ export class BusinessEntity extends DefaultEntity {
   webAddress?: string;
 
   @Prop({ type: mongoose.Schema.Types.Mixed, nullable: true })
-  @Field(() => [DailyWorkTime], { nullable: true })
+  @Field(() => [WorkHour], { nullable: true })
   @IsOptional()
-  dailyWorkTime?: DailyWorkTime[];
+  workHour?: WorkHour[];
 
   @Field(() => Number, { nullable: true })
   @Prop({ type: Number, nullable: true })

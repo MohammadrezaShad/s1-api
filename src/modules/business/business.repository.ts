@@ -118,11 +118,12 @@ export class BusinessRepository {
     };
   }
 
-  public async create(businessInput: BusinessModel): Promise<void> {
+  public async create(businessInput: BusinessModel): Promise<BusinessEntity> {
     const business = new this.businessModel(
       this.businessEntityFactory.create(businessInput),
     );
     await business.save();
+    return business;
   }
 
   public async update({
@@ -145,7 +146,7 @@ export class BusinessRepository {
     address2,
     description,
     webAddress,
-    dailyWorkTime,
+    workHour,
     lat,
     long,
     taxonomies,
@@ -164,7 +165,7 @@ export class BusinessRepository {
           address2,
           description,
           webAddress,
-          dailyWorkTime,
+          workHour,
           lat,
           long,
           taxonomies,

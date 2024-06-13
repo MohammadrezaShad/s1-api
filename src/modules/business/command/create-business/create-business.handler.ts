@@ -2,6 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { CreateBusinessCommand } from './create-business.command';
 import { BusinessModelFactory } from '../../model/business-model.factory';
+import { BusinessEntity } from '../../entity/business.entity';
 
 @CommandHandler(CreateBusinessCommand)
 export class CreateBusinessHandler
@@ -9,9 +10,9 @@ export class CreateBusinessHandler
 {
   constructor(private readonly businessFactory: BusinessModelFactory) {}
 
-  async execute(command: CreateBusinessCommand) {
+  async execute(command: CreateBusinessCommand): Promise<string> {
     const { createBusinessInput } = command;
-
-    await this.businessFactory.create(createBusinessInput);
+    const business = await this.businessFactory.create(createBusinessInput);
+    return business.getId();
   }
 }

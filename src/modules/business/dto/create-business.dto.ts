@@ -4,7 +4,7 @@ import { IsOptional } from 'class-validator';
 import { CoreOutput } from '@/common/dtos/output.dto';
 
 import { BusinessEntity } from '../entity/business.entity';
-import { DailyWorkTime } from '../entity/work-time.entity';
+import { WorkHour } from '../entity/work-hour.entity';
 
 @InputType()
 export class CreateBusinessInput extends PickType(BusinessEntity, [
@@ -19,9 +19,9 @@ export class CreateBusinessInput extends PickType(BusinessEntity, [
   'lat',
   'long',
 ] as const) {
-  @Field(() => [DailyWorkTime], { nullable: true })
+  @Field(() => [WorkHour], { nullable: true })
   @IsOptional()
-  dailyWorkTime?: DailyWorkTime[];
+  workHour?: WorkHour[];
 
   @Field(() => [String], { nullable: true })
   @IsOptional()
@@ -39,4 +39,7 @@ export class CreateBusinessInput extends PickType(BusinessEntity, [
 }
 
 @ObjectType()
-export class CreateBusinessOutput extends CoreOutput {}
+export class CreateBusinessOutput extends CoreOutput {
+  @Field(() => String)
+  businessId: string;
+}
