@@ -2,7 +2,6 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { CreateBusinessCommand } from './create-business.command';
 import { BusinessModelFactory } from '../../model/business-model.factory';
-import { BusinessEntity } from '../../entity/business.entity';
 
 @CommandHandler(CreateBusinessCommand)
 export class CreateBusinessHandler

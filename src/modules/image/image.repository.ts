@@ -20,9 +20,10 @@ export class ImageRepository {
     private readonly imageEntityFactory: ImageEntityFactory,
   ) {}
 
-  async create(input: Image): Promise<void> {
+  async create(input: Image): Promise<ImageEntity> {
     const image = new this.imageModel(this.imageEntityFactory.create(input));
     await image.save();
+    return image;
   }
 
   async findById(id: string): Promise<Image | null> {

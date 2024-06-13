@@ -63,7 +63,7 @@ export class ImageMutationResolver {
     input: UploadImageInput,
     @Args('file', { type: () => GraphQLUpload })
     file: FileUpload,
-  ): Promise<CoreOutput> {
+  ): Promise<UploadImageOutput> {
     console.log('resolver');
     return this.uploadImageUseCase.uploadImage({ ...input, imageFile: file });
   }

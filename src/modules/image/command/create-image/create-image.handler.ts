@@ -8,6 +8,7 @@ import { ImageFactory } from '@/modules/image/model/image-model.factory';
 export class CreateImageHandler implements ICommandHandler<CreateImageCommand> {
   constructor(private readonly imageFactory: ImageFactory) {}
   async execute({ createImageInput }: CreateImageCommand): Promise<Image> {
-    return await this.imageFactory.create(createImageInput);
+    const image = await this.imageFactory.create(createImageInput);
+    return image;
   }
 }

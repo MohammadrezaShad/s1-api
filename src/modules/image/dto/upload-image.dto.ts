@@ -1,4 +1,4 @@
-import { InputType, ObjectType, PickType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType, PickType } from '@nestjs/graphql';
 import { FileUpload } from 'graphql-upload';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
@@ -16,10 +16,12 @@ export class UploadImagesInput {
 
 @ObjectType()
 export class UploadImageOutput extends CoreOutput {
+  @Field(() => String)
   imageId: string;
 }
 
 @ObjectType()
 export class UploadImagesOutput extends CoreOutput {
+  @Field(() => [String])
   imageIds: string[];
 }

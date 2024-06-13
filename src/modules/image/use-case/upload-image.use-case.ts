@@ -11,6 +11,7 @@ import {
   UploadImageOutput,
 } from '@/modules/image/dto/upload-image.dto';
 import { ImageHelper } from '@/modules/image/helper/image.helper';
+import { Image } from '../model/image.model';
 
 @Injectable()
 export class UploadImageUseCase {
@@ -23,7 +24,6 @@ export class UploadImageUseCase {
     uploadImageInput: UploadImageInput,
   ): Promise<UploadImageOutput> {
     try {
-      console.log('use case');
       const { imageFile, alt } = uploadImageInput;
       await this.imageHelper.validateImageFileType(imageFile);
 
@@ -45,11 +45,11 @@ export class UploadImageUseCase {
         preview,
       };
 
-      const uploadedImage = await this.commandBus.execute(
+      const uploadedImage: Image = await this.commandBus.execute(
         new CreateImageCommand(createImageInput),
       );
 
-      const imageId: string = uploadedImage._id.toString();
+      const imageId: string = uploadedImage.getId().toString();
       if (uploadedImage) {
         // add to directory
         const directory = createdImageDirectory(imageId);
@@ -61,7 +61,7 @@ export class UploadImageUseCase {
           .toFile(`${directory}/${imageId}.webp`);
       }
 
-      return { success: true, imageId };
+      return { success: true, imageId: imageId };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
