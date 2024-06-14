@@ -48,6 +48,13 @@ export class AppService implements OnModuleInit {
         title: 'مدیر ارشد',
         permissions: permissionIds,
       });
+    } else {
+      if (permissionIds.length != ceoRole.getPermissions().length) {
+        this.roleRepository.update({
+          roleId: ceoRole.getId(),
+          permissions: permissionIds,
+        });
+      }
     }
   }
 

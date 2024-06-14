@@ -3,6 +3,7 @@ import {
   ExecutionContext,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { QueryBus } from '@nestjs/cqrs';
@@ -12,7 +13,10 @@ import { PermissionType } from '@/common/permissions/permission-type';
 import { FindPermissionByIdsUseCase } from '@/modules/auth/components/permission/use-case/find-permission-by-ids.use-case';
 import { FindRoleByIdsUseCase } from '@/modules/auth/components/role/use-case/find-role-by-ids.use-case';
 import { PERMISSION_KEY } from '@/modules/auth/constants/common.constant';
-import { ACCESS_ERROR_MESSAGE } from '@/modules/auth/constants/error-message.constant';
+import {
+  ACCESS_ERROR_MESSAGE,
+  NO_LOGIN_ERROR_MESSAGE,
+} from '@/modules/auth/constants/error-message.constant';
 import { UserModel } from '@/modules/user/model/user.model';
 import { FindUserByIdQuery } from '@/modules/user/query/find-user-by-id/find-user-by-id.query';
 
@@ -44,6 +48,9 @@ export class PermissionGuard implements CanActivate {
     const user: UserModel = await this.queryBus.execute(
       new FindUserByIdQuery(payload._id),
     );
+
+    if (!user) throw new UnauthorizedException(NO_LOGIN_ERROR_MESSAGE);
+
     // get user permissions from user
     const userPermissions = await this.permissionUseCase.findPermissionByIds({
       ids: user.getPermissions(),
