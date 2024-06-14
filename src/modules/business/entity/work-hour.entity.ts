@@ -33,7 +33,7 @@ export class WorkHour {
   @IsOptional()
   closed?: boolean;
 
-  @Field(() => TimeRange, { nullable: true })
+  @Field(() => [TimeRange], { nullable: true })
   @IsOptional()
-  timeRange?: TimeRange;
+  timeRanges?: TimeRange[];
 }
