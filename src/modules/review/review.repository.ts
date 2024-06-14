@@ -242,15 +242,20 @@ export class ReviewRepository {
     return result;
   }
 
-  async getReviewStatistics(
-    postId: string[],
+  async getPostScore(
+    post: string,
     type: ReviewType,
-  ): Promise<ReviewRateDetail[]> {
+  ): Promise<ReviewRateDetail> {
     const [searchData = {}] = await this.reviewModel.aggregate([
       {
         $facet: {
           reviewStatistics: [
-            { $match: { [type]: { $in: postId } } },
+            {
+              $match: {
+                ...(type && { type }),
+                ...(post && { post }),
+              },
+            },
             {
               $group: {
                 _id: '$' + type,
@@ -264,6 +269,6 @@ export class ReviewRepository {
         },
       },
     ]);
-    return searchData?.richsnippetStatistics;
+    return searchData?.reviewStatistics[0];
   }
 }

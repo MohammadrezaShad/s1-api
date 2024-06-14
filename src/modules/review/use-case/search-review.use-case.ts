@@ -26,18 +26,4 @@ export class SearchReviewUseCase {
       throw new InternalServerErrorException(err);
     }
   }
-
-  // async statistic(postId: string[]): Promise<ReviewRateDetail[]> {
-  //   try {
-  //     const result: ReviewRateDetail[] = await this.repo.getReviewStatistics(
-  //       postId,
-  //       ReviewType.BUSINESS,
-  //     );
-  //     return result.map(obj => {
-  //       return { ...obj, ratingValue: parseFloat(obj.ratingValue.toFixed(1)) };
-  //     });
-  //   } catch (error) {
-  //     throw new InternalServerErrorException(error);
-  //   }
-  // }
 }

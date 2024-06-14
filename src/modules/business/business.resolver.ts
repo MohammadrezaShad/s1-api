@@ -59,6 +59,9 @@ import { FindBusinessByIdUseCase } from './use-case/find-business-by-id.use-case
 import { FindBusinessByIdsUseCase } from './use-case/find-business-by-ids.use-case';
 import { SearchBusinessUseCase } from './use-case/search-business.use-case';
 import { UpdateBusinessUseCase } from './use-case/update-business.use-case';
+import { ReviewType } from '../review/enum/review-type.enum';
+import { ReviewRateDetail } from '../review/dto/review-rate.entity';
+import { GetPostScoreUseCase } from '../review/use-case/get-post-score.use-case';
 
 @Resolver(() => BusinessQuery)
 export class BusinessQueryResolver {
@@ -188,15 +191,32 @@ export class BusinessResolver {
     private readonly checkRepeatedFavoriteByUserUseCase: CheckRepeatedFavoriteByUserUseCase,
     private readonly checkRepeatedBookmarkByUserUseCase: CheckRepeatedBookmarkByUserUseCase,
     private readonly findUserByIdUseCase: FindUserByIdUseCase,
+    private readonly getPostScoreUseCase: GetPostScoreUseCase,
   ) {}
 
-  @ResolveField(() => Number)
+  @ResolveField(() => Number, {
+    name: 'favoriteCount',
+    nullable: true,
+  })
   async favoriteCount(@Parent() business: BusinessEntity) {
     const id = business._id.toString();
     return this.favoriteCountByPostUseCase.favoriteCountByPost(id);
   }
 
-  @ResolveField(() => Boolean)
+  @ResolveField(() => ReviewRateDetail, {
+    name: 'businessScore',
+    nullable: true,
+  })
+  async businessScore(@Parent() business: BusinessEntity) {
+    const id = business._id.toString();
+    console.log(id);
+    return this.getPostScoreUseCase.getPostScore(id, ReviewType.BUSINESS);
+  }
+
+  @ResolveField(() => Boolean, {
+    name: 'isUserFavorite',
+    nullable: true,
+  })
   @UseGuards(GqlOptionalAuthGuard)
   async isUserFavorite(
     @Parent() business: BusinessEntity,
@@ -210,7 +230,10 @@ export class BusinessResolver {
     });
   }
 
-  @ResolveField(() => Boolean)
+  @ResolveField(() => Boolean, {
+    name: 'isUserBookmark',
+    nullable: true,
+  })
   @UseGuards(GqlOptionalAuthGuard)
   async isUserBookmark(
     @Parent() business: BusinessEntity,
