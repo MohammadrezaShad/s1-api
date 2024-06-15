@@ -11,7 +11,7 @@ import { ReviewEntity } from '@/modules/review/entity/review.entity';
 
 @InputType('EditReviewInput')
 export class EditReviewInput extends PartialType(
-  PickType(ReviewEntity, ['content']),
+  PickType(ReviewEntity, ['content', 'score']),
 ) {
   @Field(() => String)
   id: string;

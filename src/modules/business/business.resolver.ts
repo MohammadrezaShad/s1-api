@@ -25,6 +25,9 @@ import { PanelGuard } from '../auth/guards/panel.guard';
 import { CheckRepeatedBookmarkByUserUseCase } from '../bookmark/use-case/check-repeated-bookmark-by-user.use-case';
 import { ImageEntity } from '../image/entity/image.entity';
 import ImageLoader from '../image/image.loader';
+import { ReviewRateDetail } from '../review/dto/review-rate.entity';
+import { ReviewType } from '../review/enum/review-type.enum';
+import { GetPostScoreUseCase } from '../review/use-case/get-post-score.use-case';
 import { TaxonomyEntity } from '../taxonomy/entity/taxonomy.entity';
 import BusinessDataLoader from './business.loader';
 import { BusinessMutation, BusinessQuery } from './dto/business.dto';
@@ -59,9 +62,6 @@ import { FindBusinessByIdUseCase } from './use-case/find-business-by-id.use-case
 import { FindBusinessByIdsUseCase } from './use-case/find-business-by-ids.use-case';
 import { SearchBusinessUseCase } from './use-case/search-business.use-case';
 import { UpdateBusinessUseCase } from './use-case/update-business.use-case';
-import { ReviewType } from '../review/enum/review-type.enum';
-import { ReviewRateDetail } from '../review/dto/review-rate.entity';
-import { GetPostScoreUseCase } from '../review/use-case/get-post-score.use-case';
 
 @Resolver(() => BusinessQuery)
 export class BusinessQueryResolver {
@@ -209,7 +209,6 @@ export class BusinessResolver {
   })
   async businessScore(@Parent() business: BusinessEntity) {
     const id = business._id.toString();
-    console.log(id);
     return this.getPostScoreUseCase.getPostScore(id, ReviewType.BUSINESS);
   }
 
