@@ -6,8 +6,10 @@ import { DeleteOneFavoriteUseCase } from '@/modules/favorite/use-case/delete-one
 import { FavoriteCountByPostUseCase } from '@/modules/favorite/use-case/favorite-count-by-post.use-case';
 import { FindFavoriteByIdUseCase } from '@/modules/favorite/use-case/find-favorite-by-id.use-case';
 import { FindFavoriteByIdsUseCase } from '@/modules/favorite/use-case/find-favorite-by-ids.use-case';
+import { GetFavoritesByUserUseCase } from '@/modules/favorite/use-case/get-favorite-by-user.use-case';
 import { SearchFavoriteUseCase } from '@/modules/favorite/use-case/search-favorite.use-case';
 import { UpdateFavoriteUseCase } from '@/modules/favorite/use-case/update-favorite.use-case';
+
 import { FindFavoriteByPostUseCase } from './find-favorite-by-post.use-case';
 
 export const FavoriteUseCases = [
@@ -22,4 +24,5 @@ export const FavoriteUseCases = [
   SearchFavoriteUseCase,
   FavoriteCountByPostUseCase,
   CheckRepeatedFavoriteByUserUseCase,
+  GetFavoritesByUserUseCase,
 ];

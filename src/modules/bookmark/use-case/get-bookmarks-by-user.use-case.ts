@@ -1,17 +1,12 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
-import { BookmarkEntityFactory } from '../entity/bookmark.factory';
 import {
   FindBookmarksByUserInput,
   FindBookmarksOutput,
 } from '../dto/find-bookmark.dto';
+import { BookmarkEntityFactory } from '../entity/bookmark.factory';
 import { BookmarkModel } from '../model/bookmark.model';
-import { BOOKMARK_NOT_FOUND } from '../constant/error-message.constant';
 import { GetBookmarksByUserQuery } from '../query/get-bookmarks-by-user/get-bookmarks-by-user.query';
 
 @Injectable()

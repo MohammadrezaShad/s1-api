@@ -229,6 +229,7 @@ export class BusinessResolver {
       businessId,
       ReviewType.BUSINESS,
     );
+    if (!review) return null;
     return review.score;
   }
 

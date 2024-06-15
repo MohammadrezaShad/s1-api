@@ -278,7 +278,7 @@ export class ReviewRepository {
     type: ReviewType,
   ): Promise<ReviewEntity> {
     const item = await this.reviewModel
-      .findOne({ user: user, post: post, type: type })
+      .findOne({ createUser: user, post: post, type: type })
       .exec();
     return item;
   }

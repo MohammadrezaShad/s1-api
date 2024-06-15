@@ -2,8 +2,8 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
-import { FavoriteEntity } from '@/modules/favorite/entity/favorite.entity';
 import { CollectionName } from '@/common/enums/collection-name.enum';
+import { FavoriteEntity } from '@/modules/favorite/entity/favorite.entity';
 
 @InputType()
 export class FindFavoriteInput {

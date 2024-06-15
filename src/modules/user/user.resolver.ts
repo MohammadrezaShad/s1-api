@@ -12,6 +12,10 @@ import { CoreOutput } from '@/common/dtos/output.dto';
 import { Permission } from '@/common/permissions/permission-type';
 import { PermissionEntity } from '@/modules/auth/components/permission/entity/permission.entity';
 import { RoleEntity } from '@/modules/auth/components/role/entity/role.entity';
+import { BookmarkEntity } from '@/modules/bookmark/entity/bookmark.entity';
+import { GetBookmarksByUserUseCase } from '@/modules/bookmark/use-case/get-bookmarks-by-user.use-case';
+import { FavoriteEntity } from '@/modules/favorite/entity/favorite.entity';
+import { GetFavoritesByUserUseCase } from '@/modules/favorite/use-case/get-favorite-by-user.use-case';
 import {
   CreateUserInput,
   CreateUserOutput,
@@ -143,20 +147,44 @@ export class UserMutationResolver {
 
 @Resolver(() => UserEntity)
 export class UserResolver {
-  constructor(private readonly loader: UserDataLoader) {}
+  constructor(
+    private readonly loader: UserDataLoader,
+    private readonly getBookmarksByUserUseCase: GetBookmarksByUserUseCase,
+    private readonly getFavoritesByUserUseCase: GetFavoritesByUserUseCase,
+  ) {}
 
   @ResolveField(() => [PermissionEntity], { nullable: true })
-  async permissions(@Parent() role: UserEntity) {
+  async permissions(@Parent() user: UserEntity) {
     const permissions = await this.loader.batchPermission.load(
-      role.permissions,
+      user.permissions,
     );
+    if (!permissions) return [];
     return permissions;
   }
 
   @ResolveField(() => [RoleEntity], { nullable: true })
-  async roles(@Parent() role: UserEntity) {
-    const roles = await this.loader.batchRole.load(role.roles);
+  async roles(@Parent() user: UserEntity) {
+    const roles = await this.loader.batchRole.load(user.roles);
+    if (!roles) return [];
     return roles;
+  }
+
+  @ResolveField(() => [BookmarkEntity], { nullable: true })
+  async bookmarks(@Parent() user: UserEntity) {
+    const bookmarks = await this.getBookmarksByUserUseCase.getBookmarksByUser({
+      user: user._id.toString(),
+    });
+    if (!bookmarks) return [];
+    return bookmarks.results;
+  }
+
+  @ResolveField(() => [FavoriteEntity], { nullable: true })
+  async favorites(@Parent() user: UserEntity) {
+    const favorites = await this.getFavoritesByUserUseCase.getFavoritesByUser(
+      user._id.toString(),
+    );
+    if (!favorites) return [];
+    return favorites.results;
   }
 }
 

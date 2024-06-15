@@ -1,9 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 
-import { FindUserByIdUseCase } from '@/modules/user/use-case/find-user-by-id.use-case';
-
-import { GetBookmarksByUserUseCase } from '../bookmark/use-case/get-bookmarks-by-user.use-case';
 import { FindTaxonomyByIdsUseCase } from '../taxonomy/use-case/find-taxonomy-by-ids.use-case';
 
 @Injectable({ scope: Scope.REQUEST })

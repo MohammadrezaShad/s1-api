@@ -149,4 +149,13 @@ export class FavoriteRepository {
   async countByPost(postId: string) {
     return this.favModel.find({ post: postId }).countDocuments().exec();
   }
+
+  async getFavoritesByUser(user: string): Promise<FavoriteModel[] | null> {
+    const favorites = await this.favModel.find({ user: user }).exec();
+    const favoriteModel: FavoriteModel[] = [];
+    favorites.map(it => {
+      favoriteModel.push(this.favEntityFactory.createFromEntity(it));
+    });
+    return favoriteModel;
+  }
 }

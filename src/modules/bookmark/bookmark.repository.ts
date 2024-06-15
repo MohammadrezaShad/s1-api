@@ -151,22 +151,14 @@ export class BookmarkRepository {
     return this.bookmarkModel.find({ post: postId }).countDocuments().exec();
   }
 
-  async getBookmarksByUser({ posts, user }: FindBookmarksByUserInput) {
-    const pipeline: PipelineStage[] = [
-      {
-        $match: {
-          $and: [
-            {
-              user: { $eq: user },
-            },
-            {
-              post: { $in: posts },
-            },
-          ],
-        },
-      },
-    ];
-    const bookmarks = await this.bookmarkModel.aggregate(pipeline);
-    return bookmarks;
+  async getBookmarksByUser({
+    user,
+  }: FindBookmarksByUserInput): Promise<BookmarkModel[] | null> {
+    const bookmarks = await this.bookmarkModel.find({ user: user }).exec();
+    const bookmarkModel: BookmarkModel[] = [];
+    bookmarks.map(it => {
+      bookmarkModel.push(this.bookmarkEntityFactory.createFromEntity(it));
+    });
+    return bookmarkModel;
   }
 }

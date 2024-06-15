@@ -2,8 +2,9 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
-import { BookmarkEntity } from '../entity/bookmark.entity';
 import { CollectionName } from '@/common/enums/collection-name.enum';
+
+import { BookmarkEntity } from '../entity/bookmark.entity';
 
 @InputType()
 export class FindBookmarkInput {
@@ -40,6 +41,5 @@ export class FindRepeatedBookmarkInput {
 }
 
 export class FindBookmarksByUserInput {
-  posts: string[];
   user: string;
 }
