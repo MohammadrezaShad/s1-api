@@ -17,6 +17,7 @@ import { DeleteOneBusinessUseCase } from '@/modules/business/use-case/delete-one
 import { UpdateOneBusinessUseCase } from '@/modules/business/use-case/update-one-business.use-case';
 import { CheckRepeatedFavoriteByUserUseCase } from '@/modules/favorite/use-case/check-repeated-favorite-by-user.use-case';
 import { FavoriteCountByPostUseCase } from '@/modules/favorite/use-case/favorite-count-by-post.use-case';
+import { GetPostScoreByUserUseCase } from '@/modules/review/use-case/get-post-score-by-user.use-case';
 import { UserOutput } from '@/modules/user/dto/user.output';
 import { UserEntity } from '@/modules/user/entity/user.entity';
 import { FindUserByIdUseCase } from '@/modules/user/use-case/find-user-by-id.use-case';
@@ -192,6 +193,7 @@ export class BusinessResolver {
     private readonly checkRepeatedBookmarkByUserUseCase: CheckRepeatedBookmarkByUserUseCase,
     private readonly findUserByIdUseCase: FindUserByIdUseCase,
     private readonly getPostScoreUseCase: GetPostScoreUseCase,
+    private readonly getPostScoreByUserUseCase: GetPostScoreByUserUseCase,
   ) {}
 
   @ResolveField(() => Number, {
@@ -210,6 +212,24 @@ export class BusinessResolver {
   async businessScore(@Parent() business: BusinessEntity) {
     const id = business._id.toString();
     return this.getPostScoreUseCase.getPostScore(id, ReviewType.BUSINESS);
+  }
+
+  @ResolveField(() => Number, {
+    name: 'userBusinessScore',
+    nullable: true,
+  })
+  @UseGuards(GqlOptionalAuthGuard)
+  async userBusinessScore(
+    @Parent() business: BusinessEntity,
+    @GetUser() user: UserEntity,
+  ) {
+    const businessId = business._id.toString();
+    const review = await this.getPostScoreByUserUseCase.getPostScoreByUser(
+      user ? user._id.toString() : null,
+      businessId,
+      ReviewType.BUSINESS,
+    );
+    return review.score;
   }
 
   @ResolveField(() => Boolean, {

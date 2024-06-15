@@ -252,8 +252,8 @@ export class ReviewRepository {
           reviewStatistics: [
             {
               $match: {
-                ...(type && { type }),
-                ...(post && { post }),
+                type: type,
+                post: post,
               },
             },
             {
@@ -270,5 +270,16 @@ export class ReviewRepository {
       },
     ]);
     return searchData?.reviewStatistics[0];
+  }
+
+  async getPostScoreByUser(
+    user: string,
+    post: string,
+    type: ReviewType,
+  ): Promise<ReviewEntity> {
+    const item = await this.reviewModel
+      .findOne({ user: user, post: post, type: type })
+      .exec();
+    return item;
   }
 }
