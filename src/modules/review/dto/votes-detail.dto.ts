@@ -44,7 +44,13 @@ export class Score {
 
 @InputType()
 export class GetVotesDetailInput {
-  @Field(() => ReviewType)
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
+  post?: string;
+
+  @Field(() => ReviewType, { nullable: true })
+  @IsOptional()
   @IsEnum(ReviewType)
-  type: ReviewType;
+  type?: ReviewType;
 }

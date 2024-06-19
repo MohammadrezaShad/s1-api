@@ -19,6 +19,9 @@ export class UserModelFactory implements ModelFactory<UserModel> {
     refreshToken,
     permissions,
     roles,
+    country,
+    city,
+    address,
   }: CreateUserInput): Promise<UserModel> {
     const user = new UserModel(
       new ObjectId().toHexString(),
@@ -30,6 +33,9 @@ export class UserModelFactory implements ModelFactory<UserModel> {
       refreshToken,
       permissions,
       roles,
+      country,
+      city,
+      address,
     );
     await this.userRepository.create(user);
     user.sendSms(displayName);

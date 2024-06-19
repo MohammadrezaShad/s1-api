@@ -12,6 +12,9 @@ export class CreateUserInput extends PickType(UserEntity, [
   'displayName',
   'isVerified',
   'refreshToken',
+  'country',
+  'city',
+  'address',
 ] as const) {
   @Field(() => String)
   @IsOptional()

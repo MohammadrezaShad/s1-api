@@ -14,6 +14,9 @@ export class UserModel extends AggregateRoot {
     private readonly refreshToken: string[],
     private readonly permissions: string[],
     private readonly roles: string[],
+    private readonly country: string,
+    private readonly city: string,
+    private readonly address: string,
   ) {
     super();
   }
@@ -52,6 +55,18 @@ export class UserModel extends AggregateRoot {
 
   getRoles(): string[] {
     return this.roles;
+  }
+
+  getCountry(): string {
+    return this.country;
+  }
+
+  getCity(): string {
+    return this.city;
+  }
+
+  getAddress(): string {
+    return this.address;
   }
 
   sendSms(displayName: string) {

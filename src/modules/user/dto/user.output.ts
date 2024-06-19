@@ -22,6 +22,15 @@ export class UserOutput {
   @Field(type => [String])
   roles?: string[];
 
+  @Field(type => String, { nullable: true })
+  country?: string;
+
+  @Field(type => String, { nullable: true })
+  city?: string;
+
+  @Field(type => String, { nullable: true })
+  address?: string;
+
   @Field(type => String, { nullable: true, middleware: [toPersianDate] })
   createdAt?: Date;
 

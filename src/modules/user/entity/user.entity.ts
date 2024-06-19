@@ -86,6 +86,24 @@ export class UserEntity extends DefaultEntity {
 
   @Prop({ type: [String], nullable: true })
   refreshToken?: string[];
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  country?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  address?: string;
 }
 
 type TUser = Document<UserEntity>;

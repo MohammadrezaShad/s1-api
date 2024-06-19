@@ -21,6 +21,9 @@ export class UserEntityFactory
       refreshToken: user.getRefreshTokens(),
       permissions: user.getPermissions(),
       roles: user.getRoles(),
+      country: user.getCountry(),
+      city: user.getCity(),
+      address: user.getAddress(),
     };
   }
 
@@ -36,6 +39,9 @@ export class UserEntityFactory
       refreshToken,
       permissions,
       roles,
+      country,
+      city,
+      address,
     } = userEntity;
     return new UserModel(
       _id.toHexString(),
@@ -47,6 +53,9 @@ export class UserEntityFactory
       refreshToken,
       permissions,
       roles,
+      country,
+      city,
+      address,
     );
   }
 }

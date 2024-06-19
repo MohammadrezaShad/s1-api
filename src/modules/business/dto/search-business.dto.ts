@@ -13,6 +13,15 @@ export class SearchBusinessInput extends PaginationInput {
   @IsOptional()
   @IsString()
   text?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  user?: string;
+
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  taxonomies?: string[];
 }
 
 @ObjectType('SearchBusinessOutput')

@@ -79,6 +79,8 @@ export class BusinessRepository {
     count: inputCount,
     page: inputPage,
     text,
+    user,
+    taxonomies,
   }: SearchBusinessInput): Promise<SearchBusinessOutput> {
     const count = inputCount || DEFAULT_COUNT;
     const page = inputPage || DEFAULT_PAGE;
@@ -89,6 +91,8 @@ export class BusinessRepository {
           ...(text && {
             $or: [{ $text: { $search: text } }],
           }),
+          ...(user && { user: user }),
+          ...(taxonomies && { taxonomies: { $in: taxonomies } }),
         },
       },
       {

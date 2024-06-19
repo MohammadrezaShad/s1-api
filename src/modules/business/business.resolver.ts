@@ -63,6 +63,8 @@ import { FindBusinessByIdUseCase } from './use-case/find-business-by-id.use-case
 import { FindBusinessByIdsUseCase } from './use-case/find-business-by-ids.use-case';
 import { SearchBusinessUseCase } from './use-case/search-business.use-case';
 import { UpdateBusinessUseCase } from './use-case/update-business.use-case';
+import { GetVotesDetailUseCase } from '../review/use-case/get-votes-detail.use-case';
+import { VotesDetail } from '../review/dto/votes-detail.dto';
 
 @Resolver(() => BusinessQuery)
 export class BusinessQueryResolver {
@@ -194,25 +196,8 @@ export class BusinessResolver {
     private readonly findUserByIdUseCase: FindUserByIdUseCase,
     private readonly getPostScoreUseCase: GetPostScoreUseCase,
     private readonly getPostScoreByUserUseCase: GetPostScoreByUserUseCase,
+    private readonly getVotesDetailUseCase: GetVotesDetailUseCase,
   ) {}
-
-  @ResolveField(() => Number, {
-    name: 'favoriteCount',
-    nullable: true,
-  })
-  async favoriteCount(@Parent() business: BusinessEntity) {
-    const id = business._id.toString();
-    return this.favoriteCountByPostUseCase.favoriteCountByPost(id);
-  }
-
-  @ResolveField(() => ReviewRateDetail, {
-    name: 'businessScore',
-    nullable: true,
-  })
-  async businessScore(@Parent() business: BusinessEntity) {
-    const id = business._id.toString();
-    return this.getPostScoreUseCase.getPostScore(id, ReviewType.BUSINESS);
-  }
 
   @ResolveField(() => Number, {
     name: 'userBusinessScore',
@@ -231,6 +216,37 @@ export class BusinessResolver {
     );
     if (!review) return null;
     return review.score;
+  }
+
+  @ResolveField(() => ReviewRateDetail, {
+    name: 'businessScore',
+    nullable: true,
+  })
+  async businessScore(@Parent() business: BusinessEntity) {
+    const id = business._id.toString();
+    return this.getPostScoreUseCase.getPostScore(id, ReviewType.BUSINESS);
+  }
+
+  @ResolveField(() => VotesDetail, {
+    name: 'businessScoreDetail',
+    nullable: true,
+  })
+  async businessScoreDetail(@Parent() business: BusinessEntity) {
+    const id = business._id.toString();
+    const detail = await this.getVotesDetailUseCase.getVotesDetail({
+      post: id,
+      type: ReviewType.BUSINESS,
+    });
+    return detail[0];
+  }
+
+  @ResolveField(() => Number, {
+    name: 'favoriteCount',
+    nullable: true,
+  })
+  async favoriteCount(@Parent() business: BusinessEntity) {
+    const id = business._id.toString();
+    return this.favoriteCountByPostUseCase.favoriteCountByPost(id);
   }
 
   @ResolveField(() => Boolean, {

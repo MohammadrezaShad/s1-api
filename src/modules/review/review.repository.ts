@@ -185,10 +185,14 @@ export class ReviewRepository {
     return reviewCount;
   }
 
-  async getVotesDetail({ type }: GetVotesDetailInput): Promise<VotesDetail[]> {
+  async getVotesDetail({
+    post,
+    type,
+  }: GetVotesDetailInput): Promise<VotesDetail[]> {
     const pipeline: PipelineStage[] = [
       {
         $match: {
+          ...(post && { post: post }),
           type: type,
         },
       },
