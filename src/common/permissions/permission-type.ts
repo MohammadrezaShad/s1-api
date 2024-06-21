@@ -4,6 +4,7 @@ import { BookmarkPermission } from '@/modules/bookmark/permission/bookmark-permi
 import { BusinessPermission } from '@/modules/business/permission/business-permission';
 import { FavoritePermission } from '@/modules/favorite/permission/favorite-permission';
 import { ImagePermission } from '@/modules/image/permission/image-permission';
+import { QuestionPermission } from '@/modules/q&a/permission/question-permission';
 import { ReviewPermission } from '@/modules/review/permission/review-permission';
 import { TaxonomyPermission } from '@/modules/taxonomy/permission/taxonomy-permission';
 import { UserPermission } from '@/modules/user/permission/user-permission';
@@ -73,4 +74,10 @@ export class Permission {
   static readonly DELETE_BOOKMARK = BookmarkPermission.DELETE_BOOKMARK;
   static readonly BULK_DELETE_BOOKMARK =
     BookmarkPermission.BULK_DELETE_BOOKMARK;
+
+  static readonly CREATE_QUESTION = QuestionPermission.CREATE_QUESTION;
+  static readonly UPDATE_QUESTION = QuestionPermission.UPDATE_QUESTION;
+  static readonly DELETE_QUESTION = QuestionPermission.DELETE_QUESTION;
+  static readonly BULK_DELETE_QUESTION =
+    QuestionPermission.BULK_DELETE_QUESTION;
 }

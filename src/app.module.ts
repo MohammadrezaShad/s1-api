@@ -19,6 +19,7 @@ import { BookmarkModule } from './modules/bookmark/bookmark.module';
 import { BusinessModule } from './modules/business/business.module';
 import { ImageModule } from './modules/image/image.module';
 import { ReviewModule } from './modules/review/review.module';
+import { QuestionModule } from './modules/q&a/question.module';
 
 @Module({
   imports: [
@@ -108,6 +109,7 @@ import { ReviewModule } from './modules/review/review.module';
     ReviewModule,
     FavoriteModule,
     BookmarkModule,
+    QuestionModule,
   ],
   controllers: [],
   providers: [AppService],

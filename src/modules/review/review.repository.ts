@@ -47,12 +47,12 @@ export class ReviewRepository {
     const count = inputCount || DEFAULT_COUNT;
     const page = inputPage || DEFAULT_PAGE;
     const hasParent = typeof parent === 'string';
-    const mediaApproved =
+    const reviewApproved =
       approved || approved === null ? approved : BooleanEnum.TRUE;
     const pipeline: PipelineStage[] = [
       {
         $match: {
-          ...(mediaApproved && { approved: mediaApproved }),
+          ...(reviewApproved && { approved: reviewApproved }),
           ...(type && { type: type }),
           ...(post && { post }),
           ...(authorEmail && { authorEmail }),

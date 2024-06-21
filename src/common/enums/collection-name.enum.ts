@@ -13,6 +13,8 @@ export enum CollectionName {
   REVIEW = 'review',
   FAVORITE = 'favorite',
   BOOKMARK = 'bookmark',
+  QUESTION = 'question',
+  ANSWER = 'answer',
 }
 
 registerEnumType(CollectionName, {

@@ -13,7 +13,8 @@ import { ReviewType } from '../enum/review-type.enum';
 @InputType()
 export class SearchReviewInput extends PaginationInput {
   @Field(() => String, { nullable: true })
-  post: string;
+  @IsOptional()
+  post?: string;
 
   @Field(() => ReviewType, { nullable: true })
   @IsOptional()
@@ -39,6 +40,7 @@ export class SearchReviewInput extends PaginationInput {
   approved?: BooleanEnum;
 
   @Field(() => String, { nullable: true })
+  @IsOptional()
   user?: string;
 }
 
