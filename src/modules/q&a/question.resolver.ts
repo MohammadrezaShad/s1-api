@@ -8,13 +8,19 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
-import { PostOutput } from '@/common/dtos/post-output.dto';
 import { Permission } from '@/common/permissions/permission-type';
+import { BusinessEntity } from '@/modules/business/entity/business.entity';
 import {
   CreateAnswerInput,
   CreateAnswerOutput,
 } from '@/modules/q&a/answer/dto/create-answer.dto';
-import { CreateAnswerUseCase } from '@/modules/q&a/answer/use-case/create-answer.use-case';
+import {
+  SearchAnswerInput,
+  SearchAnswerOutput,
+} from '@/modules/q&a/answer/dto/search-answer.dto';
+import { AnswerEntity } from '@/modules/q&a/answer/entity/answer.entity';
+import { FindAnswerByIdsUseCase } from '@/modules/q&a/answer/use-case/find-answer-by-ids.use-case';
+import { SearchAnswerUseCase } from '@/modules/q&a/answer/use-case/search-answer.use-case';
 import { CreateAnswerFromQuestionUseCase } from '@/modules/q&a/use-case/create-answer.use-case';
 
 import { GetUser } from '../auth/decorators/get-user.decorator';
@@ -34,7 +40,7 @@ import {
 import {
   FindQuestionInput,
   FindQuestionOutput,
-  FindQuestionsByPostInput,
+  FindQuestionsByBusinessInput,
   FindQuestionsInput,
   FindQuestionsOutput,
 } from './dto/find-question.dto';
@@ -52,9 +58,9 @@ import QuestionDataLoader from './question.loader';
 import { BulkDeleteQuestionUseCase } from './use-case/bulk-delete-question.use-case';
 import { CreateQuestionUseCase } from './use-case/create-question.use-case';
 import { DeleteQuestionUseCase } from './use-case/delete-question.use-case';
+import { FindQuestionByBusinessUseCase } from './use-case/find-question-by-business.use-case';
 import { FindQuestionByIdUseCase } from './use-case/find-question-by-id.use-case';
 import { FindQuestionByIdsUseCase } from './use-case/find-question-by-ids.use-case';
-import { FindQuestionByPostUseCase } from './use-case/find-question-by-post.use-case';
 import { SearchQuestionUseCase } from './use-case/search-question.use-case';
 import { UpdateQuestionUseCase } from './use-case/update-question.use-case';
 
@@ -62,8 +68,9 @@ import { UpdateQuestionUseCase } from './use-case/update-question.use-case';
 export class QuestionQueryResolver {
   constructor(
     private readonly searchQuestionUseCase: SearchQuestionUseCase,
+    private readonly searchAnswernUseCase: SearchAnswerUseCase,
     private readonly findQuestionByIdUseCase: FindQuestionByIdUseCase,
-    private readonly findQuestionByPostUseCase: FindQuestionByPostUseCase,
+    private readonly findQuestionByBusinessUseCase: FindQuestionByBusinessUseCase,
     private readonly findQuestionByIdsUseCase: FindQuestionByIdsUseCase,
   ) {}
 
@@ -80,10 +87,10 @@ export class QuestionQueryResolver {
   }
 
   @ResolveField(() => FindQuestionsOutput)
-  async findQuestionByPost(
-    @Args('input') input: FindQuestionsByPostInput,
+  async findQuestionByBusiness(
+    @Args('input') input: FindQuestionsByBusinessInput,
   ): Promise<FindQuestionsOutput> {
-    return this.findQuestionByPostUseCase.findQuestionsByPost(input);
+    return this.findQuestionByBusinessUseCase.findQuestionsByBusiness(input);
   }
 
   @ResolveField(() => FindQuestionsOutput)
@@ -98,6 +105,13 @@ export class QuestionQueryResolver {
     @Args('input') input: SearchQuestionInput,
   ): Promise<SearchQuestionOutput> {
     return this.searchQuestionUseCase.search(input);
+  }
+
+  @ResolveField(() => SearchAnswerOutput)
+  async searchAnswer(
+    @Args('input') input: SearchAnswerInput,
+  ): Promise<SearchAnswerOutput> {
+    return this.searchAnswernUseCase.search(input);
   }
 }
 
@@ -173,10 +187,11 @@ export class QuestionResolver {
   constructor(
     private readonly loader: QuestionDataLoader,
     private readonly userUseCase: FindUserByIdUseCase,
+    private readonly findAnswerByIdsUseCase: FindAnswerByIdsUseCase,
   ) {}
 
-  @ResolveField(() => UserOutput, { name: 'createUser', nullable: true })
-  async createUser(@Parent() question: QuestionEntity) {
+  @ResolveField(() => UserOutput, { name: 'user', nullable: true })
+  async user(@Parent() question: QuestionEntity) {
     const userId = question.user;
     if (userId == null) {
       return null;
@@ -185,13 +200,23 @@ export class QuestionResolver {
     return user.result;
   }
 
-  @ResolveField(() => PostOutput, { name: 'post', nullable: true })
-  async post(@Parent() question: QuestionEntity) {
-    const postId = question.post;
-    if (postId == null) return null;
-    return {
-      businessEntity: await this.loader.batchBusiness.load(postId),
-    };
+  @ResolveField(() => BusinessEntity, { name: 'business', nullable: true })
+  async business(@Parent() question: QuestionEntity) {
+    const businessId = question.business;
+    if (businessId == null) return null;
+    const business = await this.loader.batchBusiness.load(businessId);
+    if (!business) return null;
+    return business;
+  }
+
+  @ResolveField(() => [AnswerEntity], { name: 'answers', nullable: true })
+  async answers(@Parent() question: QuestionEntity) {
+    const answerIds = question.answers;
+    const answers = await this.findAnswerByIdsUseCase.findAnswerByIds({
+      ids: answerIds,
+    });
+    if (!answers.results) return [];
+    return answers.results;
   }
 }
 

@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
-import { SearchReviewQuery } from '@/modules/review/query/search-review/search-review.query';
+import { SearchQuestionQuery } from '@/modules/q&a/query/search-question/search-question.query';
 
 import {
   SearchQuestionInput,
@@ -17,7 +17,7 @@ export class SearchQuestionUseCase {
   ): Promise<SearchQuestionOutput> {
     try {
       const { results, success, totalCount, totalPages }: SearchQuestionOutput =
-        await this.queryBus.execute(new SearchReviewQuery(searchInput));
+        await this.queryBus.execute(new SearchQuestionQuery(searchInput));
       return {
         success,
         results: results,

@@ -6,7 +6,7 @@ export class QuestionModel extends AggregateRoot {
   constructor(
     private readonly _id: string,
     private readonly content: string,
-    private readonly post: string,
+    private readonly business: string,
     private readonly user: string,
     private readonly answers?: string[],
     private readonly approved?: BooleanEnum,
@@ -22,8 +22,8 @@ export class QuestionModel extends AggregateRoot {
     return this.content;
   }
 
-  getPost(): string {
-    return this.post;
+  getBusiness(): string {
+    return this.business;
   }
 
   getUser(): string {

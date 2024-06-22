@@ -3,9 +3,9 @@ import { CreateAnswerFromQuestionUseCase } from '@/modules/q&a/use-case/create-a
 import { BulkDeleteQuestionUseCase } from './bulk-delete-question.use-case';
 import { CreateQuestionUseCase } from './create-question.use-case';
 import { DeleteQuestionUseCase } from './delete-question.use-case';
+import { FindQuestionByBusinessUseCase } from './find-question-by-business.use-case';
 import { FindQuestionByIdUseCase } from './find-question-by-id.use-case';
 import { FindQuestionByIdsUseCase } from './find-question-by-ids.use-case';
-import { FindQuestionByPostUseCase } from './find-question-by-post.use-case';
 import { SearchQuestionUseCase } from './search-question.use-case';
 import { UpdateQuestionUseCase } from './update-question.use-case';
 
@@ -16,7 +16,7 @@ export const QuestionUseCases = [
   BulkDeleteQuestionUseCase,
   FindQuestionByIdUseCase,
   FindQuestionByIdsUseCase,
-  FindQuestionByPostUseCase,
+  FindQuestionByBusinessUseCase,
   SearchQuestionUseCase,
 
   CreateAnswerFromQuestionUseCase,

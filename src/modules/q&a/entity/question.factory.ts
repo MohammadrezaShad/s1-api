@@ -15,7 +15,7 @@ export class QuestionEntityFactory
     return {
       _id: new ObjectId(model.getId()),
       content: model.getContent(),
-      post: model.getPost(),
+      business: model.getBusiness(),
       user: model.getUser(),
       answers: model.getAnswers(),
       approved: model.getApproved(),
@@ -24,11 +24,11 @@ export class QuestionEntityFactory
 
   createFromEntity(entity: QuestionEntity): QuestionModel | null {
     if (!entity) return null;
-    const { _id, content, post, user, answers, approved } = entity;
+    const { _id, content, business, user, answers, approved } = entity;
     return new QuestionModel(
       _id.toHexString(),
       content,
-      post,
+      business,
       user,
       answers,
       approved,

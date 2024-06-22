@@ -13,10 +13,10 @@ import {
   SearchQuestionInput,
   SearchQuestionOutput,
 } from './dto/search-question.dto';
-import { QuestionModel } from './model/question.model';
+import { UpdateQuestionInput } from './dto/update-question.dto';
 import { QuestionEntity, TQuestionEntity } from './entity/question.entity';
 import { QuestionEntityFactory } from './entity/question.factory';
-import { UpdateQuestionInput } from './dto/update-question.dto';
+import { QuestionModel } from './model/question.model';
 
 @Injectable()
 export class QuestionRepository {
@@ -29,7 +29,7 @@ export class QuestionRepository {
   async search({
     count: inputCount,
     page: inputPage,
-    post,
+    business,
     approved,
     user,
   }: SearchQuestionInput): Promise<SearchQuestionOutput> {
@@ -41,7 +41,7 @@ export class QuestionRepository {
       {
         $match: {
           ...(questionApproved && { approved: questionApproved }),
-          ...(post && { post }),
+          ...(business && { business }),
           ...(user && { createUser: user }),
         },
       },
@@ -87,8 +87,10 @@ export class QuestionRepository {
     return questionModel;
   }
 
-  async findManyQuestionByPost(post: string): Promise<QuestionModel[]> {
-    const questions = await this.questionModel.find({ post: post }).exec();
+  async findManyQuestionByBusiness(business: string): Promise<QuestionModel[]> {
+    const questions = await this.questionModel
+      .find({ business: business })
+      .exec();
     const questionModel: QuestionModel[] = [];
     questions.map(it => {
       questionModel.push(this.questionEntityFactory.createFromEntity(it));
@@ -123,9 +125,9 @@ export class QuestionRepository {
     return wereRemoved.acknowledged;
   }
 
-  async questionCountByPost(postId: string) {
+  async questionCountByBusiness(businessId: string) {
     const questionCount = await this.questionModel
-      .findOne({ post: postId, approved: BooleanEnum.TRUE })
+      .findOne({ business: businessId, approved: BooleanEnum.TRUE })
       .countDocuments()
       .exec();
     return questionCount;

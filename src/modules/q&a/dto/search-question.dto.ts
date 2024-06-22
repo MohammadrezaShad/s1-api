@@ -6,12 +6,13 @@ import {
 } from 'src/common/dtos/pagination.dto';
 
 import { BooleanEnum } from '@/common/enums/boolean.enum';
+
 import { QuestionEntity } from '../entity/question.entity';
 
 @InputType()
 export class SearchQuestionInput extends PaginationInput {
   @Field(() => String, { nullable: true })
-  post: string;
+  business: string;
 
   @Field(() => BooleanEnum, { nullable: true })
   @IsOptional()

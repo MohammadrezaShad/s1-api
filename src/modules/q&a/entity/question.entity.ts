@@ -15,7 +15,9 @@ import { BooleanEnum } from '@/common/enums/boolean.enum';
 import { CollectionName } from '@/common/enums/collection-name.enum';
 import { type Document } from '@/common/types/document.type';
 import { SchemaFactory } from '@/common/utils/schema-factory.util';
+import { BusinessEntity } from '@/modules/business/entity/business.entity';
 import { UserOutput } from '@/modules/user/dto/user.output';
+
 import { AnswerEntity } from '../answer/entity/answer.entity';
 
 @InputType('QuestionEntityInputType', { isAbstract: true })
@@ -30,10 +32,10 @@ export class QuestionEntity extends DefaultEntity {
   content: string;
 
   @Prop({ type: String, required: true })
-  @Field(() => PostOutput)
+  @Field(() => BusinessEntity)
   @IsString()
   @IsNotEmpty()
-  post: string;
+  business: string;
 
   @Prop({ type: String, ref: 'UserEntity' })
   @Field(() => UserOutput, { nullable: true })

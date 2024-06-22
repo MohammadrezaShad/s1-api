@@ -1,6 +1,7 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
+
 import { QuestionEntity } from '../entity/question.entity';
 
 @InputType()
@@ -10,9 +11,9 @@ export class FindQuestionInput {
 }
 
 @InputType()
-export class FindQuestionsByPostInput {
+export class FindQuestionsByBusinessInput {
   @Field(() => String)
-  post: string;
+  business: string;
 }
 
 @InputType()

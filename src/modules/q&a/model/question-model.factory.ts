@@ -3,9 +3,9 @@ import { ObjectId } from 'mongodb';
 
 import { ModelFactory } from '@/common/repositories/model.factory';
 
-import { QuestionModel } from './question.model';
-import { QuestionRepository } from '../question.repository';
 import { CreateQuestionInput } from '../dto/create-question.dto';
+import { QuestionRepository } from '../question.repository';
+import { QuestionModel } from './question.model';
 
 @Injectable()
 export class QuestionModelFactory implements ModelFactory<QuestionModel> {
@@ -13,13 +13,13 @@ export class QuestionModelFactory implements ModelFactory<QuestionModel> {
 
   async create({
     content,
-    post,
+    business,
     user,
   }: CreateQuestionInput): Promise<QuestionModel> {
     const review = new QuestionModel(
       new ObjectId().toHexString(),
       content,
-      post,
+      business,
       user,
     );
     await this.repository.createQuestion(review);

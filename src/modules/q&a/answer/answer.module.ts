@@ -2,6 +2,8 @@ import { Global, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { AnswerResolver } from '@/modules/q&a/answer/answer.resolver';
+
 import { AnswerRepository } from './answer.repository';
 import { AnswerCommandHandlers } from './command';
 import { AnswerEntity, AnswerEntitySchema } from './entity/answer.entity';
@@ -26,6 +28,7 @@ import { AnswerUseCases } from './use-case';
     AnswerEntityFactory,
     AnswerModelFactory,
     AnswerHelepr,
+    AnswerResolver,
   ],
   exports: [...AnswerUseCases],
 })
