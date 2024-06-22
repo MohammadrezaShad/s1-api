@@ -23,6 +23,9 @@ export class BulkDeleteQuestionUseCase {
         await this.helepr.validateReviewId(id);
       }
       await this.commandBus.execute(new BulkDeleteQuestionCommand(input));
+      for (const id of input.ids) {
+        await this.helepr.deleteAnswers(id);
+      }
       return { success: true };
     } catch (err) {
       throw new InternalServerErrorException(err);

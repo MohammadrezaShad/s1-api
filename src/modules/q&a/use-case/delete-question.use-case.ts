@@ -21,6 +21,7 @@ export class DeleteQuestionUseCase {
     try {
       await this.helepr.validateReviewId(input.id);
       await this.commandBus.execute(new DeleteQuestionCommand(input));
+      await this.helepr.deleteAnswers(input.id);
       return { success: true };
     } catch (err) {
       throw new InternalServerErrorException(err);

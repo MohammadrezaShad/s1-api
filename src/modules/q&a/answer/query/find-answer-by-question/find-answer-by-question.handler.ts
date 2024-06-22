@@ -2,17 +2,17 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { AnswerModel } from '../../model/answer.model';
 import { AnswerRepository } from '../../answer.repository';
-import { FindReviewByQuestionQuery } from './find-answer-by-question.query';
+import { FindAnswerByQuestionQuery } from './find-answer-by-question.query';
 
-@QueryHandler(FindReviewByQuestionQuery)
+@QueryHandler(FindAnswerByQuestionQuery)
 export class FindAnswerByQuestionHandler
-  implements IQueryHandler<FindReviewByQuestionQuery>
+  implements IQueryHandler<FindAnswerByQuestionQuery>
 {
   constructor(private readonly repository: AnswerRepository) {}
 
   async execute({
     question,
-  }: FindReviewByQuestionQuery): Promise<AnswerModel[]> {
+  }: FindAnswerByQuestionQuery): Promise<AnswerModel[]> {
     return this.repository.findManyAnswerByQuestion(question);
   }
 }

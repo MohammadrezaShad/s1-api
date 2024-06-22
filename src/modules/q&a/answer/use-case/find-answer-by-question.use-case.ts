@@ -1,14 +1,13 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
-import { FindReviewByPostQuery } from '@/modules/review/query/find-review-by-post/find-review-by-post.query';
-
 import {
   FindManyAnswerByQuestionInput,
   FindManyAnswerOutput,
 } from '../dto/find-answer.dto';
 import { AnswerEntityFactory } from '../entity/answer.factory';
 import { AnswerModel } from '../model/answer.model';
+import { FindAnswerByQuestionQuery } from '../query/find-answer-by-question/find-answer-by-question.query';
 
 @Injectable()
 export class FindAnswerByQuestionUseCase {
@@ -22,7 +21,7 @@ export class FindAnswerByQuestionUseCase {
   }: FindManyAnswerByQuestionInput): Promise<FindManyAnswerOutput> {
     try {
       const answers: AnswerModel[] = await this.queryBus.execute(
-        new FindReviewByPostQuery(question),
+        new FindAnswerByQuestionQuery(question),
       );
 
       const resultList = answers.map(model =>
