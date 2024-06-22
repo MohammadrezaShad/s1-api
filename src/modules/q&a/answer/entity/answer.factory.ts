@@ -16,7 +16,6 @@ export class AnswerEntityFactory
       _id: new ObjectId(review.getId()),
       content: review.getContent(),
       question: review.getQuestion(),
-      date: review.getDate(),
       user: review.getUser(),
       approved: review.getApproved(),
     };
@@ -24,12 +23,11 @@ export class AnswerEntityFactory
 
   createFromEntity(entity: AnswerEntity): AnswerModel | null {
     if (!entity) return null;
-    const { _id, content, question, date, user, approved } = entity;
+    const { _id, content, question, user, approved } = entity;
     return new AnswerModel(
       _id.toHexString(),
       content,
       question,
-      date,
       user,
       approved,
     );

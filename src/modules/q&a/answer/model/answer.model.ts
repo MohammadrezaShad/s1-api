@@ -7,7 +7,6 @@ export class AnswerModel extends AggregateRoot {
     private readonly _id: string,
     private readonly content: string,
     private readonly question: string,
-    private readonly date: string,
     private readonly user: string,
     private readonly approved?: BooleanEnum,
   ) {
@@ -28,10 +27,6 @@ export class AnswerModel extends AggregateRoot {
 
   getUser(): string {
     return this.user;
-  }
-
-  getDate(): string {
-    return this.date;
   }
 
   getApproved(): BooleanEnum {

@@ -8,6 +8,7 @@ import {
   Length,
 } from 'class-validator';
 
+import { IsCorrectDate } from '@/common/decorators/date-validation-decorator';
 import { Schema } from '@/common/decorators/schema.decorator';
 import { DefaultEntity } from '@/common/entities/default.entity';
 import { BooleanEnum } from '@/common/enums/boolean.enum';
@@ -16,7 +17,6 @@ import { type Document } from '@/common/types/document.type';
 import { SchemaFactory } from '@/common/utils/schema-factory.util';
 import { UserOutput } from '@/modules/user/dto/user.output';
 
-import { IsCorrectDate } from '@/common/decorators/date-validation-decorator';
 import { QuestionEntity } from '../../entity/question.entity';
 
 @InputType('AnswerEntityInputType', { isAbstract: true })
@@ -34,13 +34,6 @@ export class AnswerEntity extends DefaultEntity {
   @Field(() => QuestionEntity)
   @IsString()
   question: string;
-
-  @Prop({ type: Date })
-  @Field(() => String, { nullable: true })
-  @IsString({ message: 'date must be string' })
-  @IsCorrectDate({ message: 'date format is wrong' })
-  @IsOptional()
-  date?: string;
 
   @Prop({ type: String, ref: 'UserEntity' })
   @Field(() => UserOutput, { nullable: true })

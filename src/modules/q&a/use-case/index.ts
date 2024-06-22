@@ -1,3 +1,5 @@
+import { CreateAnswerFromQuestionUseCase } from '@/modules/q&a/use-case/create-answer.use-case';
+
 import { BulkDeleteQuestionUseCase } from './bulk-delete-question.use-case';
 import { CreateQuestionUseCase } from './create-question.use-case';
 import { DeleteQuestionUseCase } from './delete-question.use-case';
@@ -16,4 +18,6 @@ export const QuestionUseCases = [
   FindQuestionByIdsUseCase,
   FindQuestionByPostUseCase,
   SearchQuestionUseCase,
+
+  CreateAnswerFromQuestionUseCase,
 ];

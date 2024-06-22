@@ -1,6 +1,7 @@
 import { Field, InputType, ObjectType, PartialType } from '@nestjs/graphql';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
+
 import { CreateQuestionInput } from './create-question.dto';
 
 @InputType('UpdateQuestionInput')
@@ -11,7 +12,7 @@ export class UpdateQuestionInput extends PartialType(CreateQuestionInput) {
   @Field(() => String)
   approved?: boolean;
 
-  answers?: string;
+  answers?: string[];
 
   user?: string;
 }

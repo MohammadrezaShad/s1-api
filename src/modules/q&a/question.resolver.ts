@@ -10,37 +10,18 @@ import {
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
 import { PostOutput } from '@/common/dtos/post-output.dto';
 import { Permission } from '@/common/permissions/permission-type';
+import {
+  CreateAnswerInput,
+  CreateAnswerOutput,
+} from '@/modules/q&a/answer/dto/create-answer.dto';
+import { CreateAnswerUseCase } from '@/modules/q&a/answer/use-case/create-answer.use-case';
+import { CreateAnswerFromQuestionUseCase } from '@/modules/q&a/use-case/create-answer.use-case';
 
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { PanelGuard } from '../auth/guards/panel.guard';
 import { UserOutput } from '../user/dto/user.output';
 import { UserEntity } from '../user/entity/user.entity';
 import { FindUserByIdUseCase } from '../user/use-case/find-user-by-id.use-case';
-
-import { MutateQuestionResponse, QuestionQuery } from './dto/question.dto';
-import {
-  SearchQuestionInput,
-  SearchQuestionOutput,
-} from './dto/search-question.dto';
-import {
-  UpdateQuestionInput,
-  UpdateQuestionOutput,
-} from './dto/update-question.dto';
-import { BulkDeleteQuestionUseCase } from './use-case/bulk-delete-question.use-case';
-import { CreateQuestionUseCase } from './use-case/create-question.use-case';
-import { DeleteQuestionUseCase } from './use-case/delete-question.use-case';
-import { FindQuestionByIdUseCase } from './use-case/find-question-by-id.use-case';
-import { SearchQuestionUseCase } from './use-case/search-question.use-case';
-import { UpdateQuestionUseCase } from './use-case/update-question.use-case';
-import { FindQuestionByPostUseCase } from './use-case/find-question-by-post.use-case';
-import { FindQuestionByIdsUseCase } from './use-case/find-question-by-ids.use-case';
-import {
-  FindQuestionInput,
-  FindQuestionOutput,
-  FindQuestionsByPostInput,
-  FindQuestionsInput,
-  FindQuestionsOutput,
-} from './dto/find-question.dto';
 import {
   CreateQuestionInput,
   CreateQuestionOutput,
@@ -50,8 +31,32 @@ import {
   DeleteQuestionOutput,
   DeleteQuestionsInput,
 } from './dto/delete-question.dto';
+import {
+  FindQuestionInput,
+  FindQuestionOutput,
+  FindQuestionsByPostInput,
+  FindQuestionsInput,
+  FindQuestionsOutput,
+} from './dto/find-question.dto';
+import { MutateQuestionResponse, QuestionQuery } from './dto/question.dto';
+import {
+  SearchQuestionInput,
+  SearchQuestionOutput,
+} from './dto/search-question.dto';
+import {
+  UpdateQuestionInput,
+  UpdateQuestionOutput,
+} from './dto/update-question.dto';
 import { QuestionEntity } from './entity/question.entity';
 import QuestionDataLoader from './question.loader';
+import { BulkDeleteQuestionUseCase } from './use-case/bulk-delete-question.use-case';
+import { CreateQuestionUseCase } from './use-case/create-question.use-case';
+import { DeleteQuestionUseCase } from './use-case/delete-question.use-case';
+import { FindQuestionByIdUseCase } from './use-case/find-question-by-id.use-case';
+import { FindQuestionByIdsUseCase } from './use-case/find-question-by-ids.use-case';
+import { FindQuestionByPostUseCase } from './use-case/find-question-by-post.use-case';
+import { SearchQuestionUseCase } from './use-case/search-question.use-case';
+import { UpdateQuestionUseCase } from './use-case/update-question.use-case';
 
 @Resolver(() => QuestionQuery)
 export class QuestionQueryResolver {
@@ -100,6 +105,7 @@ export class QuestionQueryResolver {
 export class QuestionMutationResolver {
   constructor(
     private readonly createQuestionUseCase: CreateQuestionUseCase,
+    private readonly createAnswerFromQuestionUseCase: CreateAnswerFromQuestionUseCase,
     private readonly updateQuestionUseCase: UpdateQuestionUseCase,
     private readonly deleteQuestionUseCase: DeleteQuestionUseCase,
     private readonly bulkDeleteQuestionUseCase: BulkDeleteQuestionUseCase,
@@ -111,12 +117,24 @@ export class QuestionMutationResolver {
   }
 
   @ResolveField(() => CreateQuestionOutput)
-  @PanelGuard<MethodDecorator>(Permission.CREATE_QUESTION, Permission.CREATE)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER, Permission.CREATE)
   async createQuestion(
     @Args('input') input: CreateQuestionInput,
     @GetUser() user: UserEntity,
   ): Promise<CreateQuestionOutput> {
     return this.createQuestionUseCase.createQuestion({
+      ...input,
+      user: user ? user._id.toString() : null,
+    });
+  }
+
+  @ResolveField(() => CreateAnswerOutput)
+  @PanelGuard<MethodDecorator>(Permission.REGULAR_USER, Permission.CREATE)
+  async createAnswer(
+    @Args('input') input: CreateAnswerInput,
+    @GetUser() user: UserEntity,
+  ): Promise<CreateAnswerOutput> {
+    return this.createAnswerFromQuestionUseCase.createAnswer({
       ...input,
       user: user ? user._id.toString() : null,
     });
