@@ -101,6 +101,7 @@ export class QuestionRepository {
   async createQuestion(input: QuestionModel): Promise<void> {
     const newQuestion = new this.questionModel(input);
     newQuestion.user = input.getUser();
+    newQuestion.approved = BooleanEnum.TRUE; // Here approved most be removed
     await newQuestion.save();
   }
 
@@ -109,7 +110,11 @@ export class QuestionRepository {
     ...restOfArgs
   }: UpdateQuestionInput): Promise<QuestionEntity | null> {
     const review = await this.questionModel
-      .findByIdAndUpdate(id, { ...restOfArgs }, { new: true })
+      .findByIdAndUpdate(
+        id,
+        { ...restOfArgs, approved: BooleanEnum.TRUE }, // Here approved most be removed
+        { new: true },
+      )
       .exec();
     return review;
   }

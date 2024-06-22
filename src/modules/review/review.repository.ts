@@ -115,6 +115,7 @@ export class ReviewRepository {
   async createReview(input: ReviewModel): Promise<void> {
     const newReview = new this.reviewModel(input);
     newReview.createUser = input.getCreateUser();
+    newReview.approved = BooleanEnum.TRUE; // Here approved most be removed
     await newReview.save();
   }
 
@@ -136,7 +137,11 @@ export class ReviewRepository {
     ...restOfArgs
   }: UpdateReviewInput): Promise<ReviewEntity | null> {
     const review = await this.reviewModel
-      .findByIdAndUpdate(id, { ...restOfArgs }, { new: true })
+      .findByIdAndUpdate(
+        id,
+        { ...restOfArgs, approved: BooleanEnum.TRUE },
+        { new: true },
+      ) // Here approved most be removed
       .exec();
     return review;
   }
@@ -149,7 +154,7 @@ export class ReviewRepository {
     const review = await this.reviewModel
       .findOneAndUpdate(
         { _id: id, createUser: user },
-        { content, approved: BooleanEnum.FALSE },
+        { content, approved: BooleanEnum.TRUE }, // Here approved most be false
         { new: true },
       )
       .exec();

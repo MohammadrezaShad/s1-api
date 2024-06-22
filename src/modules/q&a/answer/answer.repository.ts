@@ -96,6 +96,7 @@ export class AnswerRepository {
   async createAnswer(input: AnswerModel): Promise<void> {
     const newReview = new this.answerModel(input);
     newReview.user = input.getUser();
+    newReview.approved = BooleanEnum.TRUE; // Here approved most be removed
     await newReview.save();
   }
 
@@ -104,7 +105,11 @@ export class AnswerRepository {
     ...restOfArgs
   }: UpdateAnswerInput): Promise<AnswerEntity | null> {
     const review = await this.answerModel
-      .findByIdAndUpdate(id, { ...restOfArgs }, { new: true })
+      .findByIdAndUpdate(
+        id,
+        { ...restOfArgs, approved: BooleanEnum.TRUE }, // Here approved most be removed
+        { new: true },
+      )
       .exec();
     return review;
   }
