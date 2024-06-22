@@ -1,5 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
+import { AnswerEntity } from '@/modules/q&a/answer/entity/answer.entity';
+
 import { AnswerRepository } from '../../answer.repository';
 import { DeleteAnswerCommand } from './delete-answer.command';
 
@@ -9,8 +11,9 @@ export class DeleteAnswerHandler
 {
   constructor(private readonly repository: AnswerRepository) {}
 
-  async execute(command: DeleteAnswerCommand) {
+  async execute(command: DeleteAnswerCommand): Promise<AnswerEntity | null> {
     const { deleteAnswerInput } = command;
-    await this.repository.delete(deleteAnswerInput.id);
+    const answer = await this.repository.delete(deleteAnswerInput.id);
+    return answer;
   }
 }

@@ -10,10 +10,10 @@ import {
 import { BooleanEnum } from '@/common/enums/boolean.enum';
 
 import { SearchAnswerInput, SearchAnswerOutput } from './dto/search-answer.dto';
+import { UpdateAnswerInput } from './dto/update-answer.dto';
+import { AnswerEntity, TAnswerEntity } from './entity/answer.entity';
 import { AnswerEntityFactory } from './entity/answer.factory';
 import { AnswerModel } from './model/answer.model';
-import { AnswerEntity, TAnswerEntity } from './entity/answer.entity';
-import { UpdateAnswerInput } from './dto/update-answer.dto';
 
 @Injectable()
 export class AnswerRepository {
@@ -109,8 +109,9 @@ export class AnswerRepository {
     return review;
   }
 
-  async delete(id: string): Promise<void> {
-    await this.answerModel.findByIdAndDelete(id).exec();
+  async delete(id: string): Promise<AnswerEntity | null> {
+    const answer = await this.answerModel.findByIdAndDelete(id).exec();
+    return answer as unknown as AnswerEntity;
   }
 
   async bulkDelete(ids: string[]): Promise<boolean> {

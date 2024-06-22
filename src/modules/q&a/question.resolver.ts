@@ -15,10 +15,15 @@ import {
   CreateAnswerOutput,
 } from '@/modules/q&a/answer/dto/create-answer.dto';
 import {
+  DeleteAnswerInput,
+  DeleteAnswerOutput,
+} from '@/modules/q&a/answer/dto/delete-answer.dto';
+import {
   SearchAnswerInput,
   SearchAnswerOutput,
 } from '@/modules/q&a/answer/dto/search-answer.dto';
 import { AnswerEntity } from '@/modules/q&a/answer/entity/answer.entity';
+import { DeleteAnswerUseCase } from '@/modules/q&a/answer/use-case/delete-answer.use-case';
 import { FindAnswerByIdsUseCase } from '@/modules/q&a/answer/use-case/find-answer-by-ids.use-case';
 import { SearchAnswerUseCase } from '@/modules/q&a/answer/use-case/search-answer.use-case';
 import { CreateAnswerFromQuestionUseCase } from '@/modules/q&a/use-case/create-answer.use-case';
@@ -122,6 +127,7 @@ export class QuestionMutationResolver {
     private readonly createAnswerFromQuestionUseCase: CreateAnswerFromQuestionUseCase,
     private readonly updateQuestionUseCase: UpdateQuestionUseCase,
     private readonly deleteQuestionUseCase: DeleteQuestionUseCase,
+    private readonly deleteAnswerUseCase: DeleteAnswerUseCase,
     private readonly bulkDeleteQuestionUseCase: BulkDeleteQuestionUseCase,
   ) {}
 
@@ -168,6 +174,14 @@ export class QuestionMutationResolver {
     @Args('input') input: DeleteQuestionInput,
   ): Promise<DeleteQuestionOutput> {
     return this.deleteQuestionUseCase.deleteQuestion(input);
+  }
+
+  @ResolveField(() => DeleteAnswerOutput)
+  @PanelGuard<MethodDecorator>(Permission.DELETE_QUESTION, Permission.DELETE)
+  async deleteAnswer(
+    @Args('input') input: DeleteAnswerInput,
+  ): Promise<DeleteAnswerOutput> {
+    return this.deleteAnswerUseCase.deleteAnswer(input);
   }
 
   @ResolveField(() => DeleteQuestionOutput)
