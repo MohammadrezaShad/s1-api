@@ -26,6 +26,7 @@ export class DeleteBusinessUseCase {
       await this.businessHelepr.deleteBookmarks(input.id);
       await this.businessHelepr.deleteFavorites(input.id);
       await this.businessHelepr.deleteReview(input.id);
+      await this.businessHelepr.deleteQuestions(input.id);
 
       return { success: true };
     } catch (err) {

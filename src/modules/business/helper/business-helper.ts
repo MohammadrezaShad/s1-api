@@ -5,6 +5,8 @@ import { DeleteBookmarkUseCase } from '@/modules/bookmark/use-case/delete-bookma
 import { FindBookmarkByPostUseCase } from '@/modules/bookmark/use-case/find-bookmark-by-post.use-case';
 import { DeleteFavoriteUseCase } from '@/modules/favorite/use-case/delete-favorite.use-case';
 import { FindFavoriteByPostUseCase } from '@/modules/favorite/use-case/find-favorite-by-post.use-case';
+import { BulkDeleteQuestionUseCase } from '@/modules/q&a/use-case/bulk-delete-question.use-case';
+import { FindQuestionByBusinessUseCase } from '@/modules/q&a/use-case/find-question-by-business.use-case';
 import { DeleteReviewUseCase } from '@/modules/review/use-case/delete-review.use-case';
 import { FindReviewByPostUseCase } from '@/modules/review/use-case/find-review-by-post.use-case';
 import { FindTaxonomyByIdUseCase } from '@/modules/taxonomy/use-case/find-taxonomy.use-case';
@@ -32,6 +34,8 @@ export class BusinessHelepr {
     private readonly findReviewByPostUseCase: FindReviewByPostUseCase,
     private readonly deleteReviewUseCase: DeleteReviewUseCase,
     private readonly findBusinessByUserUseCase: FindBusinessByUserUseCase,
+    private readonly findQuestionByBusinessUseCase: FindQuestionByBusinessUseCase,
+    private readonly bulkDeleteQuestionUseCase: BulkDeleteQuestionUseCase,
   ) {}
 
   async validateBusinessId(id: string) {
@@ -82,6 +86,20 @@ export class BusinessHelepr {
         id: rv._id.toString(),
       });
     }
+  }
+
+  async deleteQuestions(business: string) {
+    const questions =
+      await this.findQuestionByBusinessUseCase.findQuestionsByBusiness({
+        business: business,
+      });
+    const questionIds =
+      questions.results?.map(({ _id }) => _id.toString()) || [];
+
+    if (questionIds && questionIds.length)
+      await this.bulkDeleteQuestionUseCase.bulkDeleteQuestion({
+        ids: questionIds,
+      });
   }
 
   async validateNumberOdUserBusiness(userId: string) {

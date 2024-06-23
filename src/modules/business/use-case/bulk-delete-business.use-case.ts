@@ -28,6 +28,7 @@ export class BulkDeleteBusinessUseCase {
         await this.businessHelepr.deleteBookmarks(id);
         await this.businessHelepr.deleteFavorites(id);
         await this.businessHelepr.deleteReview(id);
+        await this.businessHelepr.deleteQuestions(id);
       }
       return { success: true };
     } catch (err) {
