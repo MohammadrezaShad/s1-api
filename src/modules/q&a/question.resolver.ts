@@ -17,6 +17,7 @@ import {
 import {
   DeleteAnswerInput,
   DeleteAnswerOutput,
+  DeleteManyAnswerInput,
 } from '@/modules/q&a/answer/dto/delete-answer.dto';
 import {
   SearchAnswerInput,
@@ -68,6 +69,12 @@ import { FindQuestionByIdUseCase } from './use-case/find-question-by-id.use-case
 import { FindQuestionByIdsUseCase } from './use-case/find-question-by-ids.use-case';
 import { SearchQuestionUseCase } from './use-case/search-question.use-case';
 import { UpdateQuestionUseCase } from './use-case/update-question.use-case';
+import {
+  UpdateAnswerInput,
+  UpdateAnswerOutput,
+} from './answer/dto/update-answer.dto';
+import { UpdateAnswerUseCase } from './answer/use-case/update-answer.use-case';
+import { BulkDeleteAnswerUseCase } from './answer/use-case/bulk-delete-answer.use-case';
 
 @Resolver(() => QuestionQuery)
 export class QuestionQueryResolver {
@@ -126,9 +133,11 @@ export class QuestionMutationResolver {
     private readonly createQuestionUseCase: CreateQuestionUseCase,
     private readonly createAnswerFromQuestionUseCase: CreateAnswerFromQuestionUseCase,
     private readonly updateQuestionUseCase: UpdateQuestionUseCase,
+    private readonly updateAnswerUseCase: UpdateAnswerUseCase,
     private readonly deleteQuestionUseCase: DeleteQuestionUseCase,
     private readonly deleteAnswerUseCase: DeleteAnswerUseCase,
     private readonly bulkDeleteQuestionUseCase: BulkDeleteQuestionUseCase,
+    private readonly bulkDeleteAnswerUseCase: BulkDeleteAnswerUseCase,
   ) {}
 
   @Mutation(() => MutateQuestionResponse)
@@ -168,6 +177,14 @@ export class QuestionMutationResolver {
     return this.updateQuestionUseCase.updateQuestion(input);
   }
 
+  @ResolveField(() => UpdateAnswerOutput)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE_QUESTION, Permission.UPDATE)
+  async updateAnswer(
+    @Args('input') input: UpdateAnswerInput,
+  ): Promise<UpdateAnswerOutput> {
+    return this.updateAnswerUseCase.updateAnswer(input);
+  }
+
   @ResolveField(() => DeleteQuestionOutput)
   @PanelGuard<MethodDecorator>(Permission.DELETE_QUESTION, Permission.DELETE)
   async deleteQuestion(
@@ -193,6 +210,17 @@ export class QuestionMutationResolver {
     @Args('input') input: DeleteQuestionsInput,
   ): Promise<DeleteQuestionOutput> {
     return this.bulkDeleteQuestionUseCase.bulkDeleteQuestion(input);
+  }
+
+  @ResolveField(() => DeleteAnswerOutput)
+  @PanelGuard<MethodDecorator>(
+    Permission.BULK_DELETE_QUESTION,
+    Permission.BULK_DELETE,
+  )
+  async bulkDeleteAnswer(
+    @Args('input') input: DeleteManyAnswerInput,
+  ): Promise<DeleteAnswerOutput> {
+    return this.bulkDeleteAnswerUseCase.bulkDeleteAnswer(input);
   }
 }
 

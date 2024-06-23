@@ -1,18 +1,19 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
+import { AnswerHelepr } from '../helper/answer-helper';
+
 import {
   DeleteManyAnswerInput,
   DeleteAnswerOutput,
 } from '../dto/delete-answer.dto';
 import { BulkDeleteAnswerCommand } from '../command/bulk-delete-answer/bulk-delete-answer.command';
-import { AnswerHelepr } from '../helper/answer-helper';
 
 @Injectable()
 export class BulkDeleteAnswerUseCase {
   constructor(
     private readonly commandBus: CommandBus,
-    // private readonly answerHelepr: AnswerHelepr,
+    // private readonly helepr: AnswerHelepr,
   ) {}
 
   async bulkDeleteAnswer(
