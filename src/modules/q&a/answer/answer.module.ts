@@ -1,4 +1,4 @@
-import { Global, Module, forwardRef } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -12,7 +12,6 @@ import { AnswerHelepr } from './helper/answer-helper';
 import { AnswerModelFactory } from './model/answer-model.factory';
 import { AnswerQueryHandlers } from './query';
 import { AnswerUseCases } from './use-case';
-import { QuestionModule } from '../question.module';
 
 @Module({
   imports: [
@@ -20,8 +19,6 @@ import { QuestionModule } from '../question.module';
     MongooseModule.forFeature([
       { name: AnswerEntity.name, schema: AnswerEntitySchema },
     ]),
-
-    // forwardRef(() => QuestionModule),
   ],
   providers: [
     ...AnswerCommandHandlers,

@@ -220,7 +220,13 @@ export class QuestionMutationResolver {
   async bulkDeleteAnswer(
     @Args('input') input: DeleteManyAnswerInput,
   ): Promise<DeleteAnswerOutput> {
-    return this.bulkDeleteAnswerUseCase.bulkDeleteAnswer(input);
+    // return this.bulkDeleteAnswerUseCase.bulkDeleteAnswer(input);
+    for (const it of input.ids) {
+      this.deleteAnswerUseCase.deleteAnswer({ id: it });
+    }
+    return {
+      success: true,
+    };
   }
 }
 

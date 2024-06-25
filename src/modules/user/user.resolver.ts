@@ -121,7 +121,7 @@ export class UserMutationResolver {
   }
 
   @ResolveField(() => CreateUserOutput)
-  @PanelGuard<MethodDecorator>(Permission.CREATE_USER, Permission.CREATE)
+  // @PanelGuard<MethodDecorator>(Permission.CREATE_USER, Permission.CREATE)
   async createUser(
     @Args('input') input: CreateUserInput,
   ): Promise<CreateUserOutput> {

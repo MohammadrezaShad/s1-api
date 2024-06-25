@@ -49,7 +49,7 @@ export class UserEntity extends DefaultEntity {
   })
   @IsOptional()
   @IsString()
-  @IsPhoneNumber()
+  // @IsPhoneNumber()
   phone?: string;
 
   @Field(() => [RoleEntity], { nullable: true })
