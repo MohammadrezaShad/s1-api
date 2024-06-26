@@ -69,7 +69,8 @@ export class AuthQueryResolver {
 
   @ResolveField(() => Boolean)
   async sendMail() {
-    return this.emailService.sendEmail('m.shadmobaraki@gmail.com', '123');
+    // return this.emailService.sendEmail('m.shadmobaraki@gmail.com', '123');
+    return this.emailService.sendEmail('mostafaamorovvati@gmail.com', '123');
   }
 
   @ResolveField(() => RoleQuery)

@@ -157,7 +157,6 @@ export class UserRepository {
     const userRole = await this.roleRepository.findByName('REGULAR_USER');
     const user = new this.userModel(this.userEntityFactory.create(userInput));
     user.roles = [userRole.getId()];
-    user.isVerified = true; // must be removed
     await user.save();
   }
 
@@ -167,7 +166,6 @@ export class UserRepository {
       _id: new ObjectId(),
       phone: phone,
       roles: [userRole.getId()],
-      isVerified: true, // must be removed
     });
     await user.save();
     return this.userEntityFactory.createFromEntity(user);

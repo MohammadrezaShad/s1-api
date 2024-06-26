@@ -9,13 +9,14 @@ export class MailService {
     try {
       this.mailerService.sendMail({
         to: email,
-        from: 'noreply@egybi.com',
+        // from: 'noreply@egybi.com',
+        from: 'darhamvarhamm@gmail.com',
         subject: 'اگیبی',
         text: `کد تایید شما : ${code}`,
       });
       return true;
     } catch (e) {
-      console.log(e);
+      console.log({ error: e });
       throw new InternalServerErrorException(e);
     }
   }
