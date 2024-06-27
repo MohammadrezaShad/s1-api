@@ -95,7 +95,11 @@ export class TaxonomyMutationResolver {
   }
 
   @ResolveField(() => CreateTaxonomyOutput)
-  @PanelGuard<MethodDecorator>(Permission.CREATE_TAXONOMY, Permission.CREATE)
+  @PanelGuard<MethodDecorator>(
+    Permission.REGULAR_USER,
+    Permission.CREATE_TAXONOMY,
+    Permission.CREATE,
+  )
   async createTaxonomy(
     @Args('input') input: CreateTaxonomyInput,
   ): Promise<CreateTaxonomyOutput> {
@@ -103,7 +107,11 @@ export class TaxonomyMutationResolver {
   }
 
   @ResolveField(() => DeleteTaxonomyOutput)
-  @PanelGuard<MethodDecorator>(Permission.DELETE_TAXONOMY, Permission.DELETE)
+  @PanelGuard<MethodDecorator>(
+    Permission.REGULAR_USER,
+    Permission.DELETE_TAXONOMY,
+    Permission.DELETE,
+  )
   async deleteTaxonomy(
     @Args('input') input: DeleteTaxonomyInput,
   ): Promise<CreateTaxonomyOutput> {
@@ -111,7 +119,11 @@ export class TaxonomyMutationResolver {
   }
 
   @ResolveField(() => UpdateTaxonomyOutput)
-  @PanelGuard<MethodDecorator>(Permission.UPDATE_TAXONOMY, Permission.UPDATE)
+  @PanelGuard<MethodDecorator>(
+    Permission.REGULAR_USER,
+    Permission.UPDATE_TAXONOMY,
+    Permission.UPDATE,
+  )
   async updateTaxonomy(
     @Args('input') input: UpdateTaxonomyInput,
   ): Promise<CreateTaxonomyOutput> {

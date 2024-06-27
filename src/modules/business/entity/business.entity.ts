@@ -45,7 +45,7 @@ export class BusinessEntity extends DefaultEntity {
   @Prop({ type: String, nullable: true })
   @IsOptional()
   @IsString()
-  @IsPhoneNumber('IR')
+  // @IsPhoneNumber('IR')
   phone?: string;
 
   @Field(() => String, { nullable: true })
