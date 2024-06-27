@@ -8,12 +8,15 @@ import {
   CreateTaxonomyOutput,
 } from '@/modules/taxonomy/dto/create-taxonomy.dto';
 import { TaxonomyHelper } from '@/modules/taxonomy/helper/taxonomy.helper';
+import { Taxonomy } from '../model/taxonomy.model';
+import { TaxonomyEntityFactory } from '../entity/taxonomy.factory';
 
 @Injectable()
 export class CreateTaxonomyUseCase {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly taxonomyHelper: TaxonomyHelper,
+    private readonly taxonomyFactory: TaxonomyEntityFactory,
   ) {}
 
   async createTaxonomy(
@@ -25,8 +28,13 @@ export class CreateTaxonomyUseCase {
         parent: input.parent,
       });
 
-      await this.commandBus.execute(new CreateTaxonomyCommand(input));
-      return { success: true };
+      const taxonomy: Taxonomy = await this.commandBus.execute(
+        new CreateTaxonomyCommand(input),
+      );
+      return {
+        success: true,
+        taxonomy: this.taxonomyFactory.create(taxonomy),
+      };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

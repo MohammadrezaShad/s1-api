@@ -3,7 +3,6 @@ import { ObjectId } from 'mongodb';
 
 import { ModelFactory } from '@/common/repositories/model.factory';
 import { CreateTaxonomyInput } from '@/modules/taxonomy/dto/create-taxonomy.dto';
-import { TaxonomyEntity } from '@/modules/taxonomy/entity/taxonomy.entity';
 import { Taxonomy } from '@/modules/taxonomy/model/taxonomy.model';
 import { TaxonomyRepository } from '@/modules/taxonomy/taxonomy.repository';
 

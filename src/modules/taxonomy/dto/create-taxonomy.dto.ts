@@ -22,4 +22,7 @@ export class CreateTaxonomyInput extends PickType(TaxonomyEntity, [
 }
 
 @ObjectType()
-export class CreateTaxonomyOutput extends CoreOutput {}
+export class CreateTaxonomyOutput extends CoreOutput {
+  @Field(() => TaxonomyEntity, { nullable: true })
+  taxonomy?: TaxonomyEntity;
+}
