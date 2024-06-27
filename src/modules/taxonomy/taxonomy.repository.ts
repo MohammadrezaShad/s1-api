@@ -31,11 +31,12 @@ export class TaxonomyRepository {
     await taxonomy.save();
   }
 
-  public async update(taxonomyInput: Taxonomy): Promise<void> {
+  public async update(taxonomyInput: Taxonomy): Promise<Taxonomy | null> {
     const entity = this.taxonomyFactory.create(taxonomyInput);
     await this.taxonomyModel
       .findOneAndReplace({ _id: taxonomyInput.getId() }, entity)
       .exec();
+    return entity ? this.taxonomyFactory.createFromEntity(entity) : null;
   }
 
   public async delete(id: string): Promise<void> {

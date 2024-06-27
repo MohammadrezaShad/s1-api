@@ -8,12 +8,15 @@ import {
   UpdateTaxonomyOutput,
 } from '@/modules/taxonomy/dto/update-taxonomy.dto';
 import { TaxonomyHelper } from '@/modules/taxonomy/helper/taxonomy.helper';
+import { Taxonomy } from '../model/taxonomy.model';
+import { TaxonomyEntityFactory } from '../entity/taxonomy.factory';
 
 @Injectable()
 export class UpdateTaxonomyUseCase {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly taxonomyHelper: TaxonomyHelper,
+    private readonly taxonomyFactory: TaxonomyEntityFactory,
   ) {}
 
   async updateTaxonomy(
@@ -25,8 +28,13 @@ export class UpdateTaxonomyUseCase {
         slug: input.slug,
         parent: input.parent,
       });
-      await this.commandBus.execute(new UpdateTaxonomyCommand(input));
-      return { success: true };
+      const taxonomy: Taxonomy = await this.commandBus.execute(
+        new UpdateTaxonomyCommand(input),
+      );
+      return {
+        success: true,
+        taxonomy: this.taxonomyFactory.create(taxonomy),
+      };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

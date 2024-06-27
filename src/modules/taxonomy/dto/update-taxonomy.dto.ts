@@ -30,4 +30,7 @@ export class UpdateTaxonomyInput extends PartialType(
 }
 
 @ObjectType()
-export class UpdateTaxonomyOutput extends CoreOutput {}
+export class UpdateTaxonomyOutput extends CoreOutput {
+  @Field(() => TaxonomyEntity, { nullable: true })
+  taxonomy?: TaxonomyEntity;
+}
