@@ -154,18 +154,20 @@ export class UserRepository {
   }
 
   public async create(userInput: UserModel): Promise<void> {
-    const userRole = await this.roleRepository.findByName('REGULAR_USER');
+    const userRole = await this.roleRepository.findByName('CEO');
     const user = new this.userModel(this.userEntityFactory.create(userInput));
     user.roles = [userRole.getId()];
+    user.isVerified = true;
     await user.save();
   }
 
   public async createWithPhone(phone: string): Promise<UserModel> {
-    const userRole = await this.roleRepository.findByName('REGULAR_USER');
+    const userRole = await this.roleRepository.findByName('CEO');
     const user = new this.userModel({
       _id: new ObjectId(),
       phone: phone,
       roles: [userRole.getId()],
+      isVerified: true,
     });
     await user.save();
     return this.userEntityFactory.createFromEntity(user);
@@ -176,7 +178,7 @@ export class UserRepository {
     displayName: string,
     googleId: string,
   ): Promise<UserModel> {
-    const userRole = await this.roleRepository.findByName('REGULAR_USER');
+    const userRole = await this.roleRepository.findByName('CEO');
     const user = new this.userModel({
       _id: new ObjectId(),
       email: email,
@@ -194,7 +196,11 @@ export class UserRepository {
     ...restOfArgs
   }: UpdateUserInput): Promise<void> {
     await this.userModel
-      .findByIdAndUpdate(userId, { ...restOfArgs }, { new: true })
+      .findByIdAndUpdate(
+        userId,
+        { ...restOfArgs, isVerified: true },
+        { new: true },
+      )
       .exec();
   }
 
