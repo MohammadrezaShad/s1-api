@@ -32,6 +32,10 @@ export class CreateUserInput extends PickType(UserEntity, [
   @IsObjectId({ each: true })
   @IsOptional()
   roles?: string[];
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  avatar?: string | null;
 }
 
 @ObjectType()

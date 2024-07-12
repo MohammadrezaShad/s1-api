@@ -13,6 +13,7 @@ import { GetVotesDetailUseCase } from './get-votes-detail.use-case';
 import { RemoveReviewUseCase } from './remove-review.use-case';
 import { SearchReviewUseCase } from './search-review.use-case';
 import { UpdateReviewUseCase } from './update-review.use-case';
+import { FindReviewByUserUseCase } from './find-review-by-user.use-case';
 
 export const ReviewUseCases = [
   CreateReviewUseCase,
@@ -25,6 +26,7 @@ export const ReviewUseCases = [
   FindReviewByIdUseCase,
   FindReviewByIdsUseCase,
   FindReviewByPostUseCase,
+  FindReviewByUserUseCase,
   SearchReviewUseCase,
   GetVotesDetailUseCase,
   GetPostScoreUseCase,

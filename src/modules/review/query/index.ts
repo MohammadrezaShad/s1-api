@@ -6,11 +6,13 @@ import { FindReviewByIdsHandler } from './find-review-by-ids/find-review-by-ids.
 import { GetPostScoreHandler } from './get-post-score/get-post-score.handler';
 import { GetVotesDetailHandler } from './get-votes-detail/get-votes-detail.handler';
 import { SearchReviewHanler } from './search-review/search-review.handler';
+import { FindReviewByUserHandler } from './find-review-by-user/find-review-by-user.handler';
 
 export const ReviewQueryHandlers = [
   FindReviewByIdHandler,
   FindReviewByIdsHandler,
   FindReviewByPostHandler,
+  FindReviewByUserHandler,
   SearchReviewHanler,
   GetVotesDetailHandler,
   GetPostScoreHandler,

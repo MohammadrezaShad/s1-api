@@ -19,6 +19,7 @@ import {
 } from '@/modules/favorite/entity/favorite.entity';
 import { FavoriteEntityFactory } from '@/modules/favorite/entity/favorite.factory';
 import { FavoriteModel } from '@/modules/favorite/model/favorite.model';
+import { CollectionName } from '@/common/enums/collection-name.enum';
 
 @Injectable()
 export class FavoriteRepository {
@@ -146,8 +147,11 @@ export class FavoriteRepository {
     return repeatedFavorite.length ? true : false;
   }
 
-  async countByPost(postId: string) {
-    return this.favModel.find({ post: postId }).countDocuments().exec();
+  async countByPost(postId: string, type: CollectionName) {
+    return this.favModel
+      .find({ $and: [{ post: postId }, { type: type }] })
+      .countDocuments()
+      .exec();
   }
 
   async getFavoritesByUser(user: string): Promise<FavoriteModel[] | null> {

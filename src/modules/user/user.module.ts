@@ -12,11 +12,14 @@ import { UseCases } from '@/modules/user/use-case';
 import UserDataLoader from '@/modules/user/user.loader';
 import { UserRepository } from '@/modules/user/user.repository';
 import { UserResolvers } from '@/modules/user/user.resolver';
+import { ImageModule } from '../image/image.module';
+import ImageLoader from '../image/image.loader';
 
 @Module({
   imports: [
     CqrsModule,
     MongooseModule.forFeature([{ name: UserEntity.name, schema: UserSchema }]),
+    ImageModule,
   ],
   providers: [
     ...CommandHandlers,
@@ -28,6 +31,7 @@ import { UserResolvers } from '@/modules/user/user.resolver';
     UserEntityFactory,
     UserModelFactory,
     UserDataLoader,
+    ImageLoader,
   ],
   exports: [...UseCases],
 })

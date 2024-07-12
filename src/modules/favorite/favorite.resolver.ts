@@ -57,6 +57,7 @@ import { PanelGuard } from '../auth/guards/panel.guard';
 import { UserOutput } from '../user/dto/user.output';
 import { FindUserByIdUseCase } from '../user/use-case/find-user-by-id.use-case';
 import { FavoriteLoader } from './favorite.loader';
+import { ReviewEntity } from '../review/entity/review.entity';
 
 @Resolver(() => FavoriteResponse)
 export class FavoriteQueryResolver {
@@ -89,7 +90,8 @@ export class FavoriteQueryResolver {
   async searchFavorite(
     @Args('input') input: SearchFavoriteInput,
   ): Promise<SearchFavoriteOutput> {
-    return this.searchFavoriteUseCase.search(input);
+    const results = await this.searchFavoriteUseCase.search(input);
+    return results;
   }
 }
 
@@ -185,6 +187,11 @@ export class FavoriteResolver {
       case CollectionName.BUSINESS: {
         return {
           businessEntity: await this.loader.batchBusiness.load(postId),
+        };
+      }
+      case CollectionName.REVIEW: {
+        return {
+          reviewEntity: await this.loader.batchReview.load(postId),
         };
       }
     }

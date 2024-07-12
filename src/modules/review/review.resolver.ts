@@ -6,6 +6,8 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import ImageLoader from '../image/image.loader';
+import { UseGuards } from '@nestjs/common';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
 import { PostOutput } from '@/common/dtos/post-output.dto';
@@ -57,6 +59,11 @@ import { SearchReviewUseCase } from './use-case/search-review.use-case';
 import { UpdateReviewUseCase } from './use-case/update-review.use-case';
 import { GetVotesDetailUseCase } from './use-case/get-votes-detail.use-case';
 import { GetVotesDetailInput, VotesDetail } from './dto/votes-detail.dto';
+import { ImageEntity } from '../image/entity/image.entity';
+import { FavoriteCountByPostUseCase } from '../favorite/use-case/favorite-count-by-post.use-case';
+import { CheckRepeatedFavoriteByUserUseCase } from '../favorite/use-case/check-repeated-favorite-by-user.use-case';
+import { CollectionName } from '@/common/enums/collection-name.enum';
+import { GqlOptionalAuthGuard } from '../auth/guards/gql-optional-auth.guard';
 
 const REVIEW_LIMIT = 100;
 const REVIEW_INDEX = 1;
@@ -214,6 +221,9 @@ export class ReviewResolver {
     private readonly loader: ReviewDataLoader,
     private readonly searchReviewUseCase: SearchReviewUseCase,
     private readonly userUseCase: FindUserByIdUseCase,
+    private readonly imageLoader: ImageLoader,
+    private readonly favoriteCountByPostUseCase: FavoriteCountByPostUseCase,
+    private readonly checkRepeatedFavoriteByUserUseCase: CheckRepeatedFavoriteByUserUseCase,
   ) {}
   @ResolveField(() => ReviewEntity, { name: 'parent', nullable: true })
   async result(@Parent() review: ReviewEntity) {
@@ -256,6 +266,42 @@ export class ReviewResolver {
         };
       }
     }
+  }
+
+  @ResolveField(() => ImageEntity, { name: 'image', nullable: true })
+  async image(@Parent() review: ReviewEntity) {
+    const imageId = review.image;
+    if (!imageId) return null;
+    return this.imageLoader.batchImage.load(imageId);
+  }
+
+  @ResolveField(() => Number, {
+    name: 'favoriteCount',
+    nullable: true,
+  })
+  async favoriteCount(@Parent() review: ReviewEntity) {
+    const id = review._id.toString();
+    return this.favoriteCountByPostUseCase.favoriteCountByPost(
+      id,
+      CollectionName.REVIEW,
+    );
+  }
+
+  @ResolveField(() => Boolean, {
+    name: 'isUserFavorite',
+    nullable: true,
+  })
+  @UseGuards(GqlOptionalAuthGuard)
+  async isUserFavorite(
+    @Parent() business: ReviewEntity,
+    @GetUser() user: UserEntity,
+  ) {
+    const id = business._id.toString();
+    return this.checkRepeatedFavoriteByUserUseCase.checkRepeatedFavoriteByUser({
+      post: id,
+      user: user ? user._id.toString() : null,
+      type: CollectionName.REVIEW,
+    });
   }
 }
 

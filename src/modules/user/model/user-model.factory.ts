@@ -22,6 +22,7 @@ export class UserModelFactory implements ModelFactory<UserModel> {
     country,
     city,
     address,
+    avatar,
   }: CreateUserInput): Promise<UserModel> {
     const user = new UserModel(
       new ObjectId().toHexString(),
@@ -36,6 +37,7 @@ export class UserModelFactory implements ModelFactory<UserModel> {
       country,
       city,
       address,
+      avatar,
     );
     await this.userRepository.create(user);
     user.sendSms(displayName);

@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { DeleteّOneFavoriteCommand } from '@/modules/favorite/command/delete-one-favorite/delete-one-favorite.command';
+import { DeleteOneFavoriteCommand } from '@/modules/favorite/command/delete-one-favorite/delete-one-favorite.command';
 import {
   DeleteFavoriteOutput,
   DeleteOneFavoriteInput,
@@ -20,7 +20,7 @@ export class DeleteOneFavoriteUseCase {
     input: DeleteOneFavoriteInput,
   ): Promise<DeleteFavoriteOutput> {
     try {
-      await this.commandBus.execute(new DeleteّOneFavoriteCommand(input));
+      await this.commandBus.execute(new DeleteOneFavoriteCommand(input));
       return { success: true };
     } catch (err) {
       throw new InternalServerErrorException(err);

@@ -17,6 +17,7 @@ export class UserModel extends AggregateRoot {
     private readonly country: string,
     private readonly city: string,
     private readonly address: string,
+    private readonly avatar: string,
   ) {
     super();
   }
@@ -67,6 +68,10 @@ export class UserModel extends AggregateRoot {
 
   getAddress(): string {
     return this.address;
+  }
+
+  getAvatar(): string {
+    return this.avatar;
   }
 
   sendSms(displayName: string) {

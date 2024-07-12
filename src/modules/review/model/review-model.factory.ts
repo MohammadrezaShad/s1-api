@@ -20,6 +20,7 @@ export class ReviewModelFactory implements ModelFactory<ReviewModel> {
     user,
     parent,
     score,
+    image,
   }: CreateReviewInput): Promise<ReviewModel> {
     const review = new ReviewModel(
       new ObjectId().toHexString(),
@@ -31,6 +32,7 @@ export class ReviewModelFactory implements ModelFactory<ReviewModel> {
       user,
       parent,
       score,
+      image,
     );
     await this.reviewRepository.createReview(review);
     return review;

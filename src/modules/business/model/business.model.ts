@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { WorkHour } from '../entity/work-hour.entity';
+import { BusinessStatus } from '../enum/status.enum';
 
 export class BusinessModel extends AggregateRoot {
   constructor(
@@ -19,6 +20,8 @@ export class BusinessModel extends AggregateRoot {
     private readonly thumbnail: string,
     private readonly images: string[],
     private readonly user: string,
+    private readonly amenities: string[],
+    private readonly status: BusinessStatus,
   ) {
     super();
   }
@@ -85,5 +88,13 @@ export class BusinessModel extends AggregateRoot {
 
   getUser(): string {
     return this.user;
+  }
+
+  getAmenities(): string[] {
+    return this.amenities;
+  }
+
+  getStatus(): BusinessStatus {
+    return this.status;
   }
 }

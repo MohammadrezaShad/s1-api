@@ -10,7 +10,7 @@ export class FavoriteCountByPostHandler
 {
   constructor(private readonly favoriteRepository: FavoriteRepository) {}
 
-  async execute({ postId }: FavoriteCountByPostQuery): Promise<number> {
-    return this.favoriteRepository.countByPost(postId);
+  async execute({ postId, type }: FavoriteCountByPostQuery): Promise<number> {
+    return this.favoriteRepository.countByPost(postId, type);
   }
 }

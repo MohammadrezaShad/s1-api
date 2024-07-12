@@ -6,7 +6,7 @@ import {
   DEFAULT_COUNT,
   DEFAULT_PAGE,
 } from '@/common/constants/pagination.constant';
-import { escapeRegex } from '@/common/utils/escape-regx.util';
+import { ObjectId } from 'mongodb';
 
 import { DeleteBusinessInput } from './dto/delete-business.dto';
 import {
@@ -21,6 +21,7 @@ import { UpdateBusinessInput } from './dto/update-business.dto';
 import { BusinessEntity, TBusiness } from './entity/business.entity';
 import { BusinessEntityFactory } from './entity/business.factory';
 import { BusinessModel } from './model/business.model';
+import { BusinessStatus } from './enum/status.enum';
 
 @Injectable()
 export class BusinessRepository {
@@ -81,9 +82,16 @@ export class BusinessRepository {
     text,
     user,
     taxonomies,
+    ninId,
+    status: inputStatus,
   }: SearchBusinessInput): Promise<SearchBusinessOutput> {
     const count = inputCount || DEFAULT_COUNT;
     const page = inputPage || DEFAULT_PAGE;
+
+    const status =
+      inputStatus || inputStatus === null
+        ? inputStatus
+        : BusinessStatus.PUBLISH;
 
     const pipeline: PipelineStage[] = [
       {
@@ -93,6 +101,8 @@ export class BusinessRepository {
           }),
           ...(user && { user: user }),
           ...(taxonomies && { taxonomies: { $in: taxonomies } }),
+          ...(ninId && { _id: { $ne: new ObjectId(ninId) } }),
+          ...(status && { status: status }),
         },
       },
       {
@@ -156,6 +166,8 @@ export class BusinessRepository {
     taxonomies,
     thumbnail,
     images,
+    amenities,
+    status,
   }: UpdateBusinessInput): Promise<void> {
     await this.businessModel
       .findOneAndUpdate(
@@ -175,6 +187,8 @@ export class BusinessRepository {
           taxonomies,
           thumbnail,
           images,
+          amenities,
+          status,
         },
         { new: true },
       )

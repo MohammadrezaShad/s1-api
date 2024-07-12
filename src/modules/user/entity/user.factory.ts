@@ -24,6 +24,7 @@ export class UserEntityFactory
       country: user.getCountry(),
       city: user.getCity(),
       address: user.getAddress(),
+      avatar: user.getAvatar(),
     };
   }
 
@@ -42,6 +43,7 @@ export class UserEntityFactory
       country,
       city,
       address,
+      avatar,
     } = userEntity;
     return new UserModel(
       _id.toHexString(),
@@ -56,6 +58,7 @@ export class UserEntityFactory
       country,
       city,
       address,
+      avatar,
     );
   }
 }

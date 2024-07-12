@@ -17,6 +17,7 @@ import { type Document } from '@/common/types/document.type';
 import { SchemaFactory } from '@/common/utils/schema-factory.util';
 import { PermissionEntity } from '@/modules/auth/components/permission/entity/permission.entity';
 import { RoleEntity } from '@/modules/auth/components/role/entity/role.entity';
+import { ImageEntity } from '@/modules/image/entity/image.entity';
 
 @InputType('UserInputType', { isAbstract: true })
 @ObjectType()
@@ -104,6 +105,12 @@ export class UserEntity extends DefaultEntity {
   @IsOptional()
   @IsString()
   address?: string;
+
+  @Prop({ type: String, ref: 'ImageEntity' })
+  @Field(() => ImageEntity, { nullable: true })
+  @IsOptional()
+  @IsString()
+  avatar?: string;
 }
 
 type TUser = Document<UserEntity>;

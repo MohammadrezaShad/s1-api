@@ -27,6 +27,8 @@ export class BusinessModelFactory implements ModelFactory<BusinessModel> {
     thumbnail,
     images,
     user,
+    amenities,
+    status,
   }: CreateBusinessInput): Promise<BusinessModel> {
     const business = new BusinessModel(
       new ObjectId().toHexString(),
@@ -45,6 +47,8 @@ export class BusinessModelFactory implements ModelFactory<BusinessModel> {
       thumbnail,
       images,
       user,
+      amenities,
+      status,
     );
     await this.businessRepository.create(business);
     return business;

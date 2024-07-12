@@ -112,6 +112,15 @@ export class ReviewRepository {
     return rvModel;
   }
 
+  async findManyReviewByUser(user: string): Promise<ReviewModel[]> {
+    const manyReview = await this.reviewModel.find({ createUser: user }).exec();
+    const rvModel: ReviewModel[] = [];
+    manyReview.map(it => {
+      rvModel.push(this.reviewEntityFactory.createFromEntity(it));
+    });
+    return rvModel;
+  }
+
   async createReview(input: ReviewModel): Promise<void> {
     const newReview = new this.reviewModel(input);
     newReview.createUser = input.getCreateUser();

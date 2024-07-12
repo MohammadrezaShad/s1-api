@@ -18,6 +18,8 @@ export class CreateBusinessInput extends PickType(BusinessEntity, [
   'webAddress',
   'lat',
   'long',
+  'amenities',
+  'status',
 ] as const) {
   @Field(() => [WorkHour], { nullable: true })
   @IsOptional()

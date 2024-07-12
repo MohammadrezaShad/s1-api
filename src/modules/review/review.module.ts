@@ -16,6 +16,8 @@ import { ReviewQueryHandlers } from './query';
 import ReviewDataLoader from './review.loader';
 import { ReviewRepository } from './review.repository';
 import { ReviewUseCases } from './use-case';
+import { ImageModule } from '../image/image.module';
+import ImageLoader from '../image/image.loader';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { ReviewUseCases } from './use-case';
     MongooseModule.forFeature([
       { name: ReviewEntity.name, schema: ReviewEntitySchema },
     ]),
+    ImageModule,
   ],
   providers: [
     ...ReviewCommandHandlers,
@@ -34,6 +37,7 @@ import { ReviewUseCases } from './use-case';
     ReviewModelFactory,
     ReviewHelepr,
     ReviewDataLoader,
+    ImageLoader,
   ],
   exports: [...ReviewUseCases],
 })

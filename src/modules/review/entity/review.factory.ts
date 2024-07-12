@@ -22,6 +22,7 @@ export class ReviewEntityFactory
       createUser: review.getCreateUser(),
       parent: review.getParent(),
       score: review.getScore(),
+      image: review.getImage(),
       approved: review.getApproved(),
     };
   }
@@ -38,6 +39,7 @@ export class ReviewEntityFactory
       createUser,
       parent,
       score,
+      image,
       approved,
     } = reviewEntity;
     return new ReviewModel(
@@ -50,6 +52,7 @@ export class ReviewEntityFactory
       createUser,
       parent,
       score,
+      image,
       approved,
     );
   }

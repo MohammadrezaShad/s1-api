@@ -6,6 +6,8 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { GetUser } from '@/modules/auth/decorators/get-user.decorator';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
 import { CoreOutput } from '@/common/dtos/output.dto';
@@ -53,6 +55,10 @@ import UserDataLoader from '@/modules/user/user.loader';
 
 import { PanelGuard } from '../auth/guards/panel.guard';
 import { FindUserByPhoneOrEmailAndIsVerifiedUseCase } from './use-case/find-user-by-phone-or-email-and-is-verified.use-case';
+import ImageLoader from '../image/image.loader';
+import { ImageEntity } from '../image/entity/image.entity';
+import { FindReviewByUserUseCase } from '../review/use-case/find-review-by-user.use-case';
+import { GqlOptionalAuthGuard } from '../auth/guards/gql-optional-auth.guard';
 
 @Resolver(() => UserQuery)
 export class UserQueryResolver {
@@ -149,8 +155,10 @@ export class UserMutationResolver {
 export class UserResolver {
   constructor(
     private readonly loader: UserDataLoader,
+    private readonly imageLoader: ImageLoader,
     private readonly getBookmarksByUserUseCase: GetBookmarksByUserUseCase,
     private readonly getFavoritesByUserUseCase: GetFavoritesByUserUseCase,
+    private readonly findReviewByUserUseCase: FindReviewByUserUseCase,
   ) {}
 
   @ResolveField(() => [PermissionEntity], { nullable: true })
@@ -185,6 +193,22 @@ export class UserResolver {
     );
     if (!favorites) return [];
     return favorites.results;
+  }
+
+  @ResolveField(() => ImageEntity, { name: 'avatar', nullable: true })
+  async avatar(@Parent() user: UserEntity) {
+    const imageId = user.avatar;
+    if (!imageId) return null;
+    return this.imageLoader.batchImage.load(imageId);
+  }
+
+  @ResolveField(() => Number, { name: 'reviewCount', nullable: true })
+  @UseGuards(GqlOptionalAuthGuard)
+  async reviewCount(@GetUser() user: UserEntity) {
+    const review = await this.findReviewByUserUseCase.findReviewByUser(
+      user ? user._id.toString() : null,
+    );
+    return review.results.length;
   }
 }
 

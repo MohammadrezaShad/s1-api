@@ -246,7 +246,10 @@ export class BusinessResolver {
   })
   async favoriteCount(@Parent() business: BusinessEntity) {
     const id = business._id.toString();
-    return this.favoriteCountByPostUseCase.favoriteCountByPost(id);
+    return this.favoriteCountByPostUseCase.favoriteCountByPost(
+      id,
+      CollectionName.BUSINESS,
+    );
   }
 
   @ResolveField(() => Boolean, {

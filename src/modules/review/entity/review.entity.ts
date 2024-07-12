@@ -22,6 +22,7 @@ import { SchemaFactory } from '@/common/utils/schema-factory.util';
 import { UserOutput } from '@/modules/user/dto/user.output';
 
 import { ReviewType } from '../enum/review-type.enum';
+import { ImageEntity } from '@/modules/image/entity/image.entity';
 
 @InputType('ReviewInputType', { isAbstract: true })
 @ObjectType()
@@ -82,6 +83,12 @@ export class ReviewEntity extends DefaultEntity {
   @Min(1, { message: 'The score must be between one and ten' })
   @Max(10, { message: 'The score must be between one and ten' })
   score: number;
+
+  @Prop({ type: String, ref: 'ImageEntity' })
+  @Field(() => ImageEntity, { nullable: true })
+  @IsOptional()
+  @IsString()
+  image?: string;
 
   @Prop({
     type: String,

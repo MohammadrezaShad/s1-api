@@ -2,6 +2,7 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Prop } from '@nestjs/mongoose';
 import {
   IsEmail,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsPhoneNumber,
@@ -19,6 +20,7 @@ import { TaxonomyEntity } from '@/modules/taxonomy/entity/taxonomy.entity';
 import { UserOutput } from '@/modules/user/dto/user.output';
 
 import { WorkHour } from './work-hour.entity';
+import { BusinessStatus } from '../enum/status.enum';
 
 @InputType('BusinessInputType', { isAbstract: true })
 @ObjectType()
@@ -110,6 +112,22 @@ export class BusinessEntity extends DefaultEntity {
   @IsString()
   @IsOptional()
   user?: string;
+
+  @Field(() => [String], { nullable: true })
+  @Prop({ type: [String], nullable: true })
+  @IsOptional()
+  @IsString({ each: true })
+  amenities?: string[];
+
+  @Prop({
+    type: String,
+    enum: [...Object.values(BusinessStatus)],
+    default: BusinessStatus.DRAFT,
+  })
+  @Field(() => BusinessStatus, { nullable: true })
+  @IsEnum(BusinessStatus)
+  @IsOptional()
+  status?: BusinessStatus;
 }
 
 type TBusiness = Document<BusinessEntity>;
