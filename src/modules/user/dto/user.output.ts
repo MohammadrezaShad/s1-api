@@ -20,7 +20,10 @@ export class UserOutput {
   @Field(() => Boolean, { nullable: true })
   isVerified?: boolean;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
+  permissions?: string[];
+
+  @Field(() => [String], { nullable: true })
   roles?: string[];
 
   @Field(() => String, { nullable: true })
