@@ -24,7 +24,7 @@ export class FindUserByEmailInput {
 export class FindUserByPhoneInput {
   @Field(() => String, { nullable: true })
   @ValidateIf(o => !o.email)
-  @IsPhoneNumber('IR')
+  // @IsPhoneNumber('IR')
   @IsString()
   phone?: string;
 

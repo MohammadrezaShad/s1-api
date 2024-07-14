@@ -55,28 +55,30 @@ export class PermissionRepository {
   }
 
   public async findByName(name: string): Promise<PermissionModel | null> {
-    const role = await this.permissionModel.findOne({ name: name }).exec();
-    return this.permissionFactory.createFromEntity(role);
+    const permission = await this.permissionModel
+      .findOne({ name: name })
+      .exec();
+    return this.permissionFactory.createFromEntity(permission);
   }
 
   public async findOneItemByName(
     name: string,
     id: string | null,
   ): Promise<PermissionModel | null> {
-    const role = await this.permissionModel.findOne({
+    const permission = await this.permissionModel.findOne({
       $and: [{ name: name }, { _id: { $ne: id } }],
     });
-    return this.permissionFactory.createFromEntity(role);
+    return this.permissionFactory.createFromEntity(permission);
   }
 
   public async findOneItemByTitle(
     title: string,
     id: string | null,
   ): Promise<PermissionModel | null> {
-    const role = await this.permissionModel.findOne({
+    const permission = await this.permissionModel.findOne({
       $and: [{ title: title }, { _id: { $ne: id } }],
     });
-    return this.permissionFactory.createFromEntity(role);
+    return this.permissionFactory.createFromEntity(permission);
   }
 
   public async findAll(): Promise<PermissionEntity[]> {
